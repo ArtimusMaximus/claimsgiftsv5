@@ -1,0 +1,49 @@
+.box {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 50px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 15px;
+    
+}
+
+.box > input, label, button {
+    margin: 10px;
+}
+
+input {
+    height: 40px;
+    border-radius: 10px;
+    padding: 5px;
+    padding-left: 15px;
+    margin: 3px;
+}
+input::placeholder {
+    font-style: italic;
+}
+
+label {
+    font-weight: 900;
+    color: crimson;
+    font-size: x-large;
+}
+
+button {
+    border: none;
+    color: whitesmoke;
+    background-color: pink;
+    width: 75px;
+    height: 45px;
+    font-weight: 800;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+.newuser {
+    margin-top: 12px;
+}

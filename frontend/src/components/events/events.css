@@ -1,0 +1,38 @@
+.eventsTable {
+    text-align: left;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 5px;
+}
+
+
+
+td { 
+    font-size: 1.75vw;
+    padding: 5px;
+}
+
+.firsttd {
+    
+    color: red;
+}
+.firsttd > a {
+    text-decoration: none;
+    font-weight: 900;
+}
+
+@media only screen and (max-width: 820px) { 
+    td { 
+        font-size: 3.5vw;
+        padding: 5px;
+    }
+    
+    .firsttd {
+        
+        color: red;
+    }
+    .firsttd > a {
+        text-decoration: none;
+        font-weight: 900;
+    }
+}
