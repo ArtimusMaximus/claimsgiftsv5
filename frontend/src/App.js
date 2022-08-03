@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function App() {
   const location = useLocation()
   const navigate = useNavigate()
+ 
 
   const logOut = async () => {
     const auth = getAuth()

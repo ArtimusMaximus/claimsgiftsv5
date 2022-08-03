@@ -1,4 +1,4 @@
-import { arrayUnion, doc, getDocs, updateDoc, query, collection, where, getDoc, setDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDocs, updateDoc, query, collection, where, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { db } from '../../firebase';
@@ -6,7 +6,6 @@ import { AuthContext } from '../context/AuthContext';
 import './addgiftform.css'
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
-
 
 export default () => {
     const currentUser = useContext(AuthContext)
@@ -20,99 +19,87 @@ export default () => {
     const [giftArray, setGiftArray] = useState([]);
     const [eventData, setEventData] = useState({});
     const [didSubmit, setDidSubmit] = useState(false);
-    const [requestorArr, setRequestorArr] = useState([]);
-    const [participantEmail, setParticipantEmail] = useState([]);
-    const [eventParticipants, setEventParticipants] = useState([user.email]);
+    const [eventParticipants, setEventParticipants] = useState([eventData.eventParticipants]);
     const [giftRef] = useState(eventId);
-    const [verifyOnList, setVerifyOnList] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     
-    
     const eventRef = doc(db, 'events', eventId) // add gifts to this event
-
     const q = query(collection(db, "events"), where("gifts", "array-contains", "claimed"));
-    
 
 useEffect(() => {
     let list = [];
     
     const getUserEvents = async () => {
-    try {
-        // const querySnapshot = await getDocs(q)
-        
-        // querySnapshot.forEach((doc) => {
-        //     list.push({id: doc.id, ...doc.data()})
-        //     console.log(doc.id, "=>", doc.data())
-        // })
-        const docRef = doc(db, 'events', eventId)
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
+        try {
+            // const querySnapshot = await getDocs(q)
             
-            // list.push({events: docSnap.data().events, gifts: docSnap.data().gifts})
-            setGiftArray(docSnap.data().gifts)
-            setEventData(docSnap.data().events)
-            list.push(docSnap.data().eventParticipants)
-            setEventParticipants(...list)
+            // querySnapshot.forEach((doc) => {
+            //     list.push({id: doc.id, ...doc.data()})
+            //     console.log(doc.id, "=>", doc.data())
+            // })
+            const docRef = doc(db, 'events', eventId)
+            const docSnap = await getDoc(docRef)
+            if (docSnap.exists()) {
+                
+                // list.push({events: docSnap.data().events, gifts: docSnap.data().gifts})
+                setGiftArray(docSnap.data().gifts)
+                setEventData(docSnap.data().events)
+                console.log(docSnap.data().eventParticipants)
+                list.push(docSnap.data().eventParticipants)
+                setEventParticipants(...list)
+                
+                // list.push(docSnap.data().events.eventOwner)
+                // setParticipantEmail([...list])
+                
+                
+            } else {
+                console.log('must have been no data');
+            }
             
-            // list.push(docSnap.data().events.eventOwner)
-            // setParticipantEmail([...list])
-             
-            
-        } else {
-            console.log('must have been no data');
+        } catch (error) {
+            console.log(error);
         }
-         
-    } catch (error) {
-        console.log(error);
-    }
     }
     getUserEvents()
-    setDidSubmit(true)
-
-    const checkEmail = async () => {
-        const onTheList = eventParticipants.includes(user.email)
-        try {
-            await onTheList
-            if(onTheList) {
-                setVerifyOnList(true)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    checkEmail()
-
+    
+    
+    
+    console.log('use effect' + Date(Date.now().toLocaleString()))
 
 }, [didSubmit])
- 
-const handleSubmit = async e => {
-    e.preventDefault();
-    if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'pink'}) 
-    try {
-        // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
-        await updateDoc(eventRef, {
-            gifts: arrayUnion({giftName: giftName, giftLink: giftLink, claimed: isClaimed, requestor: requestor, giftRef: giftRef})
-        })
-        console.log(eventRef)
-        } catch (error) {
-            console.log(error)
-        }
-        setGiftName('')
-        setGiftLink('')
-    }
 
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'pink'}) 
+        try {
+            // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
+            await updateDoc(eventRef, {
+                gifts: arrayUnion({giftName: giftName, giftLink: giftLink, claimed: isClaimed, requestor: requestor, giftRef: giftRef})
+            })
+            console.log(eventRef)
+            } catch (error) {
+                console.log(error)
+            }
+            setDidSubmit(current => !current)
+            setGiftName('')
+            setGiftLink('')
+        }
+ 
     const sweetModal = async () => {
         const { value: email } = await Swal.fire({
             title: 'Enter new participant email',
             input: 'email',
             inputLabel: 'Email',
             confirmButtonColor: 'pink',
+            showCancelButton: true,
+            cancelButtonColor: 'crimson',
             inputPlaceholder: 'Enter email address here',
             html: eventParticipants && `Event participants: ${eventParticipants.join(' ')}`
         })
         if(email) {
-
-            setEventParticipants(prevList => [...prevList, email])
+            
+            console.log('event participants ' , eventParticipants)
 
             Swal.fire({
                 title: `User(s) ${email} added to participants!`,
@@ -120,20 +107,35 @@ const handleSubmit = async e => {
                 // text: `Save user email to friends list?`,
                 // showDenyButton: true
             })
+            .then((result) => console.log(result))
+            .then(() => setEventParticipants(prevList => [...prevList, email]))
+            // .then(() => updateDoc(eventRef, {
+            //     eventParticipants: arrayUnion(...eventParticipants)
+            // }))
             
+            .catch(err => console.log(err))
             // .then((result) => result.isConfirmed ? setEventParticipants(eventParticipants => [...eventParticipants, email]) : null)
             // friends list add on
+            
         }
+        
+    }
+    const updatePartici = async () => {
+        
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
             await updateDoc(eventRef, {
                 eventParticipants: arrayUnion(...eventParticipants)
             })
+            
             console.log(eventRef)
+            console.log(eventParticipants);
             } catch (error) {
                 console.log(error)
             } 
     }
+    updatePartici()
+
     console.log(giftArray)
 
     const search = (data) => {
@@ -143,17 +145,30 @@ const handleSubmit = async e => {
         )
     }
 
-
-
     console.log(user.email)
     console.log(eventData);
-    console.log(eventParticipants)
+    
+    const onTheList = eventParticipants.includes(user.email)
+    console.log(onTheList)
+    // const checkEmail = async () => {
+    //     const currentUserEmail = user.email
+    //     const onTheList = eventParticipants.includes(currentUserEmail)
+    //     try {
+    //         await onTheList
+    //         if(onTheList) {
+    //             setVerifyOnList(true)
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    // checkEmail()
 
     
         
     return (
         <>
-        {verifyOnList || user.email === eventData.eventOwner ? (<>
+        {onTheList || user.email === eventData.eventOwner ? (<>
             <div>
                 {eventData && <h2>Event: {eventData.eventName}</h2>}
                 <div style={{display: 'flex', justifyContent: 'right', marginRight: '24vw'}}>
@@ -166,7 +181,7 @@ const handleSubmit = async e => {
                         <input value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
                         <input value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
                         <div>
-                            <button type="submit" onClick={() => setDidSubmit(false)}>Add Gift</button>
+                            <button type="submit">Add Gift</button>
                         </div>
                     </form> 
             </div>
@@ -176,7 +191,7 @@ const handleSubmit = async e => {
                     <button onClick={() => setSearchQuery('')}>Clear</button>
                 </span>
             </div>
-            <Gifts giftArray={search(giftArray)} user={user} />
+            <Gifts giftArray={giftArray && search(giftArray)} user={user} />
         </>) : (
             <div style={{textAlign: 'center'}}>
                 <h1>You must be added to the event list to participate!</h1>

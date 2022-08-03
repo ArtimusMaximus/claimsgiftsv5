@@ -7,13 +7,12 @@ import './addgiftform.css'
 
 export default ({ giftArray, user }) => {
     // {giftArray && giftArray.map(i => (<ul key={i.giftName}><li><b>Gift: </b>{i.giftName}</li><li><b>Link: </b>{i.giftLink}</li><li><b>Requestor: </b>{i.requestor}</li><b>Claimed: </b><li>{i.claimed ? "claimed" : i.requestor === user.email ? 'Unavailable to requestor!' : "not claimed"}</li></ul>))}
-    const [checked, setChecked] = useState(true)
-    const [notChecked, setNotChecked] = useState(false)
+    const [checked, setChecked] = useState(false)
+    const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
     const location = useLocation()
     const eventId = location.pathname.split("/")[2]
-    console.log(eventId);
-    console.log(checked)
+    
     let inc = 0;
     
 
@@ -46,8 +45,10 @@ export default ({ giftArray, user }) => {
             .then((result) => {
                 if (result.isConfirmed) {
                     setIsClaimed(true)
+                    setChecked(current => !current)
                     
                     giftArray[e.target.id].claimed = true
+                    giftArray[e.target.id].claimee = user.email
  
                     updateClaimed()
                 } else {
@@ -69,8 +70,11 @@ export default ({ giftArray, user }) => {
         .then((result) => {
             if (result.isConfirmed) {
                 setIsClaimed(false)
+                setNotChecked(current => !current)
                 
                 giftArray[e.target.id].claimed = false
+                giftArray[e.target.id].claimee = user.email
+
                 updateClaimed()
             } else {
                 return
@@ -85,7 +89,7 @@ export default ({ giftArray, user }) => {
 
 
     
-    console.log(giftArray);
+    
 
     return (
         <div className='giftContainer'>
@@ -98,7 +102,7 @@ export default ({ giftArray, user }) => {
                         <th>Requestor</th>
                         <th>Claimed</th>
                     </tr>
-                    {giftArray.map((i, index) => 
+                    {giftArray && giftArray.map((i, index) => 
                         <tr key={i.giftName + inc++}>
                             <td>{i.giftName}</td>
                             <td>{i.giftLink}</td>
@@ -111,11 +115,11 @@ export default ({ giftArray, user }) => {
                             </td>
                             <td>
                                 {
-                                    !user.email === i.requestor 
+                                    user.email === i.requestor 
                                     ? '?¿' 
                                     : i.claimed
-                                    ?  <input className='cb' id={index} type="checkbox" value={checked} disabled={user.email === i.requestor ? false : true} checked={checked} onChange={e => handleUnclaim(e)} />
-                                    :  <input className='cb' id={index} type="checkbox" value={notChecked} checked={notChecked} onChange={e => handleChange(e)} />
+                                    ?  <input className='cb' id={index} type="checkbox" value={checked} disabled={user.email === i.claimee ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} />
+                                    :  <input className='cb' id={index} type="checkbox" value={notChecked} checked={i.claimed} onChange={e => handleChange(e)} />
                                 }
                             </td>
                         </tr>    

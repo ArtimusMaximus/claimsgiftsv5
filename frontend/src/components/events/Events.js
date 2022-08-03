@@ -18,6 +18,7 @@ export default ({ data }) => {
                 </tr>
                 </thead>
                 <tbody>
+                
                 {data.map(i => 
                 (
                     <tr key={i.id}>
@@ -26,6 +27,7 @@ export default ({ data }) => {
                         <td>{i.events.eventDate.slice(5, 10) + '-' + i.events.eventDate.slice(0, 4)}</td>
                     </tr>
                 ))}
+                { data.length === 0 && (<tr style={{textAlign: 'left'}}><td>Add an event to view here</td></tr>) }
                 </tbody>
             </table>
         </>
