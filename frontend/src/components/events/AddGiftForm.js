@@ -95,7 +95,7 @@ useEffect(() => {
             showCancelButton: true,
             cancelButtonColor: 'crimson',
             inputPlaceholder: 'Enter email address here',
-            html: eventParticipants && `Event participants: ${eventParticipants.join(' ')}`
+            title: eventParticipants && `Event participants: \n${eventParticipants.join(' ')}`
         })
         if(email) {
             

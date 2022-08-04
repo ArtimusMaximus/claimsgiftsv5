@@ -105,7 +105,7 @@ export default ({ giftArray, user }) => {
                     {giftArray && giftArray.map((i, index) => 
                         <tr key={i.giftName + inc++}>
                             <td>{i.giftName}</td>
-                            <td>{i.giftLink}</td>
+                            <td><a href={i.giftLink}>{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</a></td>
                             <td>
                                 {
                                     user.email === i.requestor 

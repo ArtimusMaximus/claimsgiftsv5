@@ -7,6 +7,7 @@ import './events.css'
 
 export default ({ data }) => {
     
+    
     return (
         <>
             <table className='eventsTable'>
@@ -19,7 +20,7 @@ export default ({ data }) => {
                 </thead>
                 <tbody>
                 
-                {data.map(i => 
+                {data?.map(i => 
                 (
                     <tr key={i.id}>
                         <td className="firsttd"><Link to={`${i.id}`}>{i.events.eventName}</Link></td>
@@ -27,9 +28,12 @@ export default ({ data }) => {
                         <td>{i.events.eventDate.slice(5, 10) + '-' + i.events.eventDate.slice(0, 4)}</td>
                     </tr>
                 ))}
-                { data.length === 0 && (<tr style={{textAlign: 'left'}}><td>Add an event to view here</td></tr>) }
+                {data.length === 0 && (<tr style={{textAlign: 'left'}}><td>Add an event to view here</td></tr>)}
                 </tbody>
             </table>
+            <div>
+                
+            </div>
         </>
     )
 }

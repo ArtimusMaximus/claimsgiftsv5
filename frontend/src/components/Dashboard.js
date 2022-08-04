@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Events from './events/Events';
-import { eventData } from './events/data';
 import { AuthContext } from './context/AuthContext';
 import AddEventForm from '../components/events/AddEventForm';
-import FetchUserEvents from './events/firebase_crud/FetchUserEvents';
 import { TbMailbox } from 'react-icons/tb'
-import { FaEnvelopeOpenText } from 'react-icons/fa'
 import Swal from 'sweetalert2';
 import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from '../firebase';
@@ -19,8 +15,6 @@ export default () => {
     const [agreedEvent, setAgreedEvent] = useState(false)
     const [participantEventId, setParticipantEventId] = useState([])
     
-    const [eventParticipants, setEventParticipants] = useState([])
-    
     const q = query(collection(db, "invites"), where("invitee", "==", user.email))
 
     useEffect(() => {
@@ -29,7 +23,7 @@ export default () => {
             try {
                 const querySnapshot = await getDocs(q)
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data())
+                    // console.log(doc.data())
                     list.push(doc.data())
                     setInviteData(prev => [...prev, doc.data()])
                 })
@@ -62,7 +56,7 @@ export default () => {
 
     const mapInvites = inviteData.map(i => (`Event: "${i.event}" | From: "${i.invitedBy}"`))
 
-    console.log(inviteData);
+    console.log('inviteData from dashboard ', inviteData);
     const handleClick = () => {
         if (inviteData.length === 0) return Swal.fire({title: 'no invites available', confirmButtonColor: 'pink'})
         const confirmInvite = async () => {

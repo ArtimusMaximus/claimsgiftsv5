@@ -17,51 +17,58 @@ export default () => {
     const splitDate = date.split('/')
     const propsDate = (splitDate[2].length > 4 ? splitDate[2].slice(0, -1) : splitDate[2]) + '-' + (splitDate[0].length < 2 ? '0' + splitDate[0] + '-' : splitDate[0] + '-') + (splitDate[1].length < 2 ? '0' + splitDate[1] : splitDate[1])
     const [eventDate, setEventDate] = useState(propsDate)
-    const [eventOwner, setEventOwner] = useState(currentUser.currentUser.email)
+    const [eventOwner, setEventOwner] = useState(userEmail)
     const [eventRef, setEventRef] = useState(user)
     const [didSubmit, setDidSubmit] = useState(false)
-    const [eventParticipants, setEventParticipants] = useState([currentUser.currentUser.email])
+    const [eventParticipants, setEventParticipants] = useState([userEmail])
+    
     
     ///////////invite/////////
     const [eventsData, setEventsData] = useState([])
     const [didInvite, setDidInvite] = useState(false)
+    
     /////////////check events//////
     const [inviteData, setInviteData] = useState([])
     const [agreedEvent, setAgreedEvent] = useState(false)
     const [participantEventId, setParticipantEventId] = useState([])
+    const [appendedInvite, setAppendedInvite] = useState([])
 
     ///////////////////////////// fetch user events ///////////////////////////
    
     const [docData, setDocData] = useState([])
     const q = query(collection(db, "events"), where("events.eventRef", "==", user));
+    const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", userEmail));
     const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
+    
 
     useEffect(() => {
         const getUserEvents = async () => {
             let list = [];
             try {
-                const querySnapshot = await getDocs(q);
+                const querySnapshot = await getDocs(q1);
                 
                 querySnapshot.forEach((doc) => {
-                    list.push({id: doc.id, ...doc.data()})
+                    list.push({id: doc.id, ...doc.data(), appendedInvite})
                     const d = doc.data()
                     // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", d);
+                    // console.log(doc.id, " => ", d);
                 });
                 setDocData(list)
                 setEventsData([...list])
+                
                 
             } catch (error) {
                 console.log(error)
             }
         }
         getUserEvents()
-        const checkInvites = async () => {
+
+        const checkInvites = async () => { // fetching invite documents
             let list2 = [];
             try {
                 const querySnapshot = await getDocs(queryInvites)
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data())
+                    // console.log(doc.data())
                     list2.push(doc.data())
                     setInviteData(prev => [...prev, doc.data()])
                 })
@@ -71,12 +78,11 @@ export default () => {
             }
         }
         checkInvites()
-    }, [didSubmit])
-    /////////////////////////////////
-    console.log('docData ', docData);
-    console.log('eventsData ', eventsData);
-    console.log('invite data ', inviteData);
 
+    }, [didSubmit])
+
+    /////////////////////////////////
+  
     const handleSubmit = async e => {
         e.preventDefault();
         
@@ -140,7 +146,7 @@ export default () => {
                 .then((result) => console.log(result.isConfirmed))
                 .then(() => setDidInvite(prev => !prev))
                 .then(() => addDoc(collection(db, "invites"), {
-                    invitee: inviteeEmail,
+                    invitee: inviteeEmail.trim().toLowerCase(),
                     event: eName,
                     invitedBy: userEmail,
                     eventDate: eDate,
@@ -188,9 +194,9 @@ export default () => {
                     const docRef = doc(db, "events", eventConfirmedId)
                     const docSnap = await getDoc(docRef)
                     if (docSnap.exists()) {
-                        console.log('doc data', docSnap.data())
+                        console.log('docSnap .data()', docSnap.data())
                         list.push(docSnap.data().eventParticipants)
-                        setEventParticipants(...list)
+                        setEventParticipants(prev => prev, ...list)
                     } else {
                         console.log('no such doc!');
                     }
@@ -205,13 +211,68 @@ export default () => {
                     })
                 }
                 updateEventPartici()
+
+                const getSingleDoc = async () => {
+                    let arr = [];
+                    const singleDocRef = doc(db, "events", eventConfirmedId)
+                    const docSnap = await getDoc(singleDocRef)
+                    if (docSnap.exists()) {
+                        console.log(docSnap.data())
+                        arr.push({id: docSnap.id, ...docSnap.data()})
+                        setAppendedInvite(docSnap.data())
+                        setDocData(prev => [...prev, {id: docSnap.id, ...docSnap.data()}])
+                        
+
+                    }
+                }
+                getSingleDoc()
+
+                // console.log(qSnap);
+                // console.log(userBlobId);
+                // if (userBlobId) { // if querySnap for blob is empty
+                //     const createEventBlob = async () => {
+                //         const docRef = await addDoc(collection(db, "eventBlob"), {owner: user, ...blobData});
+                        
+                //         console.log('docRef.id ', docRef.id);
+                //         console.log('docData inside setEventBlob ', docData);
+                //         console.log('docRef inside setEventBlob ', docRef);
+                //         console.log('CREATE EVENT BLOB FIRED');
+                //     }
+                //     createEventBlob()
+                // } else {
+                //     // update blob
+                //     const updateBlob = async () => {
+                //         const blobRef = doc(db, "eventBlob", userBlobId);
+                //         await updateDoc(blobRef, {
+                //             blobData: arrayUnion(blobData)
+                //         })
+                //         console.log('Update Blob FIRED!');
+                //     }
+                    
+                //     return updateBlob()
+                //     setDidSubmit(prev => !prev)
+
+                // }
+                
+                
+                
+                
+                
+
             }
+            
             
 
         }
         confirmInvite()
+
+        
         console.log(participantEventId);
         console.log(eventParticipants);
+        console.log(docData)
+        
+
+        
         
     }
 
@@ -232,7 +293,7 @@ export default () => {
                 
             </div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Events data={docData} />
+                <Events data={docData}   /> {/* lastly: send event blob here*/}
             </div>
         </>
     )
