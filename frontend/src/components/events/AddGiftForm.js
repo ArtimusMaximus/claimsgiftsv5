@@ -1,4 +1,4 @@
-import { arrayUnion, doc, getDocs, updateDoc, query, collection, where, getDoc, setDoc, Timestamp } from 'firebase/firestore';
+import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, query, collection, where, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { db } from '../../firebase';
@@ -19,12 +19,22 @@ export default () => {
     const [giftArray, setGiftArray] = useState([]);
     const [eventData, setEventData] = useState({});
     const [didSubmit, setDidSubmit] = useState(false);
-    const [eventParticipants, setEventParticipants] = useState([eventData.eventParticipants]);
+    const [eventParticipants, setEventParticipants] = useState([user.email]);
     const [giftRef] = useState(eventId);
     const [searchQuery, setSearchQuery] = useState('')
     
     const eventRef = doc(db, 'events', eventId) // add gifts to this event
     const q = query(collection(db, "events"), where("gifts", "array-contains", "claimed"));
+    const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", user.email));
+    const q2 = query(collection(db, "events"), where("events.eventRef", "==", user.uid));
+    const q3 = query(collection(db, "events"), 
+        where("eventParticipants", "array-contains", user.email),
+        where("giftsEventRef", "==", eventId)
+    );
+    
+    
+    
+    const [rtEvents, setRtEvents] = useState([])
 
 useEffect(() => {
     let list = [];
@@ -42,7 +52,8 @@ useEffect(() => {
             if (docSnap.exists()) {
                 
                 // list.push({events: docSnap.data().events, gifts: docSnap.data().gifts})
-                setGiftArray(docSnap.data().gifts)
+                console.log(docSnap.data().gifts)
+                // setGiftArray(docSnap.data().gifts)
                 setEventData(docSnap.data().events)
                 console.log(docSnap.data().eventParticipants)
                 list.push(docSnap.data().eventParticipants)
@@ -61,10 +72,47 @@ useEffect(() => {
         }
     }
     getUserEvents()
+
+    // const unsubscribe = onSnapshot(q1, (querySnapshot) => {
+    //     let events = [];
+    //     querySnapshot.docs.forEach((doc) => {
+    //         events.push({id: doc.id, ...doc.data().gifts})
+    //         console.log(doc.data());
+            
+    //     })
+        
+    //     //set events
+    //     let format = Object.values(events[0])
+    //     let f = format.slice(0, -1)
+    //     console.log(format);
+    //     console.log(f);
+    //     setGiftArray(f)
+    //     setRtEvents(events)
+    //     console.log(giftArray);
+    //     console.log('realtime events', rtEvents);
+    // }, (error) => {
+    //     console.log(error);
+    // })
+    // return () => {
+    //     unsubscribe()
+    // }
+    const unsub2 = onSnapshot(doc(db, "events", eventId), doc => {
+        console.log('current doc data ', doc.data());
+        const arr = [];
+        arr.push({id: doc.id, ...doc.data().gifts})
+        
+        let format = Object.values(arr[0])
+        console.log(format);
+
+        setGiftArray(format.slice(0, -1))
+    })
+    return () => {
+        unsub2()
+    }
     
     
     
-    console.log('use effect' + Date(Date.now().toLocaleString()))
+    
 
 }, [didSubmit])
 
@@ -75,7 +123,15 @@ useEffect(() => {
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
             await updateDoc(eventRef, {
-                gifts: arrayUnion({giftName: giftName, giftLink: giftLink, claimed: isClaimed, requestor: requestor, giftRef: giftRef})
+                gifts: arrayUnion(
+                    {
+                        giftName: giftName, 
+                        giftLink: giftLink, 
+                        claimed: isClaimed, 
+                        requestor: requestor, 
+                        giftRef: giftRef
+                    }
+                )
             })
             console.log(eventRef)
             } catch (error) {

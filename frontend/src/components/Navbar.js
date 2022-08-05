@@ -11,15 +11,8 @@ import { collection, getDocs, where, query, DocumentSnapshot, addDoc } from "fir
 export default () => {
     const currentUser = useContext(AuthContext)
     const user = currentUser.currentUser
-    const userId = currentUser.currentUser.uid
-    const [didInvite, setDidInvite] = useState(false)
-    const [eventsData, setEventsData] = useState([])
-    const [clicked, setClicked] = useState(false)
-
     
-    
-    
-    const q = query(collection(db, "events"), where("events.eventRef", "==", userId))
+    // const q = query(collection(db, "events"), where("events.eventRef", "==", userId))
 
     // useEffect(() => {
     //     const getUsersEvents = async () => {
@@ -97,7 +90,6 @@ export default () => {
            <div className='' style={{background: 'pink', height: '15vh', display: 'flex', alignItems:'center', justifyContent: 'center', width: '100vw', overflow: 'hidden'}}>
                 <Link to="/" style={{textDecoration: 'none', color: 'White'}}><h3>Claims Gifts</h3><h5>Beta</h5></Link>
                 <Link to="/dashboard" className='navbarlinks'>Dashboard</Link>
-                
                 <Link to="/logout" className='navbarlinks'>Logout</Link>
             </div>
         </>

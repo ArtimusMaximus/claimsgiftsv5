@@ -1,4 +1,4 @@
-import { collection, setDoc, updateDoc, doc, arrayUnion } from 'firebase/firestore';
+import { collection, setDoc, updateDoc, doc, arrayUnion, where, query, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -10,12 +10,12 @@ export default ({ giftArray, user }) => {
     const [checked, setChecked] = useState(false)
     const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
+    
     const location = useLocation()
     const eventId = location.pathname.split("/")[2]
     
     let inc = 0;
     
-
     useEffect(() => {
         // const updateClaimed = async () => {
         //     const docRef = doc(db, "events", eventId)
@@ -24,6 +24,8 @@ export default ({ giftArray, user }) => {
         //     })
         // }
         // updateClaimed()
+
+        
     }, [isClaimed])
 
     const updateClaimed = async () => {
@@ -86,10 +88,6 @@ export default ({ giftArray, user }) => {
         })
         
     }
-
-
-    
-    
 
     return (
         <div className='giftContainer'>

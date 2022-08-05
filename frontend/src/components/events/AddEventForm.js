@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { doc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, Timestamp, serverTimestamp, query, where, getDocs, getDoc } from "firebase/firestore"; 
+import { doc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, Timestamp, serverTimestamp, query, where, getDocs, getDoc, onSnapshot } from "firebase/firestore"; 
 import { AuthContext } from '../context/AuthContext';
 import { db } from '../../firebase';
 import Events from './Events';
@@ -7,6 +7,7 @@ import './addeventform.css';
 import Swal from 'sweetalert2';
 import { FaEnvelopeOpenText } from 'react-icons/fa'
 import { TbMailbox } from 'react-icons/tb'
+import { getUserEvents } from './firebase_functions/getusers';
 
 export default () => {
     const currentUser = useContext(AuthContext)
@@ -26,6 +27,8 @@ export default () => {
     ///////////invite/////////
     const [eventsData, setEventsData] = useState([])
     const [didInvite, setDidInvite] = useState(false)
+    ///////////real time events ////////
+    
     
     /////////////check events//////
     const [inviteData, setInviteData] = useState([])
@@ -36,17 +39,17 @@ export default () => {
     ///////////////////////////// fetch user events ///////////////////////////
    
     const [docData, setDocData] = useState([])
-    const q = query(collection(db, "events"), where("events.eventRef", "==", user));
+    const q = query(collection(db, "events"), where("events.eventRef", "==", user)); /* original query */
     const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", userEmail));
     const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
     
+    //setDocData , q1, appendedInvite
 
     useEffect(() => {
         const getUserEvents = async () => {
             let list = [];
             try {
                 const querySnapshot = await getDocs(q1);
-                
                 querySnapshot.forEach((doc) => {
                     list.push({id: doc.id, ...doc.data(), appendedInvite})
                     const d = doc.data()
@@ -54,8 +57,6 @@ export default () => {
                     // console.log(doc.id, " => ", d);
                 });
                 setDocData(list)
-                setEventsData([...list])
-                
                 
             } catch (error) {
                 console.log(error)
@@ -63,25 +64,40 @@ export default () => {
         }
         getUserEvents()
 
-        const checkInvites = async () => { // fetching invite documents
-            let list2 = [];
-            try {
-                const querySnapshot = await getDocs(queryInvites)
-                querySnapshot.forEach((doc) => {
-                    // console.log(doc.data())
-                    list2.push(doc.data())
-                    setInviteData(prev => [...prev, doc.data()])
-                })
+        // const checkInvites = async () => { // fetching invite documents
+        //     let list2 = [];
+        //     try {
+        //         const querySnapshot = await getDocs(queryInvites)
+        //         querySnapshot.forEach((doc) => {
+        //             // console.log(doc.data())
+        //             list2.push(doc.data())
+        //             setInviteData(prev => [...prev, doc.data()])
+        //         })
                 
-            } catch (error) {
-                console.log(error);
-            }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // }
+        // checkInvites()
+
+        const unsubscribe = onSnapshot(queryInvites, querySnapshot => {
+            let invites = [];
+            querySnapshot.docs.forEach((doc) => {
+                invites.push({id: doc.id, ...doc.data()})
+            });
+            setInviteData(invites)
+
+        }, error => console.log(error))
+
+        return () => {
+            unsubscribe()
         }
-        checkInvites()
 
     }, [didSubmit])
 
     /////////////////////////////////
+   
+    console.log(inviteData);
   
     const handleSubmit = async e => {
         e.preventDefault();
@@ -103,7 +119,8 @@ export default () => {
                     
                     
                 },
-                eventParticipants
+                eventParticipants,
+                
             });
             console.log(docRef);
             setEventName('')
@@ -115,7 +132,7 @@ export default () => {
     }
 
     const handleInviteClick = async () => {
-        const eventNames = eventsData.map(i => i.events.eventName)
+        const eventNames = docData.map(i => i.events.eventName)
 
         const { value: event } = await Swal.fire({
             title: 'Please select event to share:',
@@ -128,9 +145,9 @@ export default () => {
             inputPlaceholder: 'Your events...'
         })
         if(event) {
-            const eName = eventsData[event].events.eventName
-            const eDate = eventsData[event].events.eventDate
-            const eventId = eventsData[event].id
+            const eName = docData[event].events.eventName
+            const eDate = docData[event].events.eventDate
+            const eventId = docData[event].id
             const { value: inviteeEmail } = await Swal.fire({
                 title: `Share event "${eName}" with:`,
                 confirmButtonColor: 'pink',
@@ -178,7 +195,7 @@ export default () => {
             if (choice) {
                 const eventConfirmed = inviteData[choice]
                 const eventConfirmedId = inviteData[choice].eventId
-                const currentEventParticipants = inviteData[choice]
+                
                 console.log('event confirmed id', eventConfirmedId)
                 
                 Swal.fire({
@@ -283,7 +300,7 @@ export default () => {
                     <input value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
                     <input value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
                     <div className="btn">
-                        <button type="submit" onClick={e => setDidSubmit(false)}>Add Event</button>
+                        <button type="submit" onClick={() => setDidSubmit(false)}>Add Event</button>
                     </div>
                     <div>
                     <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'pink'} /></a></div>
@@ -293,7 +310,7 @@ export default () => {
                 
             </div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Events data={docData}   /> {/* lastly: send event blob here*/}
+                <Events data={docData}   /> {/* lastly: send event blob here*/} {/* docData was the original */}
             </div>
         </>
     )
