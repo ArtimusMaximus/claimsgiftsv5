@@ -10,6 +10,7 @@ export default ({ giftArray, user }) => {
     const [checked, setChecked] = useState(false)
     const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
+    const [toggle, setToggle] = useState(true)
     
     const location = useLocation()
     const eventId = location.pathname.split("/")[2]
@@ -88,6 +89,10 @@ export default ({ giftArray, user }) => {
         })
         
     }
+    const handleToggle = () => {
+        setToggle(prev => !prev)
+        console.log(toggle);
+    }
 
     return (
         <div className='giftContainer'>
@@ -98,7 +103,7 @@ export default ({ giftArray, user }) => {
                         <th>Gift Name</th>
                         <th>Gift Link</th>
                         <th>Requestor</th>
-                        <th>Claimed</th>
+                        <th><span>Hide claim status<input value={toggle} type="checkbox" defaultChecked={true} onClick={handleToggle} /></span>Claimed</th>
                     </tr>
                     {giftArray && giftArray.map((i, index) => 
                         <tr key={i.giftName + inc++}>
@@ -112,7 +117,7 @@ export default ({ giftArray, user }) => {
                                 }
                             </td>
                             <td>
-                                {
+                                {toggle &&
                                     user.email === i.requestor 
                                     ? '?¿' 
                                     : i.claimed

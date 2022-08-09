@@ -155,7 +155,10 @@ useEffect(() => {
         })
         if(email) {
             
-            console.log('event participants ' , eventParticipants)
+            console.log('event participants ' , eventParticipants, email)
+            
+            
+            console.log(eventParticipants)
 
             Swal.fire({
                 title: `User(s) ${email} added to participants!`,
@@ -164,16 +167,18 @@ useEffect(() => {
                 // showDenyButton: true
             })
             .then((result) => console.log(result))
-            .then(() => setEventParticipants(prevList => [...prevList, email]))
+            .then(() => setEventParticipants(prev => [...prev, email]))    
             // .then(() => updateDoc(eventRef, {
             //     eventParticipants: arrayUnion(...eventParticipants)
             // }))
-            
+            // .then(() => setDidSubmit(prev => !prev))
             .catch(err => console.log(err))
             // .then((result) => result.isConfirmed ? setEventParticipants(eventParticipants => [...eventParticipants, email]) : null)
             // friends list add on
             
         }
+        
+        // updatePartici()
         
     }
     const updatePartici = async () => {
@@ -186,11 +191,13 @@ useEffect(() => {
             
             console.log(eventRef)
             console.log(eventParticipants);
+            // setDidSubmit(p => !p)
             } catch (error) {
                 console.log(error)
             } 
     }
     updatePartici()
+    
 
     console.log(giftArray)
 
