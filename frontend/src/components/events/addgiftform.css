@@ -51,7 +51,9 @@ ul {
  /* admin6@aol.com admin@matrix.org */
 
  th {
-    padding: 25px;
+    padding: 5px;
+    
+    
  }
 
  table {
@@ -60,7 +62,9 @@ ul {
     
  }
  td {
+    margin: 10px;
     padding: 5px;
+    min-height: 100px;
  }
 .cb {
     width: 50px;

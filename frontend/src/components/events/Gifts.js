@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase';
-import './addgiftform.css'
+import './addgiftform.css';
+import './gifts.css';
+
 
 export default ({ giftArray, user }) => {
     // {giftArray && giftArray.map(i => (<ul key={i.giftName}><li><b>Gift: </b>{i.giftName}</li><li><b>Link: </b>{i.giftLink}</li><li><b>Requestor: </b>{i.requestor}</li><b>Claimed: </b><li>{i.claimed ? "claimed" : i.requestor === user.email ? 'Unavailable to requestor!' : "not claimed"}</li></ul>))}
@@ -103,7 +105,14 @@ export default ({ giftArray, user }) => {
                         <th>Gift Name</th>
                         <th>Gift Link</th>
                         <th>Requestor</th>
-                        <th><span>Hide claim status<input value={toggle} type="checkbox" defaultChecked={true} onClick={handleToggle} /></span>Claimed</th>
+                        <th className='thclaimed'>
+                            Claimed Status:
+                            <label className='switch'>
+                                <input className='tog' value={toggle} type="checkbox" defaultChecked={true} onClick={handleToggle} />
+                                <span className='slider round'></span>
+                            </label>
+                            {toggle ? "hide" : "reveal"}
+                        </th>
                     </tr>
                     {giftArray && giftArray.map((i, index) => 
                         <tr key={i.giftName + inc++}>
@@ -117,12 +126,13 @@ export default ({ giftArray, user }) => {
                                 }
                             </td>
                             <td>
-                                {toggle &&
-                                    user.email === i.requestor 
+                                {
+                                    user.email === i.requestor && toggle 
                                     ? '?¿' 
                                     : i.claimed
                                     ?  <input className='cb' id={index} type="checkbox" value={checked} disabled={user.email === i.claimee ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} />
                                     :  <input className='cb' id={index} type="checkbox" value={notChecked} checked={i.claimed} onChange={e => handleChange(e)} />
+                                    
                                 }
                             </td>
                         </tr>    
