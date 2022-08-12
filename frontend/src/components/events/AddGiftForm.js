@@ -57,7 +57,7 @@ useEffect(() => {
                 setEventData(docSnap.data().events)
                 console.log(docSnap.data().eventParticipants)
                 list.push(docSnap.data().eventParticipants)
-                setEventParticipants(...list)
+                
                 
                 // list.push(docSnap.data().events.eventOwner)
                 // setParticipantEmail([...list])
@@ -99,23 +99,32 @@ useEffect(() => {
     const unsub2 = onSnapshot(doc(db, "events", eventId), doc => {
         console.log('current doc data ', doc.data());
         const arr = [];
+        const list = [];
         arr.push({id: doc.id, ...doc.data().gifts})
+        list.push({id: doc.id, ...doc.data().eventParticipants})
+
+        console.log(doc.data())
+        console.log(list);
         
         let format = Object.values(arr[0])
+        let format2 = Object.values(list[0])
         console.log(format);
+        console.log(format2);
 
         setGiftArray(format.slice(0, -1))
+        setEventParticipants(format2.slice(0, -1))
     })
     return () => {
         unsub2()
     }
-    
+    // const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
     
     
     
 
 }, [didSubmit])
 
+console.log(eventParticipants);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -157,7 +166,7 @@ useEffect(() => {
             
             console.log('event participants ' , eventParticipants, email)
             
-            
+            // updatePartici()
             console.log(eventParticipants)
 
             Swal.fire({
@@ -178,7 +187,7 @@ useEffect(() => {
             
         }
         
-        // updatePartici()
+       // updatePartici()
         
     }
     const updatePartici = async () => {
@@ -196,7 +205,7 @@ useEffect(() => {
                 console.log(error)
             } 
     }
-    updatePartici()
+     updatePartici()
     
 
     console.log(giftArray)

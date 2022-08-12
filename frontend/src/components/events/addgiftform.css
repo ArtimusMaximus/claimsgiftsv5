@@ -15,6 +15,7 @@ button {
 }
 .plusbutton {
     width: 5vw;
+    min-width: 50px;
     font-size: xx-large;
 }
 
