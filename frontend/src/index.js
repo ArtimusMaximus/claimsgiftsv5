@@ -9,6 +9,8 @@ import Dashboard from './components/Dashboard';
 import RequireAuth from './components/auth/RequireAuth';
 import { AuthContextProvider } from './components/context/AuthContext';
 import AddGiftForm from './components/events/AddGiftForm';
+import Gifts from './components/events/Gifts';
+import RedirectPage from './components/RedirectPage';
 
 
 
@@ -22,6 +24,7 @@ root.render(
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="/dashboard/:id" element={<RequireAuth><AddGiftForm /></RequireAuth>} />
+        {/* <Route path="/external-link" element={<RedirectPage />} /> */}
         <Route path="/logout" element={<Login />} />
       </Route>
     </Routes>

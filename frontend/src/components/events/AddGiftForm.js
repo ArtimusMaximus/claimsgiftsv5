@@ -52,10 +52,10 @@ useEffect(() => {
             if (docSnap.exists()) {
                 
                 // list.push({events: docSnap.data().events, gifts: docSnap.data().gifts})
-                console.log(docSnap.data().gifts)
+                // console.log(docSnap.data().gifts)
                 // setGiftArray(docSnap.data().gifts)
                 setEventData(docSnap.data().events)
-                console.log(docSnap.data().eventParticipants)
+                // console.log(docSnap.data().eventParticipants)
                 list.push(docSnap.data().eventParticipants)
                 
                 
@@ -97,19 +97,19 @@ useEffect(() => {
     //     unsubscribe()
     // }
     const unsub2 = onSnapshot(doc(db, "events", eventId), doc => {
-        console.log('current doc data ', doc.data());
+        // console.log('current doc data ', doc.data());
         const arr = [];
         const list = [];
         arr.push({id: doc.id, ...doc.data().gifts})
         list.push({id: doc.id, ...doc.data().eventParticipants})
 
-        console.log(doc.data())
-        console.log(list);
+        // console.log(doc.data())
+        // console.log(list);
         
         let format = Object.values(arr[0])
         let format2 = Object.values(list[0])
-        console.log(format);
-        console.log(format2);
+        // console.log(format);
+        // console.log(format2);
 
         setGiftArray(format.slice(0, -1))
         setEventParticipants(format2.slice(0, -1))
@@ -124,7 +124,7 @@ useEffect(() => {
 
 }, [didSubmit])
 
-console.log(eventParticipants);
+// console.log(eventParticipants);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -142,9 +142,9 @@ console.log(eventParticipants);
                     }
                 )
             })
-            console.log(eventRef)
+            // console.log(eventRef)
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
             setDidSubmit(current => !current)
             setGiftName('')
@@ -164,10 +164,10 @@ console.log(eventParticipants);
         })
         if(email) {
             
-            console.log('event participants ' , eventParticipants, email)
+            // console.log('event participants ' , eventParticipants, email)
             
             // updatePartici()
-            console.log(eventParticipants)
+            // console.log(eventParticipants)
 
             Swal.fire({
                 title: `User(s) ${email} added to participants!`,
@@ -198,8 +198,8 @@ console.log(eventParticipants);
                 eventParticipants: arrayUnion(...eventParticipants)
             })
             
-            console.log(eventRef)
-            console.log(eventParticipants);
+            // console.log(eventRef)
+            // console.log(eventParticipants);
             // setDidSubmit(p => !p)
             } catch (error) {
                 console.log(error)
@@ -208,7 +208,7 @@ console.log(eventParticipants);
      updatePartici()
     
 
-    console.log(giftArray)
+    // console.log(giftArray)
 
     const search = (data) => {
         let keys = ['giftName', 'giftLink', 'requestor']
@@ -217,8 +217,8 @@ console.log(eventParticipants);
         )
     }
 
-    console.log(user.email)
-    console.log(eventData);
+    // console.log(user.email)
+    // console.log(eventData);
     
     const onTheList = eventParticipants.includes(user.email)
     console.log(onTheList)

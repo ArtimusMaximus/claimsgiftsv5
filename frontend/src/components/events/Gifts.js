@@ -1,8 +1,9 @@
 import { collection, setDoc, updateDoc, doc, arrayUnion, where, query, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase';
+
 import './addgiftform.css';
 import './gifts.css';
 
@@ -13,11 +14,20 @@ export default ({ giftArray, user }) => {
     const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
     const [toggle, setToggle] = useState(true)
+
+    console.log(giftArray[0]?.giftLink);
     
     const location = useLocation()
-    const eventId = location.pathname.split("/")[2]
+    const eventId = location.pathname?.split("/")[2]
     
     let inc = 0;
+
+    console.log(location);
+
+   
+    
+
+    
     
     useEffect(() => {
         // const updateClaimed = async () => {
@@ -27,6 +37,7 @@ export default ({ giftArray, user }) => {
         //     })
         // }
         // updateClaimed()
+        
 
         
     }, [isClaimed])
@@ -114,10 +125,10 @@ export default ({ giftArray, user }) => {
                             {toggle ? "hide" : "reveal"}
                         </th>
                     </tr>
-                    {giftArray && giftArray.map((i, index) => 
+                    {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++}>
                             <td>{i.giftName}</td>
-                            <td><a href={i.giftLink}>{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</a></td>
+                            <td><Link to={{pathname:`//${i.giftLink}`}} target={"_blank"} >{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</Link></td>
                             <td>
                                 {
                                     user.email === i.requestor 
