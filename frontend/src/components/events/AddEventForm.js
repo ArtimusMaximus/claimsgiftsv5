@@ -97,7 +97,7 @@ export default () => {
 
     /////////////////////////////////
    
-    console.log(inviteData);
+    // console.log(inviteData);
   
     const handleSubmit = async e => {
         e.preventDefault();
@@ -284,9 +284,9 @@ export default () => {
         confirmInvite()
 
         
-        console.log(participantEventId);
-        console.log(eventParticipants);
-        console.log(docData)
+        // console.log(participantEventId);
+        // console.log(eventParticipants);
+        // console.log(docData)
         
 
         

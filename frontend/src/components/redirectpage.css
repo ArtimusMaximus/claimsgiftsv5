@@ -1,0 +1,20 @@
+.dash {
+    cursor: pointer;
+}
+
+.exclamation {
+    color: crimson;
+    text-shadow: 5px 10px pink;
+    font-size: 15rem;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 15px;
+    line-height: 90%;
+}
+
+.title {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding: 10px;
+}

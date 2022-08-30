@@ -11,21 +11,23 @@ import { AuthContextProvider } from './components/context/AuthContext';
 import AddGiftForm from './components/events/AddGiftForm';
 import Gifts from './components/events/Gifts';
 import RedirectPage from './components/RedirectPage';
+import { createBrowserHistory } from 'history';
 
+const history = createBrowserHistory({ window })
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthContextProvider>
-  <Router>
+  <Router >
     <Routes>
       <Route path="/" element={<App />}>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="/dashboard/:id" element={<RequireAuth><AddGiftForm /></RequireAuth>} />
-        {/* <Route path="/external-link" element={<RedirectPage />} /> */}
         <Route path="/logout" element={<Login />} />
+        <Route path="*" element={<RedirectPage />} />
       </Route>
     </Routes>
   </Router>
