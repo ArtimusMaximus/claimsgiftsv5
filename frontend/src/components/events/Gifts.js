@@ -24,11 +24,6 @@ export default ({ giftArray, user }) => {
 
     console.log(location);
 
-   
-    
-
-    
-    
     useEffect(() => {
         // const updateClaimed = async () => {
         //     const docRef = doc(db, "events", eventId)
@@ -107,6 +102,7 @@ export default ({ giftArray, user }) => {
         console.log(toggle);
     }
 
+
     return (
         <div className='giftContainer'>
                 
@@ -128,7 +124,7 @@ export default ({ giftArray, user }) => {
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++}>
                             <td>{i.giftName}</td>
-                            <td><Link to={{pathname:`//${i.giftLink}`}} target={"_blank"} >{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</Link></td>
+                            <td><a rel="noopener noreferrer" href={i.giftLink} target="_blank">{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</a></td>
                             <td>
                                 {
                                     user.email === i.requestor 
