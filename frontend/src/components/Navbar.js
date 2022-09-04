@@ -15,7 +15,7 @@ export default () => {
     const user = currentUser.currentUser
 
     const location = useLocation();
-    console.log(location);
+    
     
     
     // const q = query(collection(db, "events"), where("events.eventRef", "==", userId))
