@@ -75,3 +75,7 @@ input:disabled {
     content: "\2714";
     border: .1em solid #000;
 }
+
+.removeGift {
+    width: 110px;
+}

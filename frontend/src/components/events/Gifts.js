@@ -15,14 +15,14 @@ export default ({ giftArray, user }) => {
     const [isClaimed, setIsClaimed] = useState(Boolean)
     const [toggle, setToggle] = useState(true)
 
-    console.log(giftArray[0]?.giftLink);
+    // console.log(giftArray[0]?.giftLink);
     
     const location = useLocation()
     const eventId = location.pathname?.split("/")[2]
     
     let inc = 0;
 
-    console.log(location);
+    // console.log(location);
 
     useEffect(() => {
         // const updateClaimed = async () => {

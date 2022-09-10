@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { FaEnvelopeOpenText } from 'react-icons/fa'
 import { TbMailbox } from 'react-icons/tb'
 import { getUserEvents } from './firebase_functions/getusers';
+import { deleteEg } from './deleteEg';
 
 export default () => {
     const currentUser = useContext(AuthContext)

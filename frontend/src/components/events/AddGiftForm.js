@@ -1,4 +1,4 @@
-import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, query, collection, where, getDoc, setDoc, Timestamp } from 'firebase/firestore';
+import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, query, collection, where, getDoc, setDoc, Timestamp, arrayRemove } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { db } from '../../firebase';
@@ -17,6 +17,10 @@ export default () => {
     const [isClaimed, setIsClaimed] = useState(false);
     const [requestor, setRequestor] = useState(user.email);
     const [giftArray, setGiftArray] = useState([]);
+    const [moddedArray, setModdedArray] = useState([])
+    const [remGiftLink, setRemGiftLink] = useState('')
+    const [remGiftName, setRemGiftName] = useState('')
+    const [remObject, setRemObject] = useState('')
     const [eventData, setEventData] = useState({});
     const [didSubmit, setDidSubmit] = useState(false);
     const [eventParticipants, setEventParticipants] = useState([user.email]);
@@ -32,37 +36,17 @@ export default () => {
         where("giftsEventRef", "==", eventId)
     );
     
-    
-    
-    const [rtEvents, setRtEvents] = useState([])
 
 useEffect(() => {
     let list = [];
     
     const getUserEvents = async () => {
         try {
-            // const querySnapshot = await getDocs(q)
-            
-            // querySnapshot.forEach((doc) => {
-            //     list.push({id: doc.id, ...doc.data()})
-            //     console.log(doc.id, "=>", doc.data())
-            // })
             const docRef = doc(db, 'events', eventId)
             const docSnap = await getDoc(docRef)
             if (docSnap.exists()) {
-                
-                // list.push({events: docSnap.data().events, gifts: docSnap.data().gifts})
-                // console.log(docSnap.data().gifts)
-                // setGiftArray(docSnap.data().gifts)
                 setEventData(docSnap.data().events)
-                // console.log(docSnap.data().eventParticipants)
                 list.push(docSnap.data().eventParticipants)
-                
-                
-                // list.push(docSnap.data().events.eventOwner)
-                // setParticipantEmail([...list])
-                
-                
             } else {
                 console.log('must have been no data');
             }
@@ -73,29 +57,8 @@ useEffect(() => {
     }
     getUserEvents()
 
-    // const unsubscribe = onSnapshot(q1, (querySnapshot) => {
-    //     let events = [];
-    //     querySnapshot.docs.forEach((doc) => {
-    //         events.push({id: doc.id, ...doc.data().gifts})
-    //         console.log(doc.data());
-            
-    //     })
-        
-    //     //set events
-    //     let format = Object.values(events[0])
-    //     let f = format.slice(0, -1)
-    //     console.log(format);
-    //     console.log(f);
-    //     setGiftArray(f)
-    //     setRtEvents(events)
-    //     console.log(giftArray);
-    //     console.log('realtime events', rtEvents);
-    // }, (error) => {
-    //     console.log(error);
-    // })
-    // return () => {
-    //     unsubscribe()
-    // }
+    console.log('use effect fired')
+
     const unsub2 = onSnapshot(doc(db, "events", eventId), doc => {
         // console.log('current doc data ', doc.data());
         const arr = [];
@@ -103,20 +66,17 @@ useEffect(() => {
         arr.push({id: doc.id, ...doc.data().gifts})
         list.push({id: doc.id, ...doc.data().eventParticipants})
 
-        // console.log(doc.data())
-        // console.log(list);
-        
         let format = Object.values(arr[0])
         let format2 = Object.values(list[0])
-        // console.log(format);
-        // console.log(format2);
-
+       
         setGiftArray(format.slice(0, -1))
         setEventParticipants(format2.slice(0, -1))
     })
     return () => {
         unsub2()
+        
     }
+    
     // const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
     
     
@@ -126,8 +86,10 @@ useEffect(() => {
 
 // console.log(eventParticipants);
 
+
+
     const handleSubmit = async e => {
-        e.preventDefault();
+        e?.preventDefault();
         if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'pink'}) 
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
@@ -150,7 +112,7 @@ useEffect(() => {
             setGiftName('')
             setGiftLink('')
         }
- 
+
     const sweetModal = async () => {
         const { value: email } = await Swal.fire({
             title: 'Enter new participant email',
@@ -163,12 +125,9 @@ useEffect(() => {
             title: eventParticipants && `Event participants: \n${eventParticipants.join(' ')}`
         })
         if(email) {
-            
             // console.log('event participants ' , eventParticipants, email)
-            
             // updatePartici()
             // console.log(eventParticipants)
-
             Swal.fire({
                 title: `User(s) ${email} added to participants!`,
                 confirmButtonColor: 'pink',
@@ -184,32 +143,20 @@ useEffect(() => {
             .catch(err => console.log(err))
             // .then((result) => result.isConfirmed ? setEventParticipants(eventParticipants => [...eventParticipants, email]) : null)
             // friends list add on
-            
         }
-        
        // updatePartici()
-        
     }
     const updatePartici = async () => {
-        
         try {
-            // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
             await updateDoc(eventRef, {
                 eventParticipants: arrayUnion(...eventParticipants)
             })
-            
-            // console.log(eventRef)
-            // console.log(eventParticipants);
-            // setDidSubmit(p => !p)
             } catch (error) {
                 console.log(error)
             } 
     }
-     updatePartici()
+    updatePartici()
     
-
-    // console.log(giftArray)
-
     const search = (data) => {
         let keys = ['giftName', 'giftLink', 'requestor']
         return data.filter((item) =>
@@ -217,24 +164,129 @@ useEffect(() => {
         )
     }
 
-    // console.log(user.email)
-    // console.log(eventData);
-    
     const onTheList = eventParticipants.includes(user.email)
-    console.log(onTheList)
-    // const checkEmail = async () => {
-    //     const currentUserEmail = user.email
-    //     const onTheList = eventParticipants.includes(currentUserEmail)
-    //     try {
-    //         await onTheList
-    //         if(onTheList) {
-    //             setVerifyOnList(true)
-    //         }
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-    // checkEmail()
+    // console.log('event data ', eventData, 'gift array ', giftArray)
+
+    const updateGiftArray = async (remGiftName) => {
+        // console.log(remGiftLink);
+        // console.log(remGiftName); //works
+        // console.log(moddedArray);
+        // console.log(remObject);
+
+        try {
+            // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
+            // await updateDoc(eventRef, {
+            //     gifts: arrayRemove({
+            //         // {
+            //         //     giftArray // adds the entire array as a nested array item #10-
+            //         // }
+            //         giftName: remGiftName, 
+            //         giftLink: remGiftLink, 
+            //         claimed: isClaimed,
+            //         // claimee: requestor,
+            //         requestor: requestor, 
+            //         giftRef: giftRef
+            //         })
+            // })
+            await updateDoc(eventRef, {
+                gifts: (
+                    // {
+                    //     giftArray // adds the entire array as a nested array item #10-
+                    // }
+                    // ...giftArray and giftArray being passed seems to do the same thing
+                    
+                        giftArray.filter(i => i !== remGiftName)
+                    // claimed: 'false',
+                    // giftLink: 'www.com',
+                    // giftName: 'new event to the left window plz',
+                    // giftRef: '39yUj2kcdyyeDoPYIfrF',
+                    // requestor: 'admin11@aol.com'
+                )
+            })
+            console.log('update gift array fired')
+            console.log(remObject);
+            // console.log(eventRef)
+            } catch (error) {
+                console.log(error)
+            }
+    }
+    
+    
+    const handleRemove = async () => {
+        const items = giftArray.map(i => i.giftName)
+
+        const { value: item } = await Swal.fire({
+            title: `Please select gift to remove!`,
+            confirmButtonColor: 'crimson',
+            input: 'select',
+            inputOptions: {
+                'Item to remove':
+                {...items}
+            },
+            inputPlaceholder: `Your choices...`
+        })
+        if (item) {
+            console.log(item);
+            const gift = giftArray[item].giftName
+            const eventId = giftArray[item].giftRef
+    
+            console.log(gift, eventId);
+
+            const newGiftArray = giftArray.filter(i => i !== giftArray[item])
+            // const removedItem = giftArray.filter(i => giftArray[item] !== i)
+            const remGiftName = giftArray[item]
+            setRemObject(remGiftName)
+            console.log(remGiftName);
+            
+
+            await Swal.fire({
+                title: `Are you sure you want to remove Gift: "${gift}"? (Note: This is irreversible!)`,
+                icon: 'warning',
+                iconColor: 'crimson',
+                showCancelButton: 'true',
+                confirmButtonColor: 'crimson'
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    updateGiftArray(remGiftName)
+                    Swal.fire({
+                        title: `Gift: "${gift}" removed!`,
+                        confirmButtonColor: 'pink',
+                        confirmButtonText: 'Got it!'
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Gift not deleted!',
+                        confirmButtonColor: 'green'
+                    })
+                }
+            })
+            // .then(() => setGiftArray(newGiftArray))
+            // .then(() => setRemGift(removedItem))
+            // .then(() => console.log(removedItem))
+            // .then(result => result.isConfirmed ? Swal.fire(`${gift} removed!`) : Swal.fire('File remains'))
+            // .then(() => setRemObject(remGiftName))
+            // .then(() => setModdedArray(newGiftArray), console.log('@set new gift array fired', newGiftArray))
+            // .then(() => setRemGiftLink(remGiftName.giftLink))
+            // .then(() => setRemGiftName(remGiftName.giftName))
+            
+            .then(() => console.log('gift array ', giftArray))
+            // .then(() => console.log('new gift array ', newGiftArray))
+            // .then(() => setDidSubmit(current => !current))
+
+            // .then(() => setDidSubmit(current => !current))
+            .catch(err => console.log(err))
+            // then setGiftArray()
+        }
+        // setModdedArray(newGiftArray)
+        // setRemGiftLink(remGiftName.giftLink)
+        // setRemGiftName(remGiftName.giftName)
+        // updateGiftArray()
+        setDidSubmit(current => !current)
+        
+    }
+    
+    
 
     
         
@@ -254,6 +306,7 @@ useEffect(() => {
                         <input value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
                         <div>
                             <button type="submit">Add Gift</button>
+                            <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift'>Remove Gift</button>
                         </div>
                     </form> 
             </div>

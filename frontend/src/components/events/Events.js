@@ -23,9 +23,9 @@ export default ({ data }) => {
                 {data?.map(i => 
                 (
                     <tr key={i.id}>
-                        <td className="firsttd"><Link to={`${i.id}`}>{i.events.eventName}</Link></td>
-                        <td>{i.events.eventOwner}</td>
-                        <td>{i.events.eventDate.slice(5, 10) + '-' + i.events.eventDate.slice(0, 4)}</td>
+                        <td className="firsttd"><Link to={`${i.id}`}>{i.events?.eventName}</Link></td>
+                        <td>{i.events?.eventOwner}</td>
+                        <td>{i.events?.eventDate?.slice(5, 10) + '-' + i.events?.eventDate?.slice(0, 4)}</td>
                     </tr>
                 ))}
                 {data.length === 0 && (<tr style={{textAlign: 'left'}}><td>Add an event to view here</td></tr>)}
