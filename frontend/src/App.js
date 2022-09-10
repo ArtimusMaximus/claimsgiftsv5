@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 function App() {
-console.log('~ V 08 24 2022 ~')
+console.log('~ V 09 10 2022 ~')
 
   const location = useLocation()
   const navigate = useNavigate()

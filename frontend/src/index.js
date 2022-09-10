@@ -13,7 +13,7 @@ import Gifts from './components/events/Gifts';
 import RedirectPage from './components/RedirectPage';
 import { createBrowserHistory } from 'history';
 
-const history = createBrowserHistory({ window })
+// const history = createBrowserHistory({ window })
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

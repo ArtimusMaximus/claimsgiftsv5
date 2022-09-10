@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 
 export default ({ children }) => {
     const currentUser = useContext(AuthContext)
-    console.log(currentUser)
+    // console.log(currentUser)
 
     return currentUser ? children : <Navigate to="/" />
 }

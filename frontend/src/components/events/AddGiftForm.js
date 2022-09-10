@@ -57,7 +57,7 @@ useEffect(() => {
     }
     getUserEvents()
 
-    console.log('use effect fired')
+    // console.log('use effect fired')
 
     const unsub2 = onSnapshot(doc(db, "events", eventId), doc => {
         // console.log('current doc data ', doc.data());
@@ -211,10 +211,12 @@ useEffect(() => {
             }
     }
     
-    
     const handleRemove = async () => {
-        const items = giftArray.map(i => i.giftName)
-
+        
+        
+        const yourItems = giftArray.filter(i => currentUser.currentUser.email === i.requestor)
+        const items = yourItems.map(i => i.giftName)
+        
         const { value: item } = await Swal.fire({
             title: `Please select gift to remove!`,
             confirmButtonColor: 'crimson',
