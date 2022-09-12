@@ -1,6 +1,7 @@
 import { collection, setDoc, updateDoc, doc, arrayUnion, where, query, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import {BsInfoCircle} from 'react-icons/bs'
 import Swal from 'sweetalert2';
 import { db } from '../../firebase';
 
@@ -21,6 +22,8 @@ export default ({ giftArray, user }) => {
     const eventId = location.pathname?.split("/")[2]
     
     let inc = 0;
+    console.log(giftArray);
+    console.log(user);
 
     // console.log(location);
 
@@ -56,6 +59,7 @@ export default ({ giftArray, user }) => {
             .then((result) => {
                 if (result.isConfirmed) {
                     setIsClaimed(true)
+                    
                     setChecked(current => !current)
                     
                     giftArray[e.target.id].claimed = true
@@ -69,6 +73,7 @@ export default ({ giftArray, user }) => {
                     title: `${user.email} has claimed this gift!`,
                     confirmButtonColor: 'pink'
                 })
+                
             })
             .catch((error) => console.log(error))
         }
@@ -102,6 +107,62 @@ export default ({ giftArray, user }) => {
         console.log(toggle);
     }
 
+    const claimedInfo = async (claimee) => {
+        await Swal.fire({
+            title: 'This will reveal who has claimed this item!',
+            text: 'Are you sure you want to proceed?',
+            confirmButtonColor: 'pink',
+            showCancelButton: true,
+            cancelButtonColor: 'red'
+        })
+        .then((result) => {
+            if (result.isConfirmed && !claimee) {
+                Swal.fire({
+                    title: `This item has yet to be claimed!`,
+                    confirmButtonColor: 'pink'
+                })
+            } else if (result.isConfirmed) {
+                Swal.fire({
+                    title: `Item Claimee: ${claimee}`,
+                    confirmButtonColor: 'pink'
+                })
+            } else {
+                return
+            }
+        })
+    }
+    const giftInfo = async (index) => {
+        const giftInfo = giftArray[index].giftInfo
+        
+        const { value: text } = await Swal.fire({
+            input: 'textarea',
+            inputLabel: 'Item details e.g. size, color, quantity...',
+            color: 'black',
+            inputPlaceholder: 'Item Info...',
+            text: `Current Gift Info: ${giftInfo ? `"${giftInfo}"` : '"None"'}`,
+            showCancelButton: true,
+            cancelButtonColor: 'red',
+            confirmButtonColor: 'pink'
+        })
+        if (text) {
+
+            giftArray[index].giftInfo = text
+            console.log(text);
+
+            Swal.fire({
+                title: 'Gift Information: ',
+                text: `${text}`,
+                confirmButtonColor: 'pink'
+            })
+            .then(() => updateClaimed())
+            .catch(err => err)
+        } else {
+            return
+        }
+
+        
+    }
+
 
     return (
         <div className='giftContainer'>
@@ -111,7 +172,7 @@ export default ({ giftArray, user }) => {
                     <tr>
                         <th>Gift Name</th>
                         <th>Gift Link</th>
-                        <th>Requestor</th>
+                        <th>Requestee</th>
                         <th className='thclaimed'>
                             Claimed Status:
                             <label className='switch'>
@@ -123,7 +184,7 @@ export default ({ giftArray, user }) => {
                     </tr>
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++}>
-                            <td>{i.giftName}</td>
+                            <td>{i.giftName} {user.email === i.requestor && <a onClick={() => giftInfo(index)}><BsInfoCircle size={'15px'} /></a>}</td>
                             <td><a rel="noopener noreferrer" href={i.giftLink} target="_blank">{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</a></td>
                             <td>
                                 {
@@ -132,7 +193,7 @@ export default ({ giftArray, user }) => {
                                     : i.requestor 
                                 }
                             </td>
-                            <td>
+                            <td className='cbtd'>
                                 {
                                     user.email === i.requestor && toggle 
                                     ? '?¿' 
@@ -141,7 +202,9 @@ export default ({ giftArray, user }) => {
                                     :  <input className='cb' id={index} type="checkbox" value={notChecked} checked={i.claimed} onChange={e => handleChange(e)} />
                                     
                                 }
+                                
                             </td>
+                            <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee)}><BsInfoCircle /></a>}</td>
                         </tr>    
                     )}      
                 </tbody>

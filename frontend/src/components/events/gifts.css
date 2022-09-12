@@ -1,6 +1,7 @@
 .tog {
     margin-top: 10px;
     padding-top: 10px;
+    
 }
 
 .switch {
@@ -78,4 +79,17 @@
   a {
     color: aqua;
     text-decoration: underline;
+  }
+  .infoButton {
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+  }
+
+  .cbtd {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+  .cb {
+    margin: 0px !important;
+    padding: 0px !important;
   }
