@@ -6,7 +6,8 @@ import './events.css'
 
 
 export default ({ data }) => {
-    
+    console.log(data);
+    let inc = 0
     
     return (
         <>
@@ -22,7 +23,7 @@ export default ({ data }) => {
                 
                 {data?.map(i => 
                 (
-                    <tr key={i.id}>
+                    <tr key={i.id + inc++}>
                         <td className="firsttd"><Link to={`${i.id}`}>{i.events?.eventName}</Link></td>
                         <td>{i.events?.eventOwner}</td>
                         <td>{i.events?.eventDate?.slice(5, 10) + '-' + i.events?.eventDate?.slice(0, 4)}</td>

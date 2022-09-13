@@ -25,6 +25,7 @@ export default () => {
     const [eventParticipants, setEventParticipants] = useState([userEmail])
     
     
+    
     ///////////invite/////////
     const [eventsData, setEventsData] = useState([])
     const [didInvite, setDidInvite] = useState(false)
@@ -40,24 +41,27 @@ export default () => {
     ///////////////////////////// fetch user events ///////////////////////////
    
     const [docData, setDocData] = useState([])
+    const [docData2, setDocData2] = useState([])
     const q = query(collection(db, "events"), where("events.eventRef", "==", user)); /* original query */
     const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", userEmail));
     const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
     
-    //setDocData , q1, appendedInvite
 
     useEffect(() => {
         const getUserEvents = async () => {
             let list = [];
+            let list2 = [];
             try {
                 const querySnapshot = await getDocs(q1);
                 querySnapshot.forEach((doc) => {
                     list.push({id: doc.id, ...doc.data(), appendedInvite})
+                    
                     const d = doc.data()
                     // doc.data() is never undefined for query doc snapshots
                     // console.log(doc.id, " => ", d);
                 });
                 setDocData(list)
+
                 
             } catch (error) {
                 console.log(error)
@@ -65,28 +69,14 @@ export default () => {
         }
         getUserEvents()
 
-        // const checkInvites = async () => { // fetching invite documents
-        //     let list2 = [];
-        //     try {
-        //         const querySnapshot = await getDocs(queryInvites)
-        //         querySnapshot.forEach((doc) => {
-        //             // console.log(doc.data())
-        //             list2.push(doc.data())
-        //             setInviteData(prev => [...prev, doc.data()])
-        //         })
-                
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // }
-        // checkInvites()
-
         const unsubscribe = onSnapshot(queryInvites, querySnapshot => {
             let invites = [];
             querySnapshot.docs.forEach((doc) => {
                 invites.push({id: doc.id, ...doc.data()})
+                
             });
             setInviteData(invites)
+            
 
         }, error => console.log(error))
 
@@ -95,21 +85,17 @@ export default () => {
         }
 
     }, [didSubmit])
-
+    
     /////////////////////////////////
-   
-    // console.log(inviteData);
   
     const handleSubmit = async e => {
         e.preventDefault();
-        
         if (eventName === '') {
             return Swal.fire({
                 title: 'You must provide an event name!',
                 confirmButtonColor: 'pink'
             })
         }
-        
         try {
             const docRef = await addDoc(collection(db, 'events'), {
                 events: {
@@ -117,11 +103,8 @@ export default () => {
                     eventDate: eventDate,
                     eventOwner: eventOwner,
                     eventRef: eventRef,
-                    
-                    
                 },
                 eventParticipants,
-                
             });
             console.log(docRef);
             setEventName('')
@@ -168,18 +151,22 @@ export default () => {
                     event: eName,
                     invitedBy: userEmail,
                     eventDate: eDate,
-                    eventId: eventId
+                    eventId: eventId,
                 }))
                 .then((data) => console.log(data))
                 .catch((err) => console.log(err))
-            }
-
-            
+            }  
         } 
     }
     const handleCheckEventClick = () => {
-        const mapInvites = inviteData.map(i => (`Event: "${i.event}" | From: "${i.invitedBy}"`))
-        if (inviteData.length === 0) return Swal.fire({title: 'no invites available', confirmButtonColor: 'pink'})
+        console.log(inviteData)
+        console.log(docData);
+
+        const filtAcceptedInvites = inviteData.filter(i => !i.acceptedInvite === true)
+        
+        const mapInvites = filtAcceptedInvites.map(i => (`Event: "${i.event}" | From: "${i.invitedBy}"`))
+        if (filtAcceptedInvites.length === 0) return Swal.fire({title: 'no invites available', confirmButtonColor: 'pink'})
+
         const confirmInvite = async () => {
 
             const { value: choice } = await Swal.fire({
@@ -194,17 +181,27 @@ export default () => {
                 showCancelButton: true,
             })
             if (choice) {
-                const eventConfirmed = inviteData[choice]
-                const eventConfirmedId = inviteData[choice].eventId
+                console.log(choice)
+                
+                const eventConfirmed = filtAcceptedInvites[choice]
+                const eventConfirmedId = filtAcceptedInvites[choice].eventId
+                const inviteDocId = filtAcceptedInvites[choice].id
+                console.log(filtAcceptedInvites[choice])
+                console.log(inviteDocId);
                 
                 console.log('event confirmed id', eventConfirmedId)
+
+                const fixedDate = eventConfirmed.eventDate.slice(5) + '-' + eventConfirmed.eventDate.slice(0, 4)
                 
                 Swal.fire({
-                    title: `You have been been added to "The List" \nFor event: \n"${eventConfirmed.event} - ${eventConfirmed.eventDate}"`,
+                    title: `You have been been added to "The List" \nFor event: \n"${eventConfirmed.event}" \n${fixedDate}`,
                     confirmButtonColor: 'pink'
                 })
                 .then((result) => console.log(result.isConfirmed))
-                .then(() => setAgreedEvent(prev => !prev))
+                // .then(() => setAgreedEvent(true))
+                .then(() => updateDoc(doc(db, 'invites', inviteDocId),
+                { acceptedInvite: true }
+                ))
                 .catch((err) => console.log(err))
 
                 const addMeToEvent = async () => {
@@ -239,59 +236,12 @@ export default () => {
                         arr.push({id: docSnap.id, ...docSnap.data()})
                         setAppendedInvite(docSnap.data())
                         setDocData(prev => [...prev, {id: docSnap.id, ...docSnap.data()}])
-                        
-
                     }
                 }
                 getSingleDoc()
-
-                // console.log(qSnap);
-                // console.log(userBlobId);
-                // if (userBlobId) { // if querySnap for blob is empty
-                //     const createEventBlob = async () => {
-                //         const docRef = await addDoc(collection(db, "eventBlob"), {owner: user, ...blobData});
-                        
-                //         console.log('docRef.id ', docRef.id);
-                //         console.log('docData inside setEventBlob ', docData);
-                //         console.log('docRef inside setEventBlob ', docRef);
-                //         console.log('CREATE EVENT BLOB FIRED');
-                //     }
-                //     createEventBlob()
-                // } else {
-                //     // update blob
-                //     const updateBlob = async () => {
-                //         const blobRef = doc(db, "eventBlob", userBlobId);
-                //         await updateDoc(blobRef, {
-                //             blobData: arrayUnion(blobData)
-                //         })
-                //         console.log('Update Blob FIRED!');
-                //     }
-                    
-                //     return updateBlob()
-                //     setDidSubmit(prev => !prev)
-
-                // }
-                
-                
-                
-                
-                
-
             }
-            
-            
-
         }
         confirmInvite()
-
-        
-        // console.log(participantEventId);
-        // console.log(eventParticipants);
-        // console.log(docData)
-        
-
-        
-        
     }
 
     return (

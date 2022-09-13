@@ -17,9 +17,6 @@ export default () => {
     const [isClaimed, setIsClaimed] = useState(false);
     const [requestor, setRequestor] = useState(user.email);
     const [giftArray, setGiftArray] = useState([]);
-    const [moddedArray, setModdedArray] = useState([])
-    const [remGiftLink, setRemGiftLink] = useState('')
-    const [remGiftName, setRemGiftName] = useState('')
     const [remObject, setRemObject] = useState('')
     const [eventData, setEventData] = useState({});
     const [didSubmit, setDidSubmit] = useState(false);
@@ -73,8 +70,7 @@ useEffect(() => {
         setEventParticipants(format2.slice(0, -1))
     })
     return () => {
-        unsub2()
-        
+        unsub2() 
     }
     
     // const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
@@ -122,7 +118,8 @@ useEffect(() => {
             showCancelButton: true,
             cancelButtonColor: 'crimson',
             inputPlaceholder: 'Enter email address here',
-            title: eventParticipants && `Event participants: \n${eventParticipants.join(' ')}`
+            title: eventParticipants && `Event participants: \n${eventParticipants.join(' ')}`,
+            
         })
         if(email) {
             // console.log('event participants ' , eventParticipants, email)
