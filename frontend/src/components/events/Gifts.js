@@ -22,8 +22,7 @@ export default ({ giftArray, user }) => {
     const eventId = location.pathname?.split("/")[2]
     
     let inc = 0;
-    console.log(giftArray);
-    console.log(user);
+    
 
     // console.log(location);
 

@@ -224,14 +224,14 @@ useEffect(() => {
         })
         if (item) {
             console.log(item);
-            const gift = giftArray[item].giftName
-            const eventId = giftArray[item].giftRef
+            const gift = yourItems[item].giftName
+            const eventId = yourItems[item].giftRef
     
             console.log(gift, eventId);
 
             // const newGiftArray = giftArray.filter(i => i !== giftArray[item])
             // const removedItem = giftArray.filter(i => giftArray[item] !== i)
-            const remGiftName = giftArray[item]
+            const remGiftName = yourItems[item]
             setRemObject(remGiftName)
             console.log(remGiftName);
             
