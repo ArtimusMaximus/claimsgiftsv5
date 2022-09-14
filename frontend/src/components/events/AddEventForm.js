@@ -242,7 +242,7 @@ export default () => {
         confirmInvite()
     }
 
-    const handleRemoveEvent = async (e) => 
+    const handleRemoveEvent = async (e) => {
         e.preventDefault()
         const userOwnedEvents = docData.filter(i => i.events.eventOwner === userEmail)
         const eventsToRemove = userOwnedEvents.map(i => i.events.eventName)
