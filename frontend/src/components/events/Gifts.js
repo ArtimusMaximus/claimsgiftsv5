@@ -158,10 +158,19 @@ export default ({ giftArray, user }) => {
         } else {
             return
         }
-
-        
     }
-
+    const viewGiftInfo = (index) => {
+        const giftInfo = giftArray[index].giftInfo
+        
+        Swal.fire({
+            
+            inputPlaceholder: 'Item Info...',
+            text: `Current Gift Info: ${giftInfo ? `"${giftInfo}"` : '"None"'}`,
+            showCancelButton: true,
+            cancelButtonColor: 'red',
+            confirmButtonColor: 'pink'
+        })
+    }
 
     return (
         <div className='giftContainer'>
@@ -183,7 +192,10 @@ export default ({ giftArray, user }) => {
                     </tr>
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++}>
-                            <td>{i.giftName} {user.email === i.requestor && <a onClick={() => giftInfo(index)}><BsInfoCircle size={'15px'} /></a>}</td>
+                            <td>{i.giftName} {user.email === i.requestor 
+                            ? <a onClick={() => giftInfo(index)}><BsInfoCircle size={'15px'} /></a>
+                            : <a onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'15px'} /></a>
+                            }</td>
                             <td><a rel="noopener noreferrer" href={i.giftLink} target="_blank">{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</a></td>
                             <td>
                                 {
