@@ -20,3 +20,6 @@ button {
 h2 {
     text-align: center;
 }
+.removeEvent {
+    width: 125px;
+}

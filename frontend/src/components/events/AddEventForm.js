@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { doc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, Timestamp, serverTimestamp, query, where, getDocs, getDoc, onSnapshot } from "firebase/firestore"; 
+import { doc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, Timestamp, serverTimestamp, query, where, getDocs, getDoc, onSnapshot, deleteDoc } from "firebase/firestore"; 
 import { AuthContext } from '../context/AuthContext';
 import { db } from '../../firebase';
 import Events from './Events';
@@ -16,8 +16,8 @@ export default () => {
     const userEmail = currentUser.currentUser.email
     const [eventName, setEventName] = useState('')
     const date = new Date(Date.now()).toLocaleString().slice(0, 9)
-    const splitDate = date.split('/')
-    const propsDate = (splitDate[2].length > 4 ? splitDate[2].slice(0, -1) : splitDate[2]) + '-' + (splitDate[0].length < 2 ? '0' + splitDate[0] + '-' : splitDate[0] + '-') + (splitDate[1].length < 2 ? '0' + splitDate[1] : splitDate[1])
+    const splitDate = date?.split('/')
+    const propsDate = (splitDate[2]?.length > 4 ? splitDate[2]?.slice(0, -1) : splitDate[2]) + '-' + (splitDate[0]?.length < 2 ? '0' + splitDate[0] + '-' : splitDate[0] + '-') + (splitDate[1]?.length < 2 ? '0' + splitDate[1] : splitDate[1])
     const [eventDate, setEventDate] = useState(propsDate)
     const [eventOwner, setEventOwner] = useState(userEmail)
     const [eventRef, setEventRef] = useState(user)
@@ -41,7 +41,6 @@ export default () => {
     ///////////////////////////// fetch user events ///////////////////////////
    
     const [docData, setDocData] = useState([])
-    const [docData2, setDocData2] = useState([])
     const q = query(collection(db, "events"), where("events.eventRef", "==", user)); /* original query */
     const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", userEmail));
     const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
@@ -50,12 +49,11 @@ export default () => {
     useEffect(() => {
         const getUserEvents = async () => {
             let list = [];
-            let list2 = [];
+            
             try {
                 const querySnapshot = await getDocs(q1);
                 querySnapshot.forEach((doc) => {
                     list.push({id: doc.id, ...doc.data(), appendedInvite})
-                    
                     const d = doc.data()
                     // doc.data() is never undefined for query doc snapshots
                     // console.log(doc.id, " => ", d);
@@ -244,14 +242,58 @@ export default () => {
         confirmInvite()
     }
 
+    const handleRemoveEvent = async (e) => 
+        e.preventDefault()
+        const userOwnedEvents = docData.filter(i => i.events.eventOwner === userEmail)
+        const eventsToRemove = userOwnedEvents.map(i => i.events.eventName)
+        const eventsToRemoveId = userOwnedEvents.map(i => i.id)
+        console.log(userOwnedEvents.map(i => i));
+        
+       
+        const { value: selection } = await Swal.fire({
+            title: `Please select event to remove!`,
+            text: 'Note: you can only remove events that you have created...',
+            confirmButtonColor: 'crimson',
+            input: 'select',
+            inputOptions: 
+                {...eventsToRemove},
+            inputPlaceholder: `Events to remove...`
+        })
+        if (selection) {
+            console.log(selection);
+            console.log(eventsToRemove[selection]);
+            console.log(eventsToRemoveId[selection]);
+
+            Swal.fire({
+                title: 'Removing this event cannot be undone!',
+                text: 'Other users that are participating in this event will be affected!',
+                icon: 'warning',
+                confirmButtonText: 'Yes, Proceed',
+                showCancelButton: true,
+                cancelButtonColor: 'pink',
+            })
+            .then(result => { 
+                if (result.isConfirmed) {
+                    deleteDoc(doc(db, 'events', eventsToRemoveId[selection]))
+                } else if (result.isDenied) {
+                    return
+                }
+            })
+            .then(() => setDidSubmit(prev => !prev))
+            .catch(err => console.log(err))
+
+        }
+    }
+
     return (
         <>
             <div className="formContainer">
                 <form onSubmit={handleSubmit}>
                     <input value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
                     <input value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
-                    <div className="btn">
+                    <div>
                         <button type="submit" onClick={() => setDidSubmit(false)}>Add Event</button>
+                        <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent'>Remove Event</button>
                     </div>
                     <div>
                     <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'pink'} /></a></div>

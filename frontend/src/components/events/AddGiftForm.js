@@ -209,8 +209,6 @@ useEffect(() => {
     }
     
     const handleRemove = async () => {
-        
-        
         const yourItems = giftArray.filter(i => currentUser.currentUser.email === i.requestor)
         const items = yourItems.map(i => i.giftName)
         
@@ -231,7 +229,7 @@ useEffect(() => {
     
             console.log(gift, eventId);
 
-            const newGiftArray = giftArray.filter(i => i !== giftArray[item])
+            // const newGiftArray = giftArray.filter(i => i !== giftArray[item])
             // const removedItem = giftArray.filter(i => giftArray[item] !== i)
             const remGiftName = giftArray[item]
             setRemObject(remGiftName)
