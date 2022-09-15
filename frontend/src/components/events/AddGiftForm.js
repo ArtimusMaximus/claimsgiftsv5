@@ -282,7 +282,7 @@ useEffect(() => {
         setDidSubmit(current => !current)
         
     }
-    
+    console.log(giftArray);
     
 
     
