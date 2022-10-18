@@ -1,7 +1,8 @@
 import { collection, setDoc, updateDoc, doc, arrayUnion, where, query, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import {BsInfoCircle} from 'react-icons/bs'
+import { BsInfoCircle } from 'react-icons/bs';
+import { HiOutlineExternalLink } from 'react-icons/hi'
 import Swal from 'sweetalert2';
 import { db } from '../../firebase';
 
@@ -180,7 +181,7 @@ export default ({ giftArray, user }) => {
                 <tbody>
                     <tr>
                         <th>Gift Name</th>
-                        <th>Gift Link</th>
+                        <th>Link</th>
                         <th>Requestee</th>
                         <th className='thclaimed'>
                             Claimed Status:
@@ -197,8 +198,8 @@ export default ({ giftArray, user }) => {
                             ? <a onClick={() => giftInfo(index)}><BsInfoCircle size={'15px'} /></a>
                             : <a onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'15px'} /></a>
                             }</td>
-                            <td><a rel="noopener noreferrer" href={i.giftLink} target="_blank">{i.giftLink.length > 15 ? i.giftLink.slice(0, 14) + '...' : i.giftLink}</a></td>
-                            <td>
+                            <td><a rel="noopener noreferrer" href={i.giftLink} target="_blank"><HiOutlineExternalLink size={'25px'} /></a></td>
+                            <td className="requesteeTd">
                                 {
                                     user.email === i.requestor 
                                     ? "You" 

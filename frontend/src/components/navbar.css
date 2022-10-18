@@ -1,9 +1,11 @@
 a > h5 {
     color: crimson;
     margin-top: 0px !important;
+    margin-left: 2px;
 }
 a > h3 {
     margin-bottom: 0px !important;
+    margin-left: 2px;
 }
 
 a {
@@ -14,7 +16,7 @@ a {
     text-decoration: none; 
     color: white;
     font-weight: 900;
-    font-size: 3vw;
+    font-size: 2rem;
     padding: 10px;
 }
 
@@ -24,4 +26,16 @@ a {
     font-weight: 900;
     font-size: 2.5vw;
     padding: 10px;
+}
+
+.navbar {
+    background: rgb(220,20,60);
+    background: linear-gradient(180deg, rgba(220,20,60,1) 0%, rgba(220,20,60,0.8155637254901961) 24%, rgba(0,212,255,0) 100%);
+    height: 15vh;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    
 }

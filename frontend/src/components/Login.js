@@ -35,29 +35,29 @@ export default () => {
         <>
             <div className="box">
                 <label>Welcome!</label>
-            <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <input
+                            placeholder="email"
+                            onChange={e => setEmail(e.target.value)} 
+                            onFocus={e => e.target.placeholder = ''} 
+                            onBlur={e => e.target.placeholder = 'email'}
+                        />
+                    </div>     
+                    <div>
+                        <input
+                            type="password"
+                            placeholder="password"
+                            onChange={e => setPassword(e.target.value)} 
+                            onFocus={e => e.target.placeholder = ''} 
+                            onBlur={e => e.target.placeholder = 'password'}
+                        />
+                    </div>
                 <div>
-                    <input
-                        placeholder="email"
-                        onChange={e => setEmail(e.target.value)} 
-                        onFocus={e => e.target.placeholder = ''} 
-                        onBlur={e => e.target.placeholder = 'email'}
-                    />
-                </div>     
-                <div>
-                    <input
-                        type="password"
-                        placeholder="password"
-                        onChange={e => setPassword(e.target.value)} 
-                        onFocus={e => e.target.placeholder = ''} 
-                        onBlur={e => e.target.placeholder = 'password'}
-                    />
+                    <button type="submit">Login</button>
                 </div>
-            <div>
-                <button type="submit">Login</button>
-            </div>
-            {error && <span style={{color:'crimson', paddingTop: '15px'}}>Wrong email or password!</span>}
-            </form>
+                    {error && <span style={{color:'crimson', paddingTop: '15px'}}>Wrong email or password!</span>}
+                </form>
                 <div className="newuser" style={{marginTop: 'auto'}}>
                     <p>New User?</p><p><Link to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
                 </div>

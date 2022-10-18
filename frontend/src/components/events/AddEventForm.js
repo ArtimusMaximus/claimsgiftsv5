@@ -291,7 +291,7 @@ export default () => {
                 <form onSubmit={handleSubmit}>
                     <input value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
                     <input value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
-                    <div>
+                    <div style={{display: 'flex', justifyContent:'center'}}>
                         <button type="submit" onClick={() => setDidSubmit(false)}>Add Event</button>
                         <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent'>Remove Event</button>
                     </div>
@@ -302,9 +302,9 @@ export default () => {
                 </form>
                 
             </div>
-            <div style={{display: 'flex', justifyContent: 'center'}}>
+            
                 <Events data={docData}   /> {/* lastly: send event blob here*/} {/* docData was the original */}
-            </div>
+            
         </>
     )
 }

@@ -88,8 +88,25 @@
   .cbtd {
     margin: 0px !important;
     padding: 0px !important;
+    
   }
   .cb {
     margin: 0px !important;
     padding: 0px !important;
+    width: 20px;
+  }
+
+
+  .requesteeTd {
+    font-size: .75rem;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+
+  td .cbtd {
+    width: 25px;
+  }
+
+  table {
+    margin: 0px 2px 0px 2px;
   }
