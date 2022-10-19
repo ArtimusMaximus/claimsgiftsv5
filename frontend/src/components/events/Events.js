@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 
 export default ({ data }) => {
-    console.log(data);
+    // console.log(data);
     let inc = 0;
 
     const showEventInfo = (index) => {
@@ -43,7 +43,7 @@ export default ({ data }) => {
                         <td className="infoTd"><a onClick={() => showEventInfo(index)}><BsInfoCircle size={'25px'} /></a></td>
                     </tr>
                 ))}
-                {data.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td><h1 style={{marginTop: '0px', fontStyle: 'italic'}}>Add an event to view here...</h1></td></tr>)}
+                {data.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td><h2 style={{marginTop: '0px', fontStyle: 'italic'}}>Add an event to view here...</h2></td></tr>)}
                 </tbody>
             </table>
             

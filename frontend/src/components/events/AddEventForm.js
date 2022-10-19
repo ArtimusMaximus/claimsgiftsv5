@@ -292,8 +292,8 @@ export default () => {
                     <input value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
                     <input value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
                     <div style={{display: 'flex', justifyContent: 'center'}}>
-                        <button type="submit" onClick={() => setDidSubmit(false)}>Add Event</button>
-                        <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent'>Remove Event</button>
+                        <button type="submit" className='btnInvert' onClick={() => setDidSubmit(false)}>Add Event</button>
+                        <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent btnInvert'>Remove Event</button>
                     </div>
                     <div>
                     <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>

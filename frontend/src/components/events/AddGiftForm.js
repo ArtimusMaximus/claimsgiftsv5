@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import './addgiftform.css';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
-import { GrRefresh } from 'react-icons/gr';
+import { TiRefresh } from 'react-icons/ti';
 import { FaPaste } from 'react-icons/fa';
 
 export default () => {
@@ -319,7 +319,7 @@ useEffect(() => {
             <div className='searchContainer'>
                 <span>
                     <input className='searchInput' type="text" value={searchQuery} placeholder='filter results' onChange={e => setSearchQuery(e.target.value)} />
-                    <button onClick={() => setSearchQuery('')} className="btnInvert"><GrRefresh size={'25px'} color={'#09090'} /></button>
+                    <button onClick={() => setSearchQuery('')} className="btnInvert"><TiRefresh size={'40px'} color={'#09090'} /></button>
                 </span>
             </div>
             <Gifts giftArray={giftArray && search(giftArray)} user={user} />

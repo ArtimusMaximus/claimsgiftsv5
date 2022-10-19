@@ -28,8 +28,11 @@ console.log('~ V 09 13 2022 ~')
     
       <Navbar />
       <div className='content-container'>
+        <div className='content-container2'>
+        
 
-        <Outlet />
+          <Outlet />
+        </div>
       </div>
     </>
   );

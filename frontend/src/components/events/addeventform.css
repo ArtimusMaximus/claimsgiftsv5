@@ -24,3 +24,10 @@ h2 {
 button {
     background-color: #dc143c;
 }
+
+.btnInvert:hover {
+    background-color: whitesmoke;
+    border: 1px solid crimson;
+    color: crimson;
+    padding: 1px;
+}

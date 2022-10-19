@@ -188,26 +188,26 @@ export default ({ giftArray, user }) => {
                 
             <table>
                 <tbody>
-                    <tr id="rowForHeaders">
+                    {giftArray.length !== 0 && <tr id="rowForHeaders">
                         <th>Gift Name</th>
                         <th>Link</th>
                         <th>Requestee</th>
                         <th className='thclaimed'>
-                            Claimed Status:
+                            Reveal status:
                             <label className='switch'>
                                 <input className='tog' value={toggle} type="checkbox" defaultChecked={true} onClick={handleToggle} />
                                 <span className='slider round'></span>
                             </label>
-                            {toggle ? "hide" : "reveal"}
+                            {/* {toggle ? "hide" : "reveal"} */}
                         </th>
-                    </tr>
+                    </tr>}
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++} className={index % 2 === 0 ? "firstTableRow" : ''}>
                             {/* <div className="tooltip" style={show ? {display: 'block'} : {display: 'none'} }>{i.giftName}</div> */}
                             <td className="giftNametd">{user.email === i.requestor 
                                 ? <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => giftInfo(index)}><BsInfoCircle size={'17px'} /></a>
                                 : <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'17px'} /></a>
-                                } {i.giftName}
+                                } {<b>{i.giftName}</b>}
                             </td>
                             <td><a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a></td>
                             <td className="requesteeTd">
@@ -230,7 +230,8 @@ export default ({ giftArray, user }) => {
                             </td>
                             <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee)}><BsInfoCircle /></a>}</td>
                         </tr>    
-                    )}      
+                    )}
+                    {giftArray.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{ fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}
                 </tbody>
             </table>
         

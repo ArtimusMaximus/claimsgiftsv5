@@ -80,7 +80,7 @@
   }
   .infoButton {
     margin-left: 0px !important;
-    padding-left: 0px !important;
+    padding: 3px 3px 3px 3px;
   }
 
   .cbtd {
@@ -115,7 +115,7 @@
 
   .firstTableRow {
     /* background-color: aliceblue; */
-    background-color: rgba(220, 20, 60, .15);
+    background-color: rgba(220, 20, 60, .25);
     
   }
   .firstTableRow > td {

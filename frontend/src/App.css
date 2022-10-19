@@ -30,3 +30,68 @@
 } */
 
 
+
+/* .content-container {
+  background: url('./stack_of_presents.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: -450px;
+  background-position-y: -50px;
+  height: 100vh;
+} */
+
+.content-container {
+  background-image: url('./stack_of_presents.png');
+  background-repeat: no-repeat;
+  background-size: 75%;
+  background-position-x: -850px;
+  background-position-y: -200px;
+  height: 100%;
+}
+
+.content-container2 {
+  background-image: url('./stack_of_presents.png');
+  background-repeat: no-repeat;
+  background-size: 75%;
+  background-position-x: 950px;
+  background-position-y: 250px;
+  height: 100%;
+}
+
+@media screen and (max-width: 609px) {
+  .content-container {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: -350px;
+    background-position-y: -50px;
+    height: 100%;
+  }
+  .content-container2 {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 65%;
+    background-position-x: 400px;
+    background-position-y: 150px;
+    height: 100%;
+  }
+}
+@media screen and (max-width: 414px) {
+  .content-container {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: -250px;
+    background-position-y: -50px;
+    height: 100%;
+  }
+  .content-container2 {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 65%;
+    background-position-x: 300px;
+    background-position-y: 150px;
+    height: 100%;
+  }
+}
+
