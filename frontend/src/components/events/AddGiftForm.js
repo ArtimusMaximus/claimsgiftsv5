@@ -301,7 +301,7 @@ useEffect(() => {
                 {eventData && <h2>Event: {eventData.eventName}</h2>}
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                     <span>Add event participants</span>
-                    <button className='plusbutton' onClick={sweetModal}>+</button>
+                    <button className='plusbutton btnInvert' onClick={sweetModal}>+</button>
                 </div>
             </div>
             <div className='formContainer'>
@@ -309,17 +309,17 @@ useEffect(() => {
                         <input value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
                         
                         <input value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
-                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'crimson'} /><label style={{fontSize: '10px'}}>Paste</label></i>
+                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'crimson'} id="pasteicon" /><label style={{fontSize: '10px'}}>Paste</label></i>
                         <div>
-                            <button type="submit">Add Gift</button>
-                            <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift'>Remove Gift</button>
+                            <button type="submit" className='btnInvert'>Add Gift</button>
+                            <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift btnInvert'>Remove Gift</button>
                         </div>
                     </form> 
             </div>
             <div className='searchContainer'>
                 <span>
                     <input type="text" value={searchQuery} placeholder='filter results' onChange={e => setSearchQuery(e.target.value)} />
-                    <button onClick={() => setSearchQuery('')}>Clear</button>
+                    <button onClick={() => setSearchQuery('')} className="btnInvert">Clear</button>
                 </span>
             </div>
             <Gifts giftArray={giftArray && search(giftArray)} user={user} />

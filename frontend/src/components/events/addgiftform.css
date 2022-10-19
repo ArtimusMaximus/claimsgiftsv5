@@ -81,6 +81,12 @@ input:disabled {
 .removeGift {
     width: 110px;
 }
+.btnInvert:hover {
+    background-color: whitesmoke;
+    border: 1px solid crimson;
+    color: crimson;
+}
+
 #pasteSpan {
     display: flex;
     right: 0;
@@ -94,5 +100,8 @@ input:disabled {
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+}
+#pasteicon {
+    cursor: pointer;
 }
 
