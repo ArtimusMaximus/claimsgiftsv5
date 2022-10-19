@@ -25,6 +25,13 @@ button {
     background-color: #dc143c;
 }
 
+.btnInvert {
+    background-color: #dc143c;
+    transition-property: background-color, color;
+    transition-duration: .75s;
+    transition-delay: 0s;
+}
+
 .btnInvert:hover {
     background-color: whitesmoke;
     border: 1px solid crimson;

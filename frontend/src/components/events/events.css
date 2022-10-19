@@ -63,11 +63,22 @@ th, td {
 .infoTd {
     text-align: center;
     width: 55px;
-    
     padding-right: 10px;
 }
 
-.tableBg {
+.firstTableRow {
+    /* background-color: aliceblue; */
     background-color: rgba(220, 20, 60, .25);
-}
+  }
+.firstTableRow > td {
+    border-radius: 4px;
+  }
+
+.secondTableRow {
+    /* background-color: aliceblue; */
+    background-color: rgba(245, 245, 245, .75);
+  }
+.secondTableRow > td {
+    border-radius: 4px;
+  }
 

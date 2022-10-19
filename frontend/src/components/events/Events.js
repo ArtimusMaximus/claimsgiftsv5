@@ -37,7 +37,7 @@ export default ({ data }) => {
                 
                 {data?.map((i, index) => 
                 (
-                    <tr key={i.id + inc++} className={index % 2 === 0 ? 'tableBg' : ''}>
+                    <tr key={i.id + inc++} className={index % 2 === 0 ? 'firstTableRow' : 'secondTableRow'}>
                         <td className="firsttd"><Link to={`${i.id}`}>{i.events?.eventName}</Link></td>
                         
                         <td className="infoTd"><a onClick={() => showEventInfo(index)}><BsInfoCircle size={'25px'} /></a></td>
