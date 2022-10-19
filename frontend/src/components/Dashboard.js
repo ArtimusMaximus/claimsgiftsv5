@@ -94,7 +94,7 @@ export default () => {
     return (
         <>  
             <div>
-                <h3 style={{textAlign: 'center'}}>Welcome to your dashboard <br /></h3><h2>{currentUser && currentUser.currentUser.email}</h2>
+                <h2 style={{textAlign: 'center'}}>Welcome to your dashboard <br /></h2><h3 style={{textAlign: 'center'}}>{currentUser && currentUser.currentUser.email}</h3>
                 
                 {/* <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleClick}><TbMailbox size={'35px'} color={'pink'} /></a></div> */}
                 <AddEventForm />

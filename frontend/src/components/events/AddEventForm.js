@@ -90,8 +90,8 @@ export default () => {
         e.preventDefault();
         if (eventName === '') {
             return Swal.fire({
-                title: 'You must provide an event name!',
-                confirmButtonColor: 'pink'
+                title: '<span style="font-style: italic;">You must provide an <span style="text-decoration: underline;">event name!</span></span>',
+                confirmButtonColor: 'crimson'
             })
         }
         try {
@@ -118,7 +118,7 @@ export default () => {
 
         const { value: event } = await Swal.fire({
             title: 'Please select event to share:',
-            confirmButtonColor: 'pink',
+            confirmButtonColor: 'crimson',
             input: 'select',
             inputOptions: {
                 'Events':
@@ -132,7 +132,7 @@ export default () => {
             const eventId = docData[event].id
             const { value: inviteeEmail } = await Swal.fire({
                 title: `Share event "${eName}" with:`,
-                confirmButtonColor: 'pink',
+                confirmButtonColor: 'crimson',
                 input: 'email',
                 inputLabel: '',
                 inputPlaceholder: 'Invitee\'s email'
@@ -140,7 +140,7 @@ export default () => {
             if (inviteeEmail) {
                 Swal.fire({
                     title: `Invitation sent to ${inviteeEmail}'s message center.`,
-                    confirmButtonColor: 'pink'
+                    confirmButtonColor: 'crimson'
                 })
                 .then((result) => console.log(result.isConfirmed))
                 .then(() => setDidInvite(prev => !prev))
@@ -163,7 +163,7 @@ export default () => {
         const filtAcceptedInvites = inviteData.filter(i => !i.acceptedInvite === true)
         
         const mapInvites = filtAcceptedInvites.map(i => (`Event: "${i.event}" | From: "${i.invitedBy}"`))
-        if (filtAcceptedInvites.length === 0) return Swal.fire({title: 'no invites available', confirmButtonColor: 'pink'})
+        if (filtAcceptedInvites.length === 0) return Swal.fire({title: '<b style="font-style: italic">No invites available!</b>', confirmButtonColor: 'crimson'})
 
         const confirmInvite = async () => {
 
@@ -175,7 +175,7 @@ export default () => {
                         ...mapInvites
                     }
                 },
-                confirmButtonColor: 'pink',
+                confirmButtonColor: 'crimson',
                 showCancelButton: true,
             })
             if (choice) {
@@ -193,7 +193,7 @@ export default () => {
                 
                 Swal.fire({
                     title: `You have been been added to "The List" \nFor event: \n"${eventConfirmed.event}" \n${fixedDate}`,
-                    confirmButtonColor: 'pink'
+                    confirmButtonColor: 'crimson'
                 })
                 .then((result) => console.log(result.isConfirmed))
                 // .then(() => setAgreedEvent(true))
@@ -252,7 +252,7 @@ export default () => {
        
         const { value: selection } = await Swal.fire({
             title: `Please select event to remove!`,
-            text: 'Note: you can only remove events that you have created...',
+            html: 'Note: you can only remove events that <b style="font-style: italic;">you</b> have created...',
             confirmButtonColor: 'crimson',
             input: 'select',
             inputOptions: 
@@ -270,7 +270,7 @@ export default () => {
                 icon: 'warning',
                 confirmButtonText: 'Yes, Proceed',
                 showCancelButton: true,
-                cancelButtonColor: 'pink',
+                cancelButtonColor: 'crimson',
             })
             .then(result => { 
                 if (result.isConfirmed) {
@@ -291,13 +291,13 @@ export default () => {
                 <form onSubmit={handleSubmit}>
                     <input value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
                     <input value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
-                    <div style={{display: 'flex', justifyContent:'center'}}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
                         <button type="submit" onClick={() => setDidSubmit(false)}>Add Event</button>
                         <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent'>Remove Event</button>
                     </div>
                     <div>
-                    <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'pink'} /></a></div>
-                        <div style={{textAlign: 'right', marginRight: '25vw'}}>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'pink'} /></a></div>
+                    <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>
+                        <div style={{textAlign: 'right', marginRight: '25vw'}}>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'#dc143c'} /></a></div>
                     </div>
                 </form>
                 

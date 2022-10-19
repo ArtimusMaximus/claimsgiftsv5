@@ -3,9 +3,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { db } from '../../firebase';
 import { AuthContext } from '../context/AuthContext';
-import './addgiftform.css'
+import './addgiftform.css';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
+import { SlPresent } from 'react-icons/si';
+import { FaPaste } from 'react-icons/fa';
 
 export default () => {
     const currentUser = useContext(AuthContext)
@@ -81,8 +83,6 @@ useEffect(() => {
 }, [didSubmit])
 
 // console.log(eventParticipants);
-
-
 
     const handleSubmit = async e => {
         e?.preventDefault();
@@ -283,6 +283,13 @@ useEffect(() => {
         
     }
     console.log(giftArray);
+
+    const pasteLink = async (e) => {
+        if (e) {
+            await navigator.clipboard.readText()
+                .then(text => setGiftLink(text))  
+        }
+    }
     
 
     
@@ -292,15 +299,17 @@ useEffect(() => {
         {onTheList || user.email === eventData.eventOwner ? (<>
             <div>
                 {eventData && <h2>Event: {eventData.eventName}</h2>}
-                <div style={{display: 'flex', justifyContent: 'right', marginRight: '24vw'}}>
-                    <span style={{display: 'flex', alignItems:'center'}}>Add event participants</span>
+                <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
+                    <span>Add event participants</span>
                     <button className='plusbutton' onClick={sweetModal}>+</button>
                 </div>
             </div>
             <div className='formContainer'>
                     <form onSubmit={handleSubmit}>
                         <input value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
+                        
                         <input value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
+                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'crimson'} /><label style={{fontSize: '10px'}}>Paste</label></i>
                         <div>
                             <button type="submit">Add Gift</button>
                             <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift'>Remove Gift</button>

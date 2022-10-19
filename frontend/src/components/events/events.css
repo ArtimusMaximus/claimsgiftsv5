@@ -54,4 +54,6 @@ th, td {
 .infoTd {
     text-align: center;
     width: 55px;
+    
+    padding-right: 10px;
 }

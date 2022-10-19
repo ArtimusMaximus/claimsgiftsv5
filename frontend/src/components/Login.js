@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { AuthContext } from "./context/AuthContext";
+import Swal from "sweetalert2";
 
 export default () => {
     const [error, setError] = useState(false)
@@ -17,6 +18,7 @@ export default () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        if (email === '' || password === '') return Swal.fire({ title: 'you must enter BOTH an email AND password', confirmButtonColor: 'crimson'}).then(() => setError(false))
 
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {

@@ -16,6 +16,7 @@ export default ({ giftArray, user }) => {
     const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
     const [toggle, setToggle] = useState(true)
+    const [show, setShow] = useState(false)
 
     // console.log(giftArray[0]?.giftLink);
     
@@ -52,7 +53,7 @@ export default ({ giftArray, user }) => {
             return Swal.fire({
                 title: 'Would you like to claim this gift?',
                 inputLabel: 'Email',
-                confirmButtonColor: 'pink',
+                confirmButtonColor: 'crimson',
                 showCancelButton: true,
                 cancelButtonColor: 'gray'
             })
@@ -71,7 +72,7 @@ export default ({ giftArray, user }) => {
                 }
                 Swal.fire({
                     title: `${user.email} has claimed this gift!`,
-                    confirmButtonColor: 'pink'
+                    confirmButtonColor: 'crimson'
                 })
                 
             })
@@ -97,7 +98,7 @@ export default ({ giftArray, user }) => {
             }
             Swal.fire({
                 title: `You, "${user.email}" have unclaimed this gift!`,
-                confirmButtonColor: 'pink'
+                confirmButtonColor: 'crimson'
             })
         })
         
@@ -112,20 +113,20 @@ export default ({ giftArray, user }) => {
         await Swal.fire({
             title: 'This will reveal who has claimed this item!',
             text: 'Are you sure you want to proceed?',
-            confirmButtonColor: 'pink',
+            confirmButtonColor: 'crimson',
             showCancelButton: true,
-            cancelButtonColor: 'red'
+            cancelButtonColor: 'grey'
         })
         .then((result) => {
             if (result.isConfirmed && !claimee) {
                 Swal.fire({
                     title: `This item has yet to be claimed!`,
-                    confirmButtonColor: 'pink'
+                    confirmButtonColor: 'crimson'
                 })
             } else if (result.isConfirmed) {
                 Swal.fire({
                     title: `Item Claimee: ${claimee}`,
-                    confirmButtonColor: 'pink'
+                    confirmButtonColor: 'crimson'
                 })
             } else {
                 return
@@ -142,8 +143,8 @@ export default ({ giftArray, user }) => {
             inputPlaceholder: 'Item Info...',
             text: `Current Gift Info: ${giftInfo ? `"${giftInfo}"` : '"None"'}`,
             showCancelButton: true,
-            cancelButtonColor: 'red',
-            confirmButtonColor: 'pink'
+            cancelButtonColor: 'grey',
+            confirmButtonColor: 'crimson'
         })
         if (text) {
 
@@ -153,7 +154,7 @@ export default ({ giftArray, user }) => {
             Swal.fire({
                 title: 'Gift Information: ',
                 text: `${text}`,
-                confirmButtonColor: 'pink'
+                confirmButtonColor: 'crimson'
             })
             .then(() => updateClaimed())
             .catch(err => err)
@@ -169,8 +170,8 @@ export default ({ giftArray, user }) => {
             inputPlaceholder: 'Item Info...',
             text: `Current Gift Info: ${giftInfo ? `"${giftInfo}"` : '"None"'}`,
             showCancelButton: true,
-            cancelButtonColor: 'red',
-            confirmButtonColor: 'pink'
+            cancelButtonColor: 'grey',
+            confirmButtonColor: 'crimson'
         })
     }
 
@@ -194,10 +195,12 @@ export default ({ giftArray, user }) => {
                     </tr>
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++}>
-                            <td>{i.giftName} {user.email === i.requestor 
-                            ? <a onClick={() => giftInfo(index)}><BsInfoCircle size={'15px'} /></a>
-                            : <a onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'15px'} /></a>
-                            }</td>
+                            <div className="tooltip" style={show ? {display: 'block'} : {display: 'none'} }>{i.giftName}</div>
+                            <td id="giftNametd">{user.email === i.requestor 
+                                ? <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => giftInfo(index)}><BsInfoCircle size={'15px'} /></a>
+                                : <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'15px'} /></a>
+                                } {i.giftName}
+                            </td>
                             <td><a rel="noopener noreferrer" href={i.giftLink} target="_blank"><HiOutlineExternalLink size={'25px'} /></a></td>
                             <td className="requesteeTd">
                                 {

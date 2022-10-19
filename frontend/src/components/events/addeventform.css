@@ -1,13 +1,10 @@
 .formContainer {
-    
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
     text-align: center;
 }
-
-
 
 input {
     width: 50vw;
@@ -22,4 +19,8 @@ h2 {
 }
 .removeEvent {
     width: 125px;
+}
+
+button {
+    background-color: #dc143c;
 }

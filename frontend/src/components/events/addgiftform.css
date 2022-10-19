@@ -4,6 +4,11 @@
     justify-content: center;
     flex-direction: row;
     text-align: center;
+    
+}
+
+.formContainer i {
+    position: absolute;
 }
 
 input {
@@ -76,3 +81,18 @@ input:disabled {
 .removeGift {
     width: 110px;
 }
+#pasteSpan {
+    display: flex;
+    right: 0;
+    gap: 15px;
+}
+#giftLinkInput {
+    
+}
+#iconEl {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+

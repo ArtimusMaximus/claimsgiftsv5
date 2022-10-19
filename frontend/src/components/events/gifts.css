@@ -44,11 +44,11 @@
   }
   
   input:checked + .slider {
-    background-color: pink;
+    background-color: #dc143c;
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px pink;
+    box-shadow: 0 0 1px #dc143c;
   }
   
   input:checked + .slider:before {
@@ -103,10 +103,21 @@
     text-overflow: ellipsis;
   }
 
+  #giftNametd {
+    text-align: left;
+  }
+
   td .cbtd {
     width: 25px;
   }
 
   table {
     margin: 0px 2px 0px 2px;
+  }
+
+  .tooltip {
+    position: relative;
+    background: rgba(0, 0, 0, .7);
+    color: whitesmoke;
+    display: block;
   }

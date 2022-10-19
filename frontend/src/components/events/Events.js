@@ -18,8 +18,7 @@ export default ({ data }) => {
         Swal.fire({
             title: '<span style="font-style: italic;"><b>Event Details</b></span>',
             html: `<b>Name:</b> ${eventInfo.eventName} <p><b>Date:</b> ${eventInfo.eventDate.slice(5, 10) + '-' + eventInfo.eventDate.slice(0, 4)}</p> <p><b>Creator:</b> ${eventInfo.eventOwner}</p>`,
-            
-            confirmButtonColor: 'pink'
+            confirmButtonColor: 'crimson'
         })
 
     }
@@ -31,8 +30,7 @@ export default ({ data }) => {
                 <thead>
                     <tr>
                         <th>Your Events</th>
-                        <th className="infoTd">Event Info</th>
-                        
+                        <th className='infoTd'>Event Info</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,12 +38,12 @@ export default ({ data }) => {
                 {data?.map((i, index) => 
                 (
                     <tr key={i.id + inc++}>
-                        <td className="firsttd" ><Link to={`${i.id}`}>{i.events?.eventName}</Link><hr /></td>
+                        <td className="firsttd"><Link to={`${i.id}`}>{i.events?.eventName}</Link><hr /></td>
                         
                         <td className="infoTd"><a onClick={() => showEventInfo(index)}><BsInfoCircle size={'25px'} /></a></td>
                     </tr>
                 ))}
-                {data.length === 0 && (<tr style={{textAlign: 'left'}}><td><h1>Add an event to view here</h1></td></tr>)}
+                {data.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td><h1 style={{marginTop: '0px', fontStyle: 'italic'}}>Add an event to view here...</h1></td></tr>)}
                 </tbody>
             </table>
             

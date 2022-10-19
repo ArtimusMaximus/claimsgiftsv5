@@ -40,7 +40,7 @@ export default () => {
         if (email === '') {
             Swal.fire({
                 title: 'An email must be provided!',
-                confirmButtonColor: 'pink',
+                confirmButtonColor: 'crimson',
                 icon: 'info',
             })
             return
@@ -65,10 +65,15 @@ export default () => {
                 
             })
 
-            dispatch({type:"SIGNUP", payload: res.user})
+            dispatch({ type:"SIGNUP", payload: res.user })
             navigate('/dashboard')
         } catch (error) {
             console.log(error)
+            Swal.fire({
+                title: 'An error occured!',
+                html: `Firebase error: "${error}"`,
+                confirmButtonColor: 'crimson'
+            })
             
             if (password.length && confirmPass.length < 6) {
                 setPassLengthError(true)
