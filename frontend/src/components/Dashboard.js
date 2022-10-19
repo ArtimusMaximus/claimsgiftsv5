@@ -5,6 +5,7 @@ import { TbMailbox } from 'react-icons/tb'
 import Swal from 'sweetalert2';
 import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from '../firebase';
+import { GrGift } from 'react-icons/gr'
 
 
 
@@ -88,13 +89,22 @@ export default () => {
     //     confirmInvite()
     //     console.log(participantEventId);
     // }
+    const styles = {
+        color: 'crimson',
+        height: '50px',
+        width: '50px'
+    }
 
     
 
     return (
         <>  
             <div>
-                <h2 style={{textAlign: 'center'}}>Welcome to your dashboard <br /></h2><h3 style={{textAlign: 'center'}}>{currentUser && currentUser.currentUser.email}</h3>
+                <h2 style={{textAlign: 'center', marginBottom: '10px'}}>Welcome to your dashboard <br /></h2>
+                <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <GrGift id="presentIcon" style={{styles}} />
+                </div>
+                <h3 style={{textAlign: 'center', marginTop: '10px'}}>{currentUser && currentUser.currentUser.email}</h3>
                 
                 {/* <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleClick}><TbMailbox size={'35px'} color={'pink'} /></a></div> */}
                 <AddEventForm />

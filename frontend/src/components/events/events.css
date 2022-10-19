@@ -57,3 +57,7 @@ th, td {
     
     padding-right: 10px;
 }
+
+.tableBg {
+    background-color: rgba(220, 20, 60, .15);
+}

@@ -11,12 +11,17 @@
     position: absolute;
 }
 
-input {
+/* input {
     width: 50vw;
+} */
+
+.searchInput {
+    width: 250px;
 }
 
 button {
     width: 20vw;
+    
 }
 .plusbutton {
     width: 5vw;
@@ -54,6 +59,11 @@ ul {
 .searchContainer > span > button {
     width: 65px;
 }
+.searchContainer > span {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
  /* admin6@aol.com admin@matrix.org */
 
  th {
@@ -81,10 +91,15 @@ input:disabled {
 .removeGift {
     width: 110px;
 }
+.addGift {
+    min-width: 55px;
+}
+
 .btnInvert:hover {
     background-color: whitesmoke;
     border: 1px solid crimson;
     color: crimson;
+    padding:1px;
 }
 
 #pasteSpan {
@@ -104,4 +119,6 @@ input:disabled {
 #pasteicon {
     cursor: pointer;
 }
+
+
 

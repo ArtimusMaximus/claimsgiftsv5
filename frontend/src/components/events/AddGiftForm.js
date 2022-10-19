@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import './addgiftform.css';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
-import { SlPresent } from 'react-icons/si';
+import { GrRefresh } from 'react-icons/gr';
 import { FaPaste } from 'react-icons/fa';
 
 export default () => {
@@ -248,12 +248,12 @@ useEffect(() => {
                     updateGiftArray(remGiftName)
                     Swal.fire({
                         title: `Gift: "${gift}" removed!`,
-                        confirmButtonColor: 'pink',
+                        confirmButtonColor: 'crimson',
                         confirmButtonText: 'Got it!'
                     })
                 } else {
                     Swal.fire({
-                        title: 'Gift not deleted!',
+                        title: 'Gift <b style="font-style: italic;">not</b> deleted!',
                         confirmButtonColor: 'green'
                     })
                 }
@@ -311,15 +311,15 @@ useEffect(() => {
                         <input value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
                         <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'crimson'} id="pasteicon" /><label style={{fontSize: '10px'}}>Paste</label></i>
                         <div>
-                            <button type="submit" className='btnInvert'>Add Gift</button>
+                            <button type="submit" className='btnInvert addGift'>Add Gift</button>
                             <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift btnInvert'>Remove Gift</button>
                         </div>
                     </form> 
             </div>
             <div className='searchContainer'>
                 <span>
-                    <input type="text" value={searchQuery} placeholder='filter results' onChange={e => setSearchQuery(e.target.value)} />
-                    <button onClick={() => setSearchQuery('')} className="btnInvert">Clear</button>
+                    <input className='searchInput' type="text" value={searchQuery} placeholder='filter results' onChange={e => setSearchQuery(e.target.value)} />
+                    <button onClick={() => setSearchQuery('')} className="btnInvert"><GrRefresh size={'25px'} color={'#09090'} /></button>
                 </span>
             </div>
             <Gifts giftArray={giftArray && search(giftArray)} user={user} />
