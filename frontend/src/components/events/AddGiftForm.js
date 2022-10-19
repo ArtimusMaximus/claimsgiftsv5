@@ -157,7 +157,7 @@ useEffect(() => {
     const search = (data) => {
         let keys = ['giftName', 'giftLink', 'requestor']
         return data.filter((item) =>
-            keys.some((key) => item[key].toLowerCase().includes(searchQuery))
+            keys.some((key) => item[key].toLowerCase().includes(searchQuery.toLowerCase()))
         )
     }
 
@@ -282,7 +282,7 @@ useEffect(() => {
         setDidSubmit(current => !current)
         
     }
-    console.log(giftArray);
+    // console.log(giftArray);
 
     const pasteLink = async (e) => {
         if (e) {
