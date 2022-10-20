@@ -111,7 +111,7 @@ export default () => {
                     {/* {passMatchError && <p style={errorStyles}>{errorMessage} </p>} */}
                     {error && <span style={errorStyles}>{errorMessage} </span>}
                 </form>
-                <div className="newuser" style={{marginTop: 'auto'}}>
+                <div className="newuser">
                     <p>Already have an account?</p><p><Link to="/" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Login</Link></p>
                 </div>
             </div>

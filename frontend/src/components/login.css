@@ -1,14 +1,14 @@
 .box {
     display: flex;
     align-items: center;
-    justify-content: center;
+    
     flex-direction: column;
     flex-wrap: wrap;
     margin: 50px;
     border: 1px solid gainsboro;
     border-radius: 5px;
     padding-top: 15px;
-    
+    height: 100vh;
     
 }
 
@@ -47,5 +47,6 @@ button {
 }
 
 .newuser {
-    margin-top: 12px;
+    margin-top: 20px;
+    position: relative;
 }

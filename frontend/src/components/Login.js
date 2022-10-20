@@ -60,7 +60,7 @@ export default () => {
                 </div>
                     {error && <span style={{color:'crimson', paddingTop: '15px'}}>Wrong email or password!</span>}
                 </form>
-                <div className="newuser" style={{marginTop: 'auto'}}>
+                <div className="newuser">
                     <p>New User?</p><p><Link to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
                 </div>
             </div>
