@@ -189,9 +189,9 @@ export default ({ giftArray, user }) => {
             <table>
                 <tbody>
                     {giftArray.length !== 0 && <tr id="rowForHeaders">
-                        <th>Gift Name</th>
+                        <th>Gift</th>
                         <th>Link</th>
-                        <th>Requestee</th>
+                        <th>User</th>
                         <th className='thclaimed'>
                             Reveal status:
                             <label className='switch'>
@@ -200,6 +200,7 @@ export default ({ giftArray, user }) => {
                             </label>
                             {/* {toggle ? "hide" : "reveal"} */}
                         </th>
+                        <th>Info</th>
                     </tr>}
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++} className={index % 2 === 0 ? "firstTableRow" : ''}>
@@ -228,7 +229,7 @@ export default ({ giftArray, user }) => {
                                 }
                                 
                             </td>
-                            <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee)}><BsInfoCircle /></a>}</td>
+                            <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee)}><BsInfoCircle size={'20px'} /></a>}</td>
                         </tr>    
                     )}
                     {giftArray.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{ fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}

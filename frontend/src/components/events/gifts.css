@@ -70,8 +70,11 @@
       height: 57px;
   }
 
+  /* .thclaimed {
+    width: 140px;
+  } */
   .thclaimed {
-      width: 140px;
+    display: none;
   }
 
   a {
@@ -86,6 +89,8 @@
   .cbtd {
     margin: 0px !important;
     padding: 0px !important;
+    width: 15px;
+    font-size: 1.5rem;
     
   }
   .cb {
@@ -94,9 +99,15 @@
     width: 20px;
   }
 
+  th {
+    padding: 2.5px;
+  }
+  /* td {
+    margin: 5px;
+  } */
 
   .requesteeTd {
-    font-size: .75rem;
+    font-size: 1.25rem;
     overflow-x: hidden;
     text-overflow: ellipsis;
     width: 5px;
@@ -105,8 +116,7 @@
 
   .giftNametd {
     text-align: left;
-    font-size: 1rem;
-    
+    font-size: 1.75rem;
   }
 
   td .cbtd {

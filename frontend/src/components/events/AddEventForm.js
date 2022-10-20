@@ -292,7 +292,7 @@ export default () => {
                     <input value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
                     <input value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
                     <div style={{display: 'flex', justifyContent: 'center'}}>
-                        <button type="submit" className='btnInvert' onClick={() => setDidSubmit(false)}>Add Event</button>
+                        <button type="submit" className='addEvent btnInvert' onClick={() => setDidSubmit(false)}>Add Event</button>
                         <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent btnInvert'>Remove Event</button>
                     </div>
                     <div>

@@ -10,7 +10,7 @@
 }
 .eventsTable thead tr th {
     text-decoration: underline;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-style: italic;
 }
 .tableContainer {
@@ -24,6 +24,7 @@
 
 table {
     width: 55vw;
+    
     /* text-align: center; */
 }
 @media screen and (max-width: 700px) {
@@ -33,7 +34,7 @@ table {
 }
 
 td { 
-    font-size: clamp(.75rem, 1.25rem, 2rem);
+    font-size: clamp(.75rem, 1.75rem, 2rem);
     padding: 0px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -49,7 +50,7 @@ th, td {
 .firsttd > a {
     text-decoration: none;
     font-weight: 900;
-    font-size: 1.5rem;
+    font-size: 3rem;
     text-overflow: ellipsis;
     overflow-x: hidden;
 }
@@ -64,7 +65,9 @@ th, td {
     text-align: center;
     width: 55px;
     padding-right: 10px;
+    
 }
+
 
 .firstTableRow {
     /* background-color: aliceblue; */

@@ -16,8 +16,9 @@ a {
     text-decoration: none; 
     color: white;
     font-weight: 900;
-    font-size: 1rem;
+    font-size: 2.5rem;
     padding: 5px;
+    
 }
 .navbarlinks:hover {
     text-decoration: underline;
@@ -27,7 +28,7 @@ a {
     text-decoration: none; 
     color: white;
     font-weight: 900;
-    font-size: 1rem;
+    font-size: 2rem;
     padding: 5px;
 }
 .navbarlogout:hover {
@@ -46,16 +47,21 @@ a {
     
 }
 
-.navbarlinks > a h3, h5 {
-    font-size: 1rem;
-    margin: 0px 3px 0px 3px;
+.navbarlinks > a, h3, h5 {
+    font-size: 2rem;
+    margin: 0px 3px 0px 10px;
 }
 .navbarlinks > a > h5 {
-    font-size: .75rem;
+    font-size: 1rem;
+    
 }
 .navtainer {
     display: flex;
     align-items: center;
     justify-content: center;
     
+}
+
+span > .navbarlinks > h3 {
+    line-height: 10%;
 }

@@ -300,7 +300,7 @@ useEffect(() => {
             <div>
                 {eventData && <h2>Event: {eventData.eventName}</h2>}
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
-                    <span>Add event participants</span>
+                    <span id="addeventparti">Add event participants</span>
                     <button className='plusbutton btnInvert' onClick={sweetModal}>+</button>
                 </div>
             </div>
@@ -309,7 +309,7 @@ useEffect(() => {
                         <input value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
                         
                         <input value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
-                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'crimson'} id="pasteicon" /><label style={{fontSize: '10px'}}>Paste</label></i>
+                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'black'} id="pasteicon" /><div>Paste</div></i>
                         <div>
                             <button type="submit" className='btnInvert addGift'>Add Gift</button>
                             <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift btnInvert'>Remove Gift</button>

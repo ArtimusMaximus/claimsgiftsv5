@@ -12,12 +12,18 @@ input {
 
 button {
     width: 20vw;
+    font-family: 'Tangerine', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 h2 {
     text-align: center;
 }
 .removeEvent {
+    width: 125px;
+}
+.addEvent {
     width: 125px;
 }
 

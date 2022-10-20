@@ -18,7 +18,7 @@ export default () => {
         <>
            <div className='navbar'>
                 <div className='navtainer'>
-                <span className='navbarlinks'><Link to="/" style={{textDecoration: 'none', color: 'White'}}><h3>Claims Gifts</h3><h5>Alpha</h5></Link></span>
+                <span className='navbarlinks'><Link to="#" style={{textDecoration: 'none', color: 'White'}}><h3>Claims Gifts</h3><h5>Alpha</h5></Link></span>
                 {location.pathname !== '/signup' && location.pathname !== '/' && <Link to="/dashboard" className='navbarlinks'>Dashboard</Link>}
                 {location.pathname !== '/signup' && location.pathname !== '/' && <Link to="/logout" className='navbarlogout'>Logout <IoMdLogOut style={{display: 'inlineFlex', alignItems: 'center'}} size={'20px'} /></Link>}
                 </div>

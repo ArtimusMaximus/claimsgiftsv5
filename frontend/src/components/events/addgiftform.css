@@ -24,9 +24,11 @@ button {
     
 }
 .plusbutton {
-    width: 5vw;
-    min-width: 50px;
-    font-size: xx-large;
+    
+    width: 50px;
+    font-size: 72px;
+    padding-bottom: 8px;
+    line-height: 0%;
 }
 
 h2 {
@@ -75,9 +77,9 @@ ul {
     text-align: center;
  }
  td {
-    margin: 10px;
+    margin: 5px;
     padding: 5px;
-    min-height: 100px;
+    
  }
 .cb {
     width: 50px;
@@ -100,7 +102,7 @@ input:disabled {
     width: 110px;
 }
 .addGift {
-    min-width: 55px;
+    width: 110px;
 }
 
 .btnInvert {
@@ -117,28 +119,30 @@ input:disabled {
     padding: 1px;
 }
 
-#pasteSpan {
-    display: flex;
-    right: 0;
-    gap: 15px;
-}
 #giftLinkInput {
     
 }
 #iconEl {
     display: inline-flex;
     justify-content: center;
-    align-items: center;
+    align-self: baseline;
     margin-top: 10px;
+    flex-wrap: wrap;
+    margin-right: 3px;
 }
-#iconEl > label {
+#iconEl > div {
     margin-left: 3px;
+    font-size: 1.5rem;
+    background-color: rgb(255, 255, 255, .75);
+    border-radius: 5px;
+    
 }
 
 #pasteicon {
     cursor: pointer;
     margin: 0px 1px 0px 1px;
     padding: 1px;
+    color: #000;
 
 }
 #pasteicon:hover {
@@ -146,8 +150,13 @@ input:disabled {
     border-radius: 3px;
     padding: 1px;
 }
-label {
+#iconEl > div {
     margin: 0;
+}
+
+#addeventparti {
+    background-color: rgb(255, 255, 255, .75);
+    border-radius: 5px;
 }
 
 
