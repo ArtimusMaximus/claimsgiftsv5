@@ -100,7 +100,7 @@ export default () => {
     return (
         <>  
             <div>
-                <h2 style={{textAlign: 'center', marginBottom: '10px'}}>Welcome to your dashboard <br /></h2>
+                <h2 style={{textAlign: 'center', marginBottom: '10px', marginTop:'10px'}}>Welcome to your dashboard <br /></h2>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                     <GrGift id="presentIcon" style={{styles}} />
                 </div>

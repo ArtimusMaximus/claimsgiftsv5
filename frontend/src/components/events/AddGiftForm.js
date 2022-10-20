@@ -114,9 +114,9 @@ useEffect(() => {
             title: 'Enter new participant email',
             input: 'email',
             inputLabel: 'Email',
-            confirmButtonColor: 'pink',
+            confirmButtonColor: 'crimson',
             showCancelButton: true,
-            cancelButtonColor: 'crimson',
+            cancelButtonColor: 'grey',
             inputPlaceholder: 'Enter email address here',
             title: eventParticipants && `Event participants: \n${eventParticipants.join(' ')}`,
             
@@ -298,7 +298,7 @@ useEffect(() => {
         <>
         {onTheList || user.email === eventData.eventOwner ? (<>
             <div>
-                {eventData && <h2>Event: {eventData.eventName}</h2>}
+                {eventData && <h2 style={{marginTop: '10px', marginBottom:'10px'}}>Event: {eventData.eventName}</h2>}
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                     <span id="addeventparti">Add event participants</span>
                     <button className='plusbutton btnInvert' onClick={sweetModal}>+</button>
@@ -306,10 +306,10 @@ useEffect(() => {
             </div>
             <div className='formContainer'>
                     <form onSubmit={handleSubmit}>
-                        <input value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
+                        <input className='giftInputs' value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
                         
-                        <input value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
-                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'black'} id="pasteicon" /><div>Paste</div></i>
+                        <input className='giftInputs' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
+                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'pink'} id="pasteicon" /><div>Paste</div></i>
                         <div>
                             <button type="submit" className='btnInvert addGift'>Add Gift</button>
                             <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift btnInvert'>Remove Gift</button>
@@ -318,7 +318,7 @@ useEffect(() => {
             </div>
             <div className='searchContainer'>
                 <span>
-                    <input className='searchInput' type="text" value={searchQuery} placeholder='filter results' onChange={e => setSearchQuery(e.target.value)} />
+                    <input className='searchInput' type="text" value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
                     <button onClick={() => setSearchQuery('')} className="btnInvert"><TiRefresh size={'40px'} color={'#09090'} /></button>
                 </span>
             </div>

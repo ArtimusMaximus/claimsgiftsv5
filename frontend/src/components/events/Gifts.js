@@ -200,7 +200,7 @@ export default ({ giftArray, user }) => {
                             </label>
                             {/* {toggle ? "hide" : "reveal"} */}
                         </th>
-                        <th>Info</th>
+                        <th colSpan={2}>Info</th>
                     </tr>}
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++} className={index % 2 === 0 ? "firstTableRow" : ''}>

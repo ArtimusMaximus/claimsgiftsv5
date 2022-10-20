@@ -17,6 +17,11 @@
 
 .searchInput {
     width: 250px;
+    font-family: 'Tangerine', cursive;
+    font-weight: 700;
+    font: bold;
+    font-size: 2rem;
+
 }
 
 button {
@@ -133,7 +138,7 @@ input:disabled {
 #iconEl > div {
     margin-left: 3px;
     font-size: 1.5rem;
-    background-color: rgb(255, 255, 255, .75);
+    background-color: rgb(255, 192, 203, .75);
     border-radius: 5px;
     
 }
@@ -159,5 +164,10 @@ input:disabled {
     border-radius: 5px;
 }
 
-
+.giftInputs {
+    font-family: 'Tangerine', cursive;
+    font-weight: 700;
+    font: bold;
+    font-size: 2rem;
+}
 
