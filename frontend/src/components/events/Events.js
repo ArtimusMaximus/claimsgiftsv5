@@ -27,12 +27,13 @@ export default ({ data }) => {
         <>
         <div className='tableContainer'>
             <table className='eventsTable'>
-                <thead>
-                    <tr>
+            {data.length > 0 && <thead>
+                <tr>
                         <th>Your Events</th>
                         <th className='infoTd'>Event Info</th>
-                    </tr>
-                </thead>
+                </tr>
+            </thead>
+            }
                 <tbody>
                 
                 {data?.map((i, index) => 
@@ -43,7 +44,7 @@ export default ({ data }) => {
                         <td className="infoTd"><a onClick={() => showEventInfo(index)}><BsInfoCircle size={'25px'} /></a></td>
                     </tr>
                 ))}
-                {data.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td><h2 style={{marginTop: '20px', fontStyle: 'italic'}}>Add an event to view here...</h2></td></tr>)}
+                {data.length === 0 && (<tr colSpan={'2'}><td style={{ display: 'flex', justifyContent:'center', alignItems:'center'}}><h2 style={{marginTop:'0px', marginBottom:'0px', fontStyle: 'italic'}}>Add an event to view here...</h2></td></tr>)}
                 </tbody>
             </table>
             

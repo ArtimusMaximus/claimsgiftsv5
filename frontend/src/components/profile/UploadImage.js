@@ -4,6 +4,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import blankProfile from './blank-profile.webp'
 import './uploadimage.css';
 import { doc, updateDoc } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 
 
@@ -21,7 +22,11 @@ export default ({ userId, userInfo }) => {
             
         } catch(error) {
             if (error) {
-                console.log('error from try catch', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please try again!',
+                    confirmButtonColor: 'crimson'
+                })
             }
         }
 
@@ -75,7 +80,7 @@ export default ({ userId, userInfo }) => {
             <div className="avatarContainer">
                 <div>Upload an Avatar</div>
                 <div>
-                    <img src={userInfo.img === undefined ? blankProfile : data.url ? data.url : userInfo.img } width="75px" height="75px" style={{borderRadius: '50%'}}/>
+                    <img src={userInfo.img === undefined ? blankProfile : data.url ? data.url : userInfo.img } width="auto" height="125px" style={{borderRadius: '50%'}}/>
                 </div>
                 <label className="label">
                     <input type='file' id='file' onChange={e => setFile(e.target.files[0])}></input>

@@ -23,7 +23,7 @@ root.render(
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
-        <Route path="/dashboard/:profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
+        <Route path="/dashboard/user/:profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
         <Route path="/dashboard/:id" element={<RequireAuth><AddGiftForm /></RequireAuth>} />
         <Route path="/logout" element={<Login />} />
         <Route path="*" element={<RedirectPage />} />

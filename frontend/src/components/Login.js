@@ -25,7 +25,7 @@ export default () => {
                 // Signed in 
                 const user = userCredential.user;
                 dispatch({type:"LOGIN", payload: user})
-                console.log(user)
+                
                 navigate('/dashboard')
             })
             .catch((error) => {

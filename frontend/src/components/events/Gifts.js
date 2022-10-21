@@ -15,7 +15,7 @@ export default ({ giftArray, user }) => {
     const [checked, setChecked] = useState(false)
     const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
-    const [toggle, setToggle] = useState(true)
+    const [toggle, setToggle] = useState(false)
     const [show, setShow] = useState(false)
 
     // console.log(giftArray[0]?.giftLink);
@@ -184,6 +184,7 @@ export default ({ giftArray, user }) => {
     }
 
     return (
+        <>
         <div className='giftContainer'>
                 
             <table>
@@ -192,14 +193,7 @@ export default ({ giftArray, user }) => {
                         <th>Gift</th>
                         <th>Link</th>
                         <th>User</th>
-                        <th className='thclaimed'>
-                            Reveal status:
-                            <label className='switch'>
-                                <input className='tog' value={toggle} type="checkbox" defaultChecked={true} onClick={handleToggle} />
-                                <span className='slider round'></span>
-                            </label>
-                            {/* {toggle ? "hide" : "reveal"} */}
-                        </th>
+                        
                         <th colSpan={2}>Info</th>
                     </tr>}
                     {giftArray && giftArray.map((i, index) =>
@@ -215,7 +209,9 @@ export default ({ giftArray, user }) => {
                                 {
                                     user.email === i.requestor 
                                     ? "You" 
-                                    : i.requestor 
+                                    : i.username
+                                    ? i.username
+                                    : i.requestor
                                 }
                             </td>
                             <td className='cbtd'>
@@ -232,10 +228,19 @@ export default ({ giftArray, user }) => {
                             <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee)}><BsInfoCircle size={'20px'} /></a>}</td>
                         </tr>    
                     )}
-                    {giftArray.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{ fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}
+                    {giftArray.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}
                 </tbody>
             </table>
-        
+            <span className={giftArray.length === 0 ? 'thclaimed' : 'thclaimed2'}>
+                Reveal if your items have been claimed:
+                <label className='switch'>
+                    <input className='tog' value={toggle} type="checkbox" defaultChecked={false} onClick={handleToggle} />
+                    <span className='slider round'></span>
+                </label>
+                {toggle ? "hide" : "reveal"} 
+            </span>
         </div>
+        
+        </>
     )
 }

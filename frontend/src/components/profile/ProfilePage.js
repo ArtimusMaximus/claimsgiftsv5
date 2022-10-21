@@ -5,30 +5,39 @@ import { db } from "../../firebase";
 import UpdateUserName from "./UpdateUserName";
 import UploadImage from "./UploadImage";
 import './profilepage.css';
+import Swal from "sweetalert2";
 
 export default () => {
     const params = useParams();
     const userId = params.profile;
     const userRef = doc(db, 'users', userId);
-    
-
     const [userInfo, setUserInfo] = useState({})
 
     useEffect(() => {
         
         const getUserInfo = async () => {
             const docSnap = await getDoc(userRef)
-            if (docSnap.exists()) {
-                console.log('Document data: ', docSnap.data())
-                setUserInfo({ username: docSnap.data().username, img: docSnap.data().img})
-            } else {
-                console.log('no data for this user');
+
+            try {
+                if (docSnap.exists()) {
+                    setUserInfo({ username: docSnap.data().username, img: docSnap.data().img })
+                }
+            } catch(error) {
+                if (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Please try again!',
+                        confirmButtonColor: 'crimson'
+                    })
+                }
+                
             }
+
         }
         getUserInfo();
 
     }, [])
-    console.log('user Info', userInfo);
+    
     
 
     return (

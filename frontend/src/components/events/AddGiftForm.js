@@ -18,6 +18,7 @@ export default () => {
     const [giftLink, setGiftLink] = useState('');
     const [isClaimed, setIsClaimed] = useState(false);
     const [requestor, setRequestor] = useState(user.email);
+    const [userName, setUserName] = useState('')
     const [giftArray, setGiftArray] = useState([]);
     const [remObject, setRemObject] = useState('')
     const [eventData, setEventData] = useState({});
@@ -27,13 +28,15 @@ export default () => {
     const [searchQuery, setSearchQuery] = useState('')
     
     const eventRef = doc(db, 'events', eventId) // add gifts to this event
-    const q = query(collection(db, "events"), where("gifts", "array-contains", "claimed"));
-    const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", user.email));
-    const q2 = query(collection(db, "events"), where("events.eventRef", "==", user.uid));
-    const q3 = query(collection(db, "events"), 
-        where("eventParticipants", "array-contains", user.email),
-        where("giftsEventRef", "==", eventId)
-    );
+    
+    const userRef = doc(db, 'users', user.uid)
+    const getUserInfo = async () => {
+        const userInfo = await getDoc(userRef)
+        if (userInfo.exists) {
+            setUserName(userInfo.data().username)
+        }
+    }
+    getUserInfo();
     
 
 useEffect(() => {
@@ -96,7 +99,8 @@ useEffect(() => {
                         giftLink: giftLink, 
                         claimed: isClaimed, 
                         requestor: requestor, 
-                        giftRef: giftRef
+                        giftRef: giftRef,
+                        username: userName
                     }
                 )
             })
@@ -155,7 +159,7 @@ useEffect(() => {
     updatePartici()
     
     const search = (data) => {
-        let keys = ['giftName', 'giftLink', 'requestor']
+        let keys = ['giftName', 'giftLink', 'requestor', 'username']
         return data.filter((item) =>
             keys.some((key) => item[key].toLowerCase().includes(searchQuery.toLowerCase()))
         )
@@ -200,8 +204,7 @@ useEffect(() => {
                     // requestor: 'admin11@aol.com'
                 )
             })
-            console.log('update gift array fired')
-            console.log(remObject);
+            
             // console.log(eventRef)
             } catch (error) {
                 console.log(error)
@@ -226,11 +229,7 @@ useEffect(() => {
             console.log(item);
             const gift = yourItems[item].giftName
             const eventId = yourItems[item].giftRef
-    
-            console.log(gift, eventId);
 
-            // const newGiftArray = giftArray.filter(i => i !== giftArray[item])
-            // const removedItem = giftArray.filter(i => giftArray[item] !== i)
             const remGiftName = yourItems[item]
             setRemObject(remGiftName)
             console.log(remGiftName);
@@ -258,42 +257,23 @@ useEffect(() => {
                     })
                 }
             })
-            // .then(() => setGiftArray(newGiftArray))
-            // .then(() => setRemGift(removedItem))
-            // .then(() => console.log(removedItem))
-            // .then(result => result.isConfirmed ? Swal.fire(`${gift} removed!`) : Swal.fire('File remains'))
-            // .then(() => setRemObject(remGiftName))
-            // .then(() => setModdedArray(newGiftArray), console.log('@set new gift array fired', newGiftArray))
-            // .then(() => setRemGiftLink(remGiftName.giftLink))
-            // .then(() => setRemGiftName(remGiftName.giftName))
-            
+         
             .then(() => console.log('gift array ', giftArray))
-            // .then(() => console.log('new gift array ', newGiftArray))
-            // .then(() => setDidSubmit(current => !current))
-
-            // .then(() => setDidSubmit(current => !current))
             .catch(err => console.log(err))
-            // then setGiftArray()
+            
         }
-        // setModdedArray(newGiftArray)
-        // setRemGiftLink(remGiftName.giftLink)
-        // setRemGiftName(remGiftName.giftName)
-        // updateGiftArray()
+        
         setDidSubmit(current => !current)
         
     }
-    // console.log(giftArray);
-
+  
     const pasteLink = async (e) => {
         if (e) {
             await navigator.clipboard.readText()
                 .then(text => setGiftLink(text))  
         }
     }
-    
 
-    
-        
     return (
         <>
         {onTheList || user.email === eventData.eventOwner ? (<>

@@ -171,3 +171,8 @@ input:disabled {
     font-size: 2rem;
 }
 
+.giftInputs:focus {
+    color: crimson;
+    outline: none;
+}
+

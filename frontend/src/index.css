@@ -8,6 +8,7 @@ body {
   font-family: 'Tangerine', cursive;
   font-size: 2rem;
   font-weight: 700;
+  height: 100vh;
   
 }
 
@@ -16,5 +17,7 @@ code {
     monospace;
     
 }
+
+
 
 

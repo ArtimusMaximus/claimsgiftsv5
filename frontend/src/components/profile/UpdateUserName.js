@@ -10,16 +10,17 @@ export default ({ userId }) => {
     const navigate = useNavigate();
     const delay = t => new Promise(resolve => setTimeout(resolve, t))
 
+
     const handleSubmit = async e => {
         e.preventDefault();
-        
+        if (userName === '') return navigate('/dashboard')
         const userRef = doc(db, 'users', userId)
 
         await updateDoc(userRef, {
             username: userName,
         })
         setUserName('');
-        delay(2000)
+        delay(500)
             .then(() => navigate('/dashboard'))
         
     }

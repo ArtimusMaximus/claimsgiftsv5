@@ -1,0 +1,16 @@
+.editProfileTainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.editProfileTainer > h3 {
+    margin: 0;
+}
+
+.editProfileTainer > a > img {
+    width: auto; 
+    height: 55px;
+    border-radius: 50%;
+}
