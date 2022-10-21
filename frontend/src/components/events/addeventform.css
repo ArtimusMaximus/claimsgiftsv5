@@ -44,3 +44,10 @@ button {
     color: crimson;
     padding: 1px;
 }
+
+.eventNameDate {
+    font-family: 'Tangerine', cursive;
+    font-weight: 700;
+    font: bold;
+    font-size: 2rem;
+}

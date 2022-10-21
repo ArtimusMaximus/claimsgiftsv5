@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './context/AuthContext';
 import AddEventForm from '../components/events/AddEventForm';
-import { TbMailbox } from 'react-icons/tb'
-import Swal from 'sweetalert2';
 import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from '../firebase';
 import { GrGift } from 'react-icons/gr';
-import UploadImage  from './UploadImage.js';
+import UploadImage  from './profile/UploadImage';
 import { Link } from 'react-router-dom';
 
 
@@ -14,9 +12,6 @@ import { Link } from 'react-router-dom';
 export default () => {
     const currentUser = useContext(AuthContext)
     const user = currentUser.currentUser
-    const [inviteData, setInviteData] = useState([])
-    const [agreedEvent, setAgreedEvent] = useState(false)
-    const [participantEventId, setParticipantEventId] = useState([])
     const [userData, setUserData] = useState('')
     
     const q = query(collection(db, "invites"), where("invitee", "==", user.email))
@@ -109,23 +104,22 @@ export default () => {
     //     confirmInvite()
     //     console.log(participantEventId);
     // }
-    const styles = {
-        color: 'crimson',
-        height: '50px',
-        width: '50px'
-    }
+    
 
     return (
         <>  
             <div>
                 <h2 style={{textAlign: 'center', marginBottom: '10px', marginTop:'10px'}}>Welcome to your dashboard <br /></h2>
-                <div><Link to={`${user.uid}`}>Edit Profile</Link></div>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                    <GrGift id="presentIcon" style={{styles}} />
+                
+                <div>
+                    <h3 style={{textAlign: 'center', marginTop: '10px'}}>{currentUser && userData.username ? userData.username : user.email}</h3>
                 </div>
-                <h3 style={{textAlign: 'center', marginTop: '10px'}}>{currentUser && userData.username ? userData.username : user.email}</h3>
                 <span><img src={userData.img} width="auto" height="55px"></img></span>
-                {/* <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleClick}><TbMailbox size={'35px'} color={'pink'} /></a></div> */}
+                <div>
+                    <Link to={`${user.uid}`}>Edit Profile</Link>
+                </div>
+                </div>
                 <AddEventForm />
             </div>
             

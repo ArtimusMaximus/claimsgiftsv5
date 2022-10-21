@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { db, storage } from "../firebase";
+import { db, storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import blankProfile from './blank-profile.webp'
 import './uploadimage.css';
 import { doc, updateDoc } from "firebase/firestore";
+
 
 
 export default ({ userId, userInfo }) => {
@@ -71,10 +72,19 @@ export default ({ userId, userInfo }) => {
     
     return (
         <>
-            
-            <div>Upload Your own Avatar</div><span><img src={userInfo.img === undefined ? blankProfile : data.url ? data.url : userInfo.img } width="55px" height="55px" style={{borderRadius: '50%'}}/></span>
-            <input type='file' id='file' onChange={e => setFile(e.target.files[0])}></input>
+            <div className="avatarContainer">
+                <div>Upload an Avatar</div>
+                <div>
+                    <img src={userInfo.img === undefined ? blankProfile : data.url ? data.url : userInfo.img } width="75px" height="75px" style={{borderRadius: '50%'}}/>
+                </div>
+                <label className="label">
+                    <input type='file' id='file' onChange={e => setFile(e.target.files[0])}></input>
+                    Upload an image...
+                </label>
                 
+                
+            </div>
+            
             
         </>
     );

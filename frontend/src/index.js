@@ -9,12 +9,9 @@ import Dashboard from './components/Dashboard';
 import RequireAuth from './components/auth/RequireAuth';
 import { AuthContextProvider } from './components/context/AuthContext';
 import AddGiftForm from './components/events/AddGiftForm';
-import Gifts from './components/events/Gifts';
 import RedirectPage from './components/RedirectPage';
-import { createBrowserHistory } from 'history';
-import ProfilePage from './components/ProfilePage';
+import ProfilePage from './components/profile/ProfilePage';
 
-// const history = createBrowserHistory({ window })
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
