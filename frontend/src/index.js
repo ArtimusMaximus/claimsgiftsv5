@@ -12,6 +12,7 @@ import AddGiftForm from './components/events/AddGiftForm';
 import Gifts from './components/events/Gifts';
 import RedirectPage from './components/RedirectPage';
 import { createBrowserHistory } from 'history';
+import ProfilePage from './components/ProfilePage';
 
 // const history = createBrowserHistory({ window })
 
@@ -25,6 +26,7 @@ root.render(
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+        <Route path="/dashboard/:profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
         <Route path="/dashboard/:id" element={<RequireAuth><AddGiftForm /></RequireAuth>} />
         <Route path="/logout" element={<Login />} />
         <Route path="*" element={<RedirectPage />} />

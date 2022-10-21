@@ -5,7 +5,9 @@ import { TbMailbox } from 'react-icons/tb'
 import Swal from 'sweetalert2';
 import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from '../firebase';
-import { GrGift } from 'react-icons/gr'
+import { GrGift } from 'react-icons/gr';
+import UploadImage  from './UploadImage.js';
+import { Link } from 'react-router-dom';
 
 
 
@@ -15,8 +17,26 @@ export default () => {
     const [inviteData, setInviteData] = useState([])
     const [agreedEvent, setAgreedEvent] = useState(false)
     const [participantEventId, setParticipantEventId] = useState([])
+    const [userData, setUserData] = useState('')
     
     const q = query(collection(db, "invites"), where("invitee", "==", user.email))
+
+
+    let userRef = doc(db, 'users', user.uid)
+    useEffect(() => {
+
+        const getUserInfo = async () => {
+            const docSnap = await getDoc(userRef)
+
+            if (docSnap.exists()) {
+                setUserData(docSnap.data())
+            } else {
+                return
+            }
+        }
+        getUserInfo();
+
+    }, [])
 
     // useEffect(() => {
         // const checkInvites = async () => {
@@ -95,17 +115,16 @@ export default () => {
         width: '50px'
     }
 
-    
-
     return (
         <>  
             <div>
                 <h2 style={{textAlign: 'center', marginBottom: '10px', marginTop:'10px'}}>Welcome to your dashboard <br /></h2>
+                <div><Link to={`${user.uid}`}>Edit Profile</Link></div>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                     <GrGift id="presentIcon" style={{styles}} />
                 </div>
-                <h3 style={{textAlign: 'center', marginTop: '10px'}}>{currentUser && currentUser.currentUser.email}</h3>
-                
+                <h3 style={{textAlign: 'center', marginTop: '10px'}}>{currentUser && userData.username ? userData.username : user.email}</h3>
+                <span><img src={userData.img} width="auto" height="55px"></img></span>
                 {/* <div style={{textAlign: 'right', marginRight: '25vw'}}>Check Event Invites &nbsp;<a onClick={handleClick}><TbMailbox size={'35px'} color={'pink'} /></a></div> */}
                 <AddEventForm />
             </div>

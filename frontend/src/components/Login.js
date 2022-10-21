@@ -18,7 +18,7 @@ export default () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (email === '' || password === '') return Swal.fire({ title: 'you must enter BOTH an email AND password', confirmButtonColor: 'crimson'}).then(() => setError(false))
+        if (email === '' || password === '') return Swal.fire({ title: 'you must enter both an email and password', confirmButtonColor: 'crimson'}).then(() => setError(false))
 
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
