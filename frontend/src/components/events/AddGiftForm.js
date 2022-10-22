@@ -101,13 +101,13 @@ useEffect(() => {
                         claimed: isClaimed, 
                         requestor: requestor, 
                         giftRef: giftRef,
-                        username: userName
+                        // username: userName why was this here?
                     }
                 )
             })
             // console.log(eventRef)
             } catch (error) {
-                // console.log(error)
+                console.log(error)
             }
             setDidSubmit(current => !current)
             setGiftName('')
@@ -227,13 +227,12 @@ useEffect(() => {
             inputPlaceholder: `Your choices...`
         })
         if (item) {
-            console.log(item);
             const gift = yourItems[item].giftName
             const eventId = yourItems[item].giftRef
 
             const remGiftName = yourItems[item]
             setRemObject(remGiftName)
-            console.log(remGiftName);
+            
             
 
             await Swal.fire({
@@ -258,8 +257,6 @@ useEffect(() => {
                     })
                 }
             })
-         
-            .then(() => console.log('gift array ', giftArray))
             .catch(err => console.log(err))
             
         }
