@@ -300,7 +300,7 @@ useEffect(() => {
             <div className='searchContainer'>
                 <span>
                     <input className='searchInput' type="text" value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
-                    <button onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} color={'#09090'} /></button>
+                    <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
                 </span>
             </div>
             <Gifts giftArray={giftArray && search(giftArray)} user={user} />

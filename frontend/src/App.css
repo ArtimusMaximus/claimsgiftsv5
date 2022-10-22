@@ -55,9 +55,89 @@
   background-image: url('./stack_of_presents.png');
   background-repeat: no-repeat;
   background-size: 75%;
-  background-position-x: 950px;
-  background-position-y: 250px;
+  background-position-x: 1400px;
+  background-position-y: -50px;
   height: 100%;
+}
+/*******************************************************************/
+@media screen and (max-width: 1500px) {
+  .content-container {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: -650px;
+    background-position-y: -100px;
+    height: 100%;
+  }
+  
+  .content-container2 {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: 1100px;
+    background-position-y: -50px;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .content-container {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: -550px;
+    background-position-y: -50px;
+    height: 100%;
+  }
+  
+  .content-container2 {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: 900px;
+    background-position-y: -50px;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .content-container {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: -425px;
+    background-position-y: -50px;
+    height: 100%;
+  }
+  
+  .content-container2 {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: 700px;
+    background-position-y: 80px;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .content-container {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: -350px;
+    background-position-y: -50px;
+    height: 100%;
+  }
+  
+  .content-container2 {
+    background-image: url('./stack_of_presents.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position-x: 550px;
+    background-position-y: 80px;
+    height: 100%;
+  }
 }
 
 @media screen and (max-width: 609px) {
