@@ -105,7 +105,6 @@ export default ({ giftArray, user }) => {
     }
     const handleToggle = () => {
         setToggle(prev => !prev)
-        console.log(toggle);
     }
 
     const claimedInfo = async (claimee) => {

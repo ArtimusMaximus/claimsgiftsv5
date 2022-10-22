@@ -27,20 +27,32 @@
 #swal2-html-container {
 
 }
+/* buttons div */
+.swal2-actions {
+    font-size: 1rem;
+}
+
+
+
+/* buttons below */
+
+.swal2-cancel {
+    
+}
 
 .swal2-styled {
-    padding-bottom: 50px;
-
+    /* padding-bottom: 50px;  */
+    font-size: 2rem;
 }
 
 .swal2-default-outline {
-
+    font-size: 24px;
 }
 
 @media screen and (max-width: 600px) {
     .swal2-styled {
-        padding-bottom: 50px;
-        padding-right: 80px;
+        /* padding-bottom: 50px;
+        padding-right: 80px; */
     
     }
 }
