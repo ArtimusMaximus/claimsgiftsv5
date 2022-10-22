@@ -42,12 +42,14 @@ export default () => {
 
     return (
         <>
+        <div className="containAll">
             <div className="container">
                 <UploadImage userId={userId} userInfo={userInfo} />
             </div>
             <div className="container1">
                 <UpdateUserName userId={userId} />
             </div>
+        </div>
         </>
     );
 }

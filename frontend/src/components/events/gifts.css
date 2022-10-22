@@ -163,6 +163,7 @@
   
   .giftContainer {
     width: 100%;
+    height: 50vh;
   }
   .giftContainer > td > table > tbody > tr > td {
     margin: 0px 15px 0px 15px;

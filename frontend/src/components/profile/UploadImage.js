@@ -80,7 +80,7 @@ export default ({ userId, userInfo }) => {
             <div className="avatarContainer">
                 <div>Upload an Avatar</div>
                 <div>
-                    <img src={userInfo.img === undefined ? blankProfile : data.url ? data.url : userInfo.img } width="auto" height="125px" style={{borderRadius: '50%'}}/>
+                    <img src={data.url ? data.url : userInfo.img !== undefined ? userInfo.img : blankProfile} width="auto" height="125px" style={{borderRadius: '50%'}}/>
                 </div>
                 <label className="label">
                     <input type='file' id='file' onChange={e => setFile(e.target.files[0])}></input>
@@ -95,3 +95,4 @@ export default ({ userId, userInfo }) => {
     );
 
 }
+// old ternary for line 83 userInfo.img === undefined ? blankProfile : data.url ? data.url : userInfo.img
