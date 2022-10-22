@@ -78,6 +78,7 @@
   .thclaimed2 {
     margin: 5px 0px 5px 0px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
   }

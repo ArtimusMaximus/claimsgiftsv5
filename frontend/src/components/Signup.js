@@ -96,13 +96,14 @@ export default () => {
                             onChange={e => setEmail(e.target.value)}
                             onFocus={e => e.target.placeholder = ''} 
                             onBlur={e => e.target.placeholder = 'email'}
+                            className="signLoginInputs"
                         />
                     </div>
                     <div>
-                        <input name="password" type="password" placeholder="password" onChange={e => setPassword(e.target.value)} />
+                        <input className="signLoginInputs" name="password" type="password" placeholder="password" onChange={e => setPassword(e.target.value)} />
                     </div>
                     <div>
-                        <input name="password" type="password" placeholder="confirm password" onChange={e => setConfirmPass(e.target.value)} />
+                        <input className="signLoginInputs" name="password" type="password" placeholder="confirm password" onChange={e => setConfirmPass(e.target.value)} />
                     </div>
                     <div>
                         <button>Sign Up</button>

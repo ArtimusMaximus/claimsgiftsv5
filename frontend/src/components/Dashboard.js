@@ -5,7 +5,8 @@ import { collection, query, where, getDocs, getDoc, doc } from "firebase/firesto
 import { db } from '../firebase';
 import EditProfile from './profile/EditProfile';
 import { Link } from 'react-router-dom';
-import './dashboard.css'
+import './dashboard.css';
+import './swalstyles.css';
 
 
 

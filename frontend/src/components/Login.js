@@ -44,6 +44,7 @@ export default () => {
                             onChange={e => setEmail(e.target.value)} 
                             onFocus={e => e.target.placeholder = ''} 
                             onBlur={e => e.target.placeholder = 'email'}
+                            className="signLoginInputs"
                         />
                     </div>     
                     <div>
@@ -53,6 +54,7 @@ export default () => {
                             onChange={e => setPassword(e.target.value)} 
                             onFocus={e => e.target.placeholder = ''} 
                             onBlur={e => e.target.placeholder = 'password'}
+                            className="signLoginInputs"
                         />
                     </div>
                 <div>

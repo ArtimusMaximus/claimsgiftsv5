@@ -50,3 +50,12 @@ button {
     margin-top: 20px;
     position: relative;
 }
+.signLoginInputs {
+    font-family: 'Tangerine', cursive;
+    font-weight: 700;
+    font: bold;
+    font-size: 2rem;
+}
+label {
+    font-size: 2rem;
+}

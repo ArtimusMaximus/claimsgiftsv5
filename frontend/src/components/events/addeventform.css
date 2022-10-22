@@ -55,3 +55,10 @@ button {
     font: bold;
     font-size: 2rem;
 }
+
+#invitesTainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
