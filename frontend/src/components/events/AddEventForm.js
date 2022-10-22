@@ -9,6 +9,8 @@ import { FaEnvelopeOpenText } from 'react-icons/fa'
 import { TbMailbox } from 'react-icons/tb'
 import { getUserEvents } from './firebase_functions/getusers';
 import { deleteEg } from './deleteEg';
+import Emailjs from '../emailjs/Emailjs';
+import emailjs from '@emailjs/browser';
 
 export default () => {
     const currentUser = useContext(AuthContext)
@@ -23,6 +25,7 @@ export default () => {
     const [eventRef, setEventRef] = useState(user)
     const [didSubmit, setDidSubmit] = useState(false)
     const [eventParticipants, setEventParticipants] = useState([userEmail])
+    const [templateParams, setTemplateParams] = useState({})
     
     
     
@@ -118,6 +121,7 @@ export default () => {
 
         const { value: event } = await Swal.fire({
             title: 'Please select event to share:',
+            text: 'Note: this will invite the user via their dashboard invites, as well as send them an automated email.',
             confirmButtonColor: 'crimson',
             input: 'select',
             inputOptions: {
@@ -126,7 +130,7 @@ export default () => {
             },
             inputPlaceholder: 'Your events...'
         })
-        if(event) {
+        if (event) {
             const eName = docData[event].events.eventName
             const eDate = docData[event].events.eventDate
             const eventId = docData[event].id
@@ -138,8 +142,27 @@ export default () => {
                 inputPlaceholder: 'Invitee\'s email'
             })
             if (inviteeEmail) {
+
+                let inviteeE = inviteeEmail.trim().toLowerCase();
+                let invLink = `https://claims.gifts/dashboard/${eventId}`
+
+                let tempParam = {
+                    from_name: userEmail,
+                    event_name: eName,
+                    event_date: eDate,
+                    to_email: inviteeE,
+                    invite_link: invLink,
+                }
+                const templateID = 'template_db6c98h';
+                const publicKey = 'C0U6FhGhn-2kWm9SD';
+                const handleEmail = async () => {
+                    await emailjs.send('default_service', templateID, tempParam, publicKey)
+                        .then((res) => console.log('Success ', res.status, res.text))
+                        .catch(err => console.log(err))
+                }
+
                 Swal.fire({
-                    title: `Invitation sent to ${inviteeEmail}'s message center.`,
+                    title: `Invitation sent to ${inviteeEmail}'s 'message invite center', as well as an automated email.`,
                     confirmButtonColor: 'crimson'
                 })
                 .then((result) => console.log(result.isConfirmed))
@@ -151,11 +174,26 @@ export default () => {
                     eventDate: eDate,
                     eventId: eventId,
                 }))
-                .then((data) => console.log(data))
+                
+                .then(() => handleEmail())
                 .catch((err) => console.log(err))
-            }  
-        } 
+            }
+
+            
+                
+            
+            
+            
+           
+            
+
+
+        }
+        
     }
+    
+
+
     const handleCheckEventClick = () => {
         console.log(inviteData)
         console.log(docData);
@@ -284,6 +322,7 @@ export default () => {
 
         }
     }
+    
 
     return (
         <>

@@ -6,13 +6,19 @@
     
 }
 
+.swal2-select {
+    font-family: 'Tangerine', cursive;
+    font-size: 2.05rem;
+    
+}
+
 .swal2-textarea {
     font-family: 'Tangerine', cursive;
     font-size: 48px;
 }
 
 .swal2-input {
-    
+    font-size: 1.25rem;;
 }
 .swal2-input-label {
     font-size: 36px;
@@ -22,7 +28,7 @@
 }
 
 .swal2-html-container {
-    font-size: 36px;
+    font-size: 2.5rem;
 }
 #swal2-html-container {
 
@@ -31,6 +37,7 @@
 .swal2-actions {
     font-size: 1rem;
 }
+
 
 
 

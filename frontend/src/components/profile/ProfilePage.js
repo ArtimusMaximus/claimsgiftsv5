@@ -6,6 +6,7 @@ import UpdateUserName from "./UpdateUserName";
 import UploadImage from "./UploadImage";
 import './profilepage.css';
 import Swal from "sweetalert2";
+import Emailjs from "../emailjs/Emailjs";
 
 export default () => {
     const params = useParams();
@@ -49,7 +50,11 @@ export default () => {
             <div className="container1">
                 <UpdateUserName userId={userId} />
             </div>
+            <div className="container">
+                <Emailjs />
+            </div>
         </div>
+        
         </>
     );
 }
