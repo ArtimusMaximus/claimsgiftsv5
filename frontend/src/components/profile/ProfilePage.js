@@ -50,9 +50,6 @@ export default () => {
             <div className="container1">
                 <UpdateUserName userId={userId} />
             </div>
-            <div className="container">
-                <Emailjs />
-            </div>
         </div>
         
         </>

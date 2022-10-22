@@ -162,7 +162,7 @@ export default () => {
                 }
 
                 Swal.fire({
-                    title: `Invitation sent to ${inviteeEmail}'s 'message invite center', as well as an automated email.`,
+                    title: `Invitation sent to ${inviteeEmail}'s 'message invite center', as well as via an automated email.`,
                     confirmButtonColor: 'crimson'
                 })
                 .then((result) => console.log(result.isConfirmed))

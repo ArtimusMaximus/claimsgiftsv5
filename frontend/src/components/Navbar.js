@@ -14,6 +14,8 @@ export default () => {
     const user = currentUser.currentUser
     const location = useLocation();
 
+    
+
     return (
         <>
            <div className='navbar'>

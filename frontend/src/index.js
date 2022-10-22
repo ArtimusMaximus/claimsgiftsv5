@@ -17,7 +17,7 @@ import ProfilePage from './components/profile/ProfilePage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthContextProvider>
-  <Router >
+  <Router>
     <Routes>
       <Route path="/" element={<App />}>
         <Route path="/" element={<Login />} />
