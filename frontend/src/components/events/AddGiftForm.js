@@ -6,8 +6,9 @@ import { AuthContext } from '../context/AuthContext';
 import './addgiftform.css';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
-import { TiRefresh } from 'react-icons/ti';
+import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
+import { MdGroupAdd } from 'react-icons/md'
 
 export default () => {
     const currentUser = useContext(AuthContext)
@@ -159,9 +160,9 @@ useEffect(() => {
     updatePartici()
     
     const search = (data) => {
-        let keys = ['giftName', 'giftLink', 'requestor', 'username']
+        let keys = ['giftName', 'requestor', 'username']
         return data.filter((item) =>
-            keys.some((key) => item[key].toLowerCase().includes(searchQuery.toLowerCase()))
+            keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase()))
         )
     }
 
@@ -281,7 +282,7 @@ useEffect(() => {
                 {eventData && <h2 style={{marginTop: '10px', marginBottom:'10px'}}>Event: {eventData.eventName}</h2>}
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                     <span id="addeventparti">Add event participants</span>
-                    <button className='plusbutton btnInvert' onClick={sweetModal}>+</button>
+                    <MdGroupAdd id="addPartIcon" size={'36px'} onClick={sweetModal} />
                 </div>
             </div>
             <div className='formContainer'>
@@ -289,7 +290,7 @@ useEffect(() => {
                         <input className='giftInputs' value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
                         
                         <input className='giftInputs' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
-                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'pink'} id="pasteicon" /><div>Paste</div></i>
+                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'pink'} id="pasteicon" /><div>Paste&nbsp;</div></i>
                         <div>
                             <button type="submit" className='btnInvert addGift'>Add Gift</button>
                             <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift btnInvert'>Remove Gift</button>
@@ -299,7 +300,7 @@ useEffect(() => {
             <div className='searchContainer'>
                 <span>
                     <input className='searchInput' type="text" value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
-                    <button onClick={() => setSearchQuery('')} className="btnInvert"><TiRefresh size={'40px'} color={'#09090'} /></button>
+                    <button onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} color={'#09090'} /></button>
                 </span>
             </div>
             <Gifts giftArray={giftArray && search(giftArray)} user={user} />

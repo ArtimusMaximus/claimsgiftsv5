@@ -29,11 +29,9 @@ button {
     
 }
 .plusbutton {
-    
     width: 50px;
     font-size: 72px;
-    padding-bottom: 8px;
-    line-height: 0%;
+    line-height: 0%; 
 }
 
 h2 {
@@ -175,4 +173,24 @@ input:disabled {
     color: crimson;
     outline: none;
 }
+
+#addPartIcon {
+    margin-left: 5px;
+    color: crimson;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    transition-property: background-color, color;
+    transition-duration: .75s;
+    transition-delay: 0s;
+}
+
+#addPartIcon:hover {
+    color: whitesmoke;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #dc143c;
+}
+
+
 

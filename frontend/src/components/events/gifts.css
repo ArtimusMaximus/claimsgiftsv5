@@ -43,11 +43,10 @@
   }
   
   input:checked + .slider {
-    background-color: #dc143c;
+    background-color: crimson;
   }
-  
   input:focus + .slider {
-    box-shadow: 0 0 1px #dc143c;
+    box-shadow: 0 0 1px white;
   }
   
   input:checked + .slider:before {
@@ -117,13 +116,22 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
     width: 5px;
-    
+  
   }
 
   .giftNametd {
     text-align: left;
     font-size: 1.75rem;
   }
+  @media screen and (min-width: 1300px) {
+    .giftNametd {
+      font-size: 2.5rem;
+    }
+    .requesteeTd {
+      font-size: 2rem;
+    }
+  }
+
 
   td .cbtd {
     width: 25px;

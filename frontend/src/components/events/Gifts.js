@@ -15,7 +15,7 @@ export default ({ giftArray, user }) => {
     const [checked, setChecked] = useState(false)
     const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
-    const [toggle, setToggle] = useState(false)
+    const [toggle, setToggle] = useState(true)
     const [show, setShow] = useState(false)
 
     // console.log(giftArray[0]?.giftLink);
@@ -232,12 +232,12 @@ export default ({ giftArray, user }) => {
                 </tbody>
             </table>
             <span className={giftArray.length === 0 ? 'thclaimed' : 'thclaimed2'}>
-                Reveal if your items have been claimed:
+                Click to reveal your items 'claimed' status
                 <label className='switch'>
-                    <input className='tog' value={toggle} type="checkbox" defaultChecked={false} onClick={handleToggle} />
+                    <input className='tog' value={toggle} type="checkbox" defaultChecked={true} onClick={handleToggle} />
                     <span className='slider round'></span>
                 </label>
-                {toggle ? "hide" : "reveal"} 
+                {toggle ? "(hidden)" : "(revealed)"} 
             </span>
         </div>
         
