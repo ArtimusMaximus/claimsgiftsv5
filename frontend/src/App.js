@@ -15,13 +15,15 @@ console.log('~ V 10 21 2022 ~')
 
   const { dispatch } = useContext(AuthContext)
 
+  
+  
 
   const logOut = async () => {
     const auth = getAuth()
     await signOut(auth).then(() => {
       console.log('Successfully logged out!');
 
-      // dispatch({ type: 'LOGOUT' })
+      dispatch({ type: 'LOGOUT' })
 
       navigate('/')
     })
@@ -34,7 +36,7 @@ console.log('~ V 10 21 2022 ~')
     <>
     
       <Navbar />
-      <div className='content-container'>
+      <div className='content-container'> {/*containers for bg's */}
         <div className='content-container2'>
         
 

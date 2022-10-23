@@ -18,13 +18,13 @@ export default () => {
     const [giftName, setGiftName] = useState('');
     const [giftLink, setGiftLink] = useState('');
     const [isClaimed, setIsClaimed] = useState(false);
-    const [requestor, setRequestor] = useState(user.email);
+    const [requestor, setRequestor] = useState('');
     const [userName, setUserName] = useState('')
     const [giftArray, setGiftArray] = useState([]);
     const [remObject, setRemObject] = useState('')
     const [eventData, setEventData] = useState({});
     const [didSubmit, setDidSubmit] = useState(false);
-    const [eventParticipants, setEventParticipants] = useState([user.email]);
+    const [eventParticipants, setEventParticipants] = useState([]);
     const [giftRef] = useState(eventId);
     const [searchQuery, setSearchQuery] = useState('')
     
@@ -35,14 +35,19 @@ export default () => {
         const userInfo = await getDoc(userRef)
         if (userInfo.exists) {
             console.log(userInfo.data())
-            setUserName(userInfo.data().username)
-        }
+            if (userInfo.data().username === undefined) return
+            setUserName(userInfo.data().username) // so this was undefined, and therefore given to the array union....hence the error
+        }                                         // userName was set from '' to undefined...gotcha
     }
     getUserInfo();
+    console.log(userName); // at least its blank now
     
 
 useEffect(() => {
     let list = [];
+
+    setRequestor(user.email)
+    setEventParticipants([user.email])
     
     const getUserEvents = async () => {
         try {
@@ -87,6 +92,8 @@ useEffect(() => {
 
 }, [didSubmit])
 
+
+
 // console.log(eventParticipants);
 
     const handleSubmit = async e => {
@@ -94,6 +101,7 @@ useEffect(() => {
         if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'pink'}) 
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
+            if (userName === '')
             await updateDoc(eventRef, {
                 gifts: arrayUnion(
                     {
@@ -301,7 +309,7 @@ useEffect(() => {
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
                 </span>
             </div>
-            <Gifts giftArray={giftArray && search(giftArray)} user={user} username={userName} />
+            <Gifts giftArray={giftArray && search(giftArray)} user={user}/>
         </>) : (
             <div style={{textAlign: 'center'}}>
                 <h1>You must be added to the event list to participate!</h1>

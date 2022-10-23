@@ -9,14 +9,12 @@ import './dashboard.css';
 import './swalstyles.css';
 
 
-
 export default () => {
     const currentUser = useContext(AuthContext)
     const user = currentUser.currentUser
     const [userData, setUserData] = useState('')
-    
-    const q = query(collection(db, "invites"), where("invitee", "==", user.email))
 
+    const q = query(collection(db, "invites"), where("invitee", "==", user.email))
 
     let userRef = doc(db, 'users', user.uid)
     useEffect(() => {
@@ -33,6 +31,8 @@ export default () => {
         getUserInfo();
 
     }, [])
+
+    console.log('user ', user, ' vs ', 'userData', userData)
 
 
     return (
