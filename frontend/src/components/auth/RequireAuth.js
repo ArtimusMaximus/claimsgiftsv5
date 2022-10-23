@@ -15,5 +15,5 @@ export default ({ children }) => {
     const currentUser = useContext(AuthContext); // this is supposed to set currentUser to null on logout, and it is, but somehow,
                                                  // am unable to read the value as null, so using google
 
-    return currentUser ? children : <Navigate to="/" />
+    return user ? children : <Navigate to="/" />
 }

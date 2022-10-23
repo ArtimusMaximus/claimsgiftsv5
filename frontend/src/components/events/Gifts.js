@@ -206,11 +206,20 @@ export default ({ giftArray, user }) => {
                             </td>
                             <td><a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a></td>
                             <td className="requesteeTd">
+                            <span id="imgDiv">
+                                {
+                                    i?.img && <img src={i.img} width={'25px'} height={'25px'} style={{borderRadius: '50%'}} />
+                                }
+                                
                                 {
                                     user.email === i.requestor 
                                     ? "You"
+                                    : i?.username
+                                    ? i.username
                                     : i.requestor
                                 }
+                            </span>
+                                
                             </td>
                             <td className='cbtd'>
                                 {

@@ -19,7 +19,10 @@ export default () => {
     const [giftName, setGiftName] = useState('');
     const [giftLink, setGiftLink] = useState('');
     const [remObject, setRemObject] = useState('');
-    const [userName, setUserName] = useState('');
+    const [userData, setUserData] = useState({
+        username: '',
+        img: ''
+    });
     const [searchQuery, setSearchQuery] = useState('');
     const [giftArray, setGiftArray] = useState([]);
     const [eventData, setEventData] = useState({});
@@ -32,22 +35,10 @@ export default () => {
     
     const eventRef = doc(db, 'events', eventId) // add gifts to this event
     
-    const userRef = doc(db, 'users', user.uid)
-    // const getUserInfo = async () => {
-    //     const userInfo = await getDoc(userRef)
-    //     if (userInfo.exists) {
-    //         // console.log(userInfo.data())
-    //         if (userInfo.data().username === undefined || userInfo.data()) {
-    //             setUserName(user.email)
-    //         } else {
-    //             setUserName(userInfo.data().username) // so this was undefined, and therefore given to the array union....hence the error
-    //                                                   // userName was set from '' to undefined...gotcha
-    //         }
-            
-    //     }                                         
-    // }
-    // getUserInfo();
-    console.log(' when did this fire', userName); // at least its blank now
+    
+
+    
+    console.log(' when did this fire', userData); // at least its blank now
     
 
 useEffect(() => {
@@ -70,6 +61,22 @@ useEffect(() => {
         }
     }
     getUserEvents()
+    const userRef = doc(db, 'users', user.uid)
+    const getUserInfo = async () => {
+        const userInfo = await getDoc(userRef)
+        if (userInfo.exists) {
+            console.log(userInfo.data())
+            setUserData({
+                username: userInfo.data().username,
+                img: userInfo.data().img
+            })
+        } else {
+            console.log('no data');
+        }
+    }
+    getUserInfo()
+
+    
 
     // console.log('use effect fired')
 
@@ -91,9 +98,6 @@ useEffect(() => {
     }
     
     // const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
-    
-    
-    
 
 }, [didSubmit])
 
@@ -106,7 +110,7 @@ useEffect(() => {
         if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'crimson'}) 
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
-            if (userName === '')
+            // if (userName === '') ?? wtf is this ; don't game and debug
             await updateDoc(eventRef, {
                 gifts: arrayUnion(
                     {
@@ -115,6 +119,8 @@ useEffect(() => {
                         claimed: isClaimed, 
                         requestor: requestor, 
                         giftRef: giftRef,
+                        username: userData.username,
+                        img: userData.img
                     }
                 )
             })

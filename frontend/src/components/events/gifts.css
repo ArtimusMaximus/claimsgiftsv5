@@ -178,4 +178,17 @@
     margin: 0px 2px 0px 2px;
   } */
 
+  #imgDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+
+  }
+  #imgDiv > img {
+    margin-right: 3px;
+    left: 0;
+    position: relative;
+  }
+
   
