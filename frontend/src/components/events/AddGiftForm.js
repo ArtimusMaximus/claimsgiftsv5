@@ -34,6 +34,7 @@ export default () => {
     const getUserInfo = async () => {
         const userInfo = await getDoc(userRef)
         if (userInfo.exists) {
+            console.log(userInfo.data())
             setUserName(userInfo.data().username)
         }
     }
@@ -300,7 +301,7 @@ useEffect(() => {
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
                 </span>
             </div>
-            <Gifts giftArray={giftArray && search(giftArray)} user={user} />
+            <Gifts giftArray={giftArray && search(giftArray)} user={user} username={userName} />
         </>) : (
             <div style={{textAlign: 'center'}}>
                 <h1>You must be added to the event list to participate!</h1>

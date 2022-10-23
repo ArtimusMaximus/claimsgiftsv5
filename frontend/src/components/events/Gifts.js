@@ -207,9 +207,7 @@ export default ({ giftArray, user }) => {
                             <td className="requesteeTd">
                                 {
                                     user.email === i.requestor 
-                                    ? "You" 
-                                    : i.username
-                                    ? i.username
+                                    ? "You"
                                     : i.requestor
                                 }
                             </td>
