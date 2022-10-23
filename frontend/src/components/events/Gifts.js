@@ -10,7 +10,7 @@ import './addgiftform.css';
 import './gifts.css';
 
 
-export default ({ giftArray, user, username }) => {
+export default ({ giftArray, user }) => {
     // {giftArray && giftArray.map(i => (<ul key={i.giftName}><li><b>Gift: </b>{i.giftName}</li><li><b>Link: </b>{i.giftLink}</li><li><b>Requestor: </b>{i.requestor}</li><b>Claimed: </b><li>{i.claimed ? "claimed" : i.requestor === user.email ? 'Unavailable to requestor!' : "not claimed"}</li></ul>))}
     const [checked, setChecked] = useState(false)
     const [notChecked, setNotChecked] = useState(true)
@@ -181,6 +181,7 @@ export default ({ giftArray, user, username }) => {
             return 'https://' + link
         }
     }
+    console.log(giftArray.map(i => i?.username))
 
     return (
         <>

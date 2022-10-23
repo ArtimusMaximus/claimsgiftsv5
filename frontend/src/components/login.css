@@ -4,12 +4,15 @@
     
     flex-direction: column;
     flex-wrap: wrap;
-    margin: 50px;
-    border: 1px solid gainsboro;
+    margin: 30px 50px 50px 50px;
+    /* border: 1px solid gainsboro; */
     border-radius: 5px;
     padding-top: 15px;
     height: 100vh;
     
+}
+.box > label {
+    font-size: 3rem;
 }
 
 .box > input, label, button {
@@ -47,8 +50,9 @@ button {
 }
 
 .newuser {
-    margin-top: 20px;
+    
     position: relative;
+    text-align: center;
 }
 .signLoginInputs {
     font-family: 'Tangerine', cursive;
@@ -56,6 +60,15 @@ button {
     font: bold;
     font-size: 2rem;
 }
-label {
-    font-size: 2rem;
+
+
+#signup {
+    color: #B3CEE5 !important;
+    background-color: rgb(220, 20, 60, .4);
+    border-radius: 5px;
+    padding: 5px;
+    font-style: bold;
+    font-weight: 700;
+    font-size: 2.5rem;
+    
 }

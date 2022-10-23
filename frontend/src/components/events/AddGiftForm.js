@@ -1,4 +1,4 @@
-import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, query, collection, where, getDoc, setDoc, Timestamp, arrayRemove } from 'firebase/firestore';
+import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { db } from '../../firebase';
@@ -13,41 +13,46 @@ import { MdGroupAdd } from 'react-icons/md'
 export default () => {
     const currentUser = useContext(AuthContext)
     const user = currentUser.currentUser
-    const location = useLocation()
+    const location = useLocation();
     const eventId = location.pathname.split("/")[2]
+
     const [giftName, setGiftName] = useState('');
     const [giftLink, setGiftLink] = useState('');
-    const [isClaimed, setIsClaimed] = useState(false);
-    const [requestor, setRequestor] = useState('');
-    const [userName, setUserName] = useState('')
+    const [remObject, setRemObject] = useState('');
+    const [userName, setUserName] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const [giftArray, setGiftArray] = useState([]);
-    const [remObject, setRemObject] = useState('')
     const [eventData, setEventData] = useState({});
+    const [isClaimed, setIsClaimed] = useState(false);
     const [didSubmit, setDidSubmit] = useState(false);
-    const [eventParticipants, setEventParticipants] = useState([]);
+    const [requestor, setRequestor] = useState(user.email);
+    const [eventParticipants, setEventParticipants] = useState([user.email]);
     const [giftRef] = useState(eventId);
-    const [searchQuery, setSearchQuery] = useState('')
+    
     
     const eventRef = doc(db, 'events', eventId) // add gifts to this event
     
     const userRef = doc(db, 'users', user.uid)
-    const getUserInfo = async () => {
-        const userInfo = await getDoc(userRef)
-        if (userInfo.exists) {
-            console.log(userInfo.data())
-            if (userInfo.data().username === undefined) return
-            setUserName(userInfo.data().username) // so this was undefined, and therefore given to the array union....hence the error
-        }                                         // userName was set from '' to undefined...gotcha
-    }
-    getUserInfo();
-    console.log(userName); // at least its blank now
+    // const getUserInfo = async () => {
+    //     const userInfo = await getDoc(userRef)
+    //     if (userInfo.exists) {
+    //         // console.log(userInfo.data())
+    //         if (userInfo.data().username === undefined || userInfo.data()) {
+    //             setUserName(user.email)
+    //         } else {
+    //             setUserName(userInfo.data().username) // so this was undefined, and therefore given to the array union....hence the error
+    //                                                   // userName was set from '' to undefined...gotcha
+    //         }
+            
+    //     }                                         
+    // }
+    // getUserInfo();
+    console.log(' when did this fire', userName); // at least its blank now
     
 
 useEffect(() => {
     let list = [];
 
-    setRequestor(user.email)
-    setEventParticipants([user.email])
     
     const getUserEvents = async () => {
         try {
@@ -98,7 +103,7 @@ useEffect(() => {
 
     const handleSubmit = async e => {
         e?.preventDefault();
-        if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'pink'}) 
+        if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'crimson'}) 
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
             if (userName === '')
@@ -110,7 +115,6 @@ useEffect(() => {
                         claimed: isClaimed, 
                         requestor: requestor, 
                         giftRef: giftRef,
-                        // username: userName why was this here?
                     }
                 )
             })
@@ -141,7 +145,7 @@ useEffect(() => {
             // console.log(eventParticipants)
             Swal.fire({
                 title: `User(s) ${email} added to participants!`,
-                confirmButtonColor: 'pink',
+                confirmButtonColor: 'crimson',
                 // text: `Save user email to friends list?`,
                 // showDenyButton: true
             })

@@ -38,6 +38,7 @@ export default () => {
         <>
             <div className="box">
                 <label>Welcome!</label>
+                <p>Please login to continue...</p>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <input
@@ -59,12 +60,12 @@ export default () => {
                         />
                     </div>
                 <div>
-                    <button type="submit">Login</button>
+                    <button type="submit" className="btnInvert">Login</button>
                 </div>
                     {error && <span style={{color:'crimson', paddingTop: '15px'}}>Wrong email or password!</span>}
                 </form>
                 <div className="newuser">
-                    <p>New User?</p><p><Link to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
+                    <p>New User?</p><p><Link id="signup" to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
                 </div>
             </div>
         </>

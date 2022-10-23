@@ -32,8 +32,6 @@ export default () => {
 
     }, [])
 
-    console.log('user ', user, ' vs ', 'userData', userData)
-
 
     return (
         <>  

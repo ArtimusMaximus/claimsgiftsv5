@@ -196,7 +196,7 @@ export default () => {
 
     const handleCheckEventClick = () => {
         console.log(inviteData)
-        console.log(docData);
+        console.log('docData ', docData);
 
         const filtAcceptedInvites = inviteData.filter(i => !i.acceptedInvite === true)
         
