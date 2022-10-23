@@ -6,6 +6,7 @@ import { auth, db } from "../firebase";
 import { doc, setDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { AuthContext } from "./context/AuthContext";
 import Swal from "sweetalert2";
+import './signup.css'
 
 export default () => {
     const navigate = useNavigate();
@@ -87,6 +88,7 @@ export default () => {
         <>
             <div className="box">
                 <label>Welcome!</label>
+                <p>Please sign up to continue...</p>
                 <form onSubmit={handleAdd}>
                     <div>
                         <input 
@@ -113,7 +115,7 @@ export default () => {
                     {error && <span style={errorStyles}>{errorMessage} </span>}
                 </form>
                 <div className="newuser">
-                    <p>Already have an account?</p><p><Link to="/" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Login</Link></p>
+                    <p>Already have an account?</p><p><Link id="login" to="/" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Login</Link></p>
                 </div>
             </div>
         </>

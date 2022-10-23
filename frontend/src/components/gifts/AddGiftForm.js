@@ -3,12 +3,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { db } from '../../firebase';
 import { AuthContext } from '../context/AuthContext';
-import './addgiftform.css';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
 import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
+import './addgiftform.css';
 
 export default () => {
     const currentUser = useContext(AuthContext)
@@ -35,12 +35,6 @@ export default () => {
     
     const eventRef = doc(db, 'events', eventId) // add gifts to this event
     
-    
-
-    
-    console.log(' when did this fire', userData); // at least its blank now
-    
-
 useEffect(() => {
     let list = [];
 
@@ -65,7 +59,6 @@ useEffect(() => {
     const getUserInfo = async () => {
         const userInfo = await getDoc(userRef)
         if (userInfo.exists) {
-            console.log(userInfo.data())
             setUserData({
                 username: userInfo.data().username,
                 img: userInfo.data().img

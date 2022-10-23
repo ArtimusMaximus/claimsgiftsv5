@@ -181,7 +181,7 @@ export default ({ giftArray, user }) => {
             return 'https://' + link
         }
     }
-    console.log(giftArray.map(i => i?.username))
+    // console.log(giftArray.map(i => i?.username))
 
     return (
         <>

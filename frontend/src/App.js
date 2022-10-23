@@ -25,7 +25,7 @@ console.log('~ V 10 21 2022 ~')
 
       dispatch({ type: 'LOGOUT' })
 
-      navigate('/')
+      navigate('/departure')
     })
     .catch((error) => console.log(error))
   }

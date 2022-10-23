@@ -62,4 +62,11 @@
         padding-right: 80px; */
     
     }
+    .swal2-textarea {
+        margin: 25px;
+    }
+    .swal2-input-label {
+        text-align: center;
+    }
+
 }

@@ -8,10 +8,10 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import RequireAuth from './components/auth/RequireAuth';
 import { AuthContextProvider } from './components/context/AuthContext';
-import AddGiftForm from './components/events/AddGiftForm';
+import AddGiftForm from './components/gifts/AddGiftForm';
 import RedirectPage from './components/RedirectPage';
 import ProfilePage from './components/profile/ProfilePage';
-
+import LoggedOut from './components/LoggedOut';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -25,8 +25,7 @@ root.render(
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="/dashboard/user/:profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
         <Route path="/dashboard/:id" element={<RequireAuth><AddGiftForm /></RequireAuth>} />
-        <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
-        <Route path="/logout" element={<Login />} />
+        <Route path="/departure" element={<LoggedOut />} />
         <Route path="*" element={<RedirectPage />} />
       </Route>
     </Routes>

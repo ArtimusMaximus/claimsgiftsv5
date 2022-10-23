@@ -4,15 +4,17 @@ import AddEventForm from '../components/events/AddEventForm';
 import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from '../firebase';
 import EditProfile from './profile/EditProfile';
-import { Link } from 'react-router-dom';
 import './dashboard.css';
 import './swalstyles.css';
+
 
 
 export default () => {
     const currentUser = useContext(AuthContext)
     const user = currentUser.currentUser
     const [userData, setUserData] = useState('')
+
+    
 
     const q = query(collection(db, "invites"), where("invitee", "==", user.email))
 

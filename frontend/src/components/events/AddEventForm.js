@@ -107,7 +107,7 @@ export default () => {
                 },
                 eventParticipants,
             });
-            console.log(docRef);
+            
             setEventName('')
             setEventDate(propsDate)
             setDidSubmit(true)
@@ -121,7 +121,7 @@ export default () => {
 
         const { value: event } = await Swal.fire({
             title: 'Please select event to share:',
-            text: 'Note: this will invite the user via their dashboard invites, as well as send them an automated email.',
+            text: 'Note: this will invite the user via their dashboard invites, as well as send them an automated email invite.',
             confirmButtonColor: 'crimson',
             input: 'select',
             inputOptions: {
@@ -195,8 +195,8 @@ export default () => {
 
 
     const handleCheckEventClick = () => {
-        console.log(inviteData)
-        console.log('docData ', docData);
+        // console.log(inviteData)
+        // console.log('docData ', docData);
 
         const filtAcceptedInvites = inviteData.filter(i => !i.acceptedInvite === true)
         
@@ -285,7 +285,7 @@ export default () => {
         const userOwnedEvents = docData.filter(i => i.events.eventOwner === userEmail)
         const eventsToRemove = userOwnedEvents.map(i => i.events.eventName)
         const eventsToRemoveId = userOwnedEvents.map(i => i.id)
-        console.log(userOwnedEvents.map(i => i));
+        // console.log(userOwnedEvents.map(i => i));
         
        
         const { value: selection } = await Swal.fire({
@@ -306,7 +306,9 @@ export default () => {
                 title: 'Removing this event cannot be undone!',
                 text: 'Other users that are participating in this event will be affected!',
                 icon: 'warning',
+                iconColor: 'crimson',
                 confirmButtonText: 'Yes, Proceed',
+                confirmButtonColor: 'pink',
                 showCancelButton: true,
                 cancelButtonColor: 'crimson',
             })
