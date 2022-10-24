@@ -1,5 +1,5 @@
 import { getRedirectResult, signInWithRedirect, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, DocumentSnapshot, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
@@ -17,38 +17,55 @@ export default () => {
     const [oAuthUser, setoAuthUser] = useState({})
     const [oAuthToken, setoAuthToken] = useState('')
 
+    const checkForExistingUser = async (user) => {
+        
+        const userRef = doc(db, 'users', user.uid)
+        const docSnap = await getDoc(userRef)
+        if (docSnap.exists()) {
+            // console.log('already exists!!!!!!');
+            navigate('/dashboard')
+        } else {
+            // console.log('doesnt exist yet');
+            await setDoc(doc(db, 'users', user.uid), {
+                email: user.email,
+                img: user.photoURL || '',
+                timeStamp: serverTimestamp(),
+                username: user.displayName || ''
+            })
+            navigate('/dashboard')
+        }
+    }
+    
+
     const redirResults = async () => {
-        return getRedirectResult(auth)
+        await getRedirectResult(auth)
             .then((result) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user
+                
                 setoAuthToken(token)
                 setoAuthUser(user)
 
                 dispatch({ type: 'LOGIN', payload: user })
 
-                setDoc(doc(db, 'users', user.uid), {
-                    email: user.email,
-                    img: user.photoURL || '',
-                    timeStamp: serverTimestamp(),
-                    username: user.displayName || ''
-                })
-                navigate('/dashboard')
+                checkForExistingUser(user)
+
             })
             .catch((error) => {
                 console.log(error.code)
                 console.log(error.message)
-                console.log(error.customData?.email)
+                console.log(error.customData.email)
             })
     }
 
     useEffect(() => {
 
-    redirResults();
-    
+        redirResults();
 
-    }, [])
+    
+    }, [oAuthUser])
+    
 
 
 
@@ -71,7 +88,7 @@ export default () => {
 
     return (
         <>
-        <div className="oauthtainer">
+        <div className="oauthTainer">
             <h1>Sign in with Google</h1>
             <button id="oauthButton" onClick={handleLogin}><FcGoogle />&nbsp;&nbsp;Google OAuth2</button>
             <div id="noteTainer">
