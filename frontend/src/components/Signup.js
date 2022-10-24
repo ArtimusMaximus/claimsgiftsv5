@@ -3,7 +3,7 @@ import './login.css'
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
-import { doc, setDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { AuthContext } from "./context/AuthContext";
 import Swal from "sweetalert2";
 import './signup.css'

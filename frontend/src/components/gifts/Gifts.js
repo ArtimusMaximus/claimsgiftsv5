@@ -108,7 +108,7 @@ export default ({ giftArray, user }) => {
     }
 
     const claimedInfo = async (claimee) => {
-        console.log(claimee);
+        // console.log(claimee);
         await Swal.fire({
             title: 'This will reveal who has claimed this item!',
             text: 'Are you sure you want to proceed?',

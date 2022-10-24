@@ -12,8 +12,8 @@ export default () => {
                 <h1>Thanks for visiting Claims Gifts!</h1>
                 <h2>You have successfully logged out...</h2>
                 <h4>Invite a friend</h4>
-                <h4>Questions comments or concerns?</h4>
-                <h4>Return to Login Page    <Link to={'/'}><HiOutlineLogin color='red' cursor={'pointer'} /></Link></h4>
+                <h4>Questions comments or concerns? <Link to={'mailto:'}><BiMailSend color='red' cursor={'pointer'} /></Link></h4>
+                <h4>Return to Login Page    <Link to={'/login'}><HiOutlineLogin color='red' cursor={'pointer'} /></Link></h4>
             </div>
         </>
     )

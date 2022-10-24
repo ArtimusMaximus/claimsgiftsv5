@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { AuthContext } from "./context/AuthContext";
-import './login.css'
 import Swal from "sweetalert2";
+import './login.css'
 
 export default () => {
     const [error, setError] = useState(false)

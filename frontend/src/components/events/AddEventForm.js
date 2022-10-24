@@ -1,50 +1,46 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { doc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, Timestamp, serverTimestamp, query, where, getDocs, getDoc, onSnapshot, deleteDoc } from "firebase/firestore"; 
+import { doc, addDoc, collection, updateDoc, arrayUnion, query, where, getDocs, getDoc, onSnapshot, deleteDoc } from "firebase/firestore"; 
 import { AuthContext } from '../context/AuthContext';
-import { db } from '../../firebase';
+import { auth, db } from '../../firebase';
 import Events from './Events';
 import './addeventform.css';
 import Swal from 'sweetalert2';
 import { FaEnvelopeOpenText } from 'react-icons/fa'
 import { TbMailbox } from 'react-icons/tb'
-import { getUserEvents } from './firebase_functions/getusers';
-import { deleteEg } from './deleteEg';
-import Emailjs from '../emailjs/Emailjs';
 import emailjs from '@emailjs/browser';
+
 
 export default () => {
     const currentUser = useContext(AuthContext)
-    const user = currentUser.currentUser.uid
-    const userEmail = currentUser.currentUser.email
+    // const user = currentUser.currentUser.uid
+    const user2 = auth.currentUser.uid
+    // const userEmail = currentUser.currentUser?.email
+    const userEmail = auth.currentUser.email
     const [eventName, setEventName] = useState('')
     const date = new Date(Date.now()).toLocaleString().slice(0, 9)
     const splitDate = date?.split('/')
     const propsDate = (splitDate[2]?.length > 4 ? splitDate[2]?.slice(0, -1) : splitDate[2]) + '-' + (splitDate[0]?.length < 2 ? '0' + splitDate[0] + '-' : splitDate[0] + '-') + (splitDate[1]?.length < 2 ? '0' + splitDate[1] : splitDate[1])
     const [eventDate, setEventDate] = useState(propsDate)
     const [eventOwner, setEventOwner] = useState(userEmail)
-    const [eventRef, setEventRef] = useState(user)
+    const [eventRef, setEventRef] = useState(user2)
     const [didSubmit, setDidSubmit] = useState(false)
     const [eventParticipants, setEventParticipants] = useState([userEmail])
-    const [templateParams, setTemplateParams] = useState({})
     
     
     
     ///////////invite/////////
-    const [eventsData, setEventsData] = useState([])
     const [didInvite, setDidInvite] = useState(false)
     ///////////real time events ////////
     
     
     /////////////check events//////
     const [inviteData, setInviteData] = useState([])
-    const [agreedEvent, setAgreedEvent] = useState(false)
-    const [participantEventId, setParticipantEventId] = useState([])
     const [appendedInvite, setAppendedInvite] = useState([])
 
     ///////////////////////////// fetch user events ///////////////////////////
    
     const [docData, setDocData] = useState([])
-    const q = query(collection(db, "events"), where("events.eventRef", "==", user)); /* original query */
+    // const q = query(collection(db, "events"), where("events.eventRef", "==", user2)); /* original query */
     const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", userEmail));
     const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
     
@@ -178,15 +174,6 @@ export default () => {
                 .then(() => handleEmail())
                 .catch((err) => console.log(err))
             }
-
-            
-                
-            
-            
-            
-           
-            
-
 
         }
         

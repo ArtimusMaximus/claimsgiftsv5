@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { useNavigate, useParams } from "react-router-dom";
+import { doc, getDoc } from 'firebase/firestore';
+import { useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import UpdateUserName from "./UpdateUserName";
 import UploadImage from "./UploadImage";
 import './profilepage.css';
 import Swal from "sweetalert2";
-import Emailjs from "../emailjs/Emailjs";
+
 
 export default () => {
     const params = useParams();

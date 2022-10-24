@@ -14,6 +14,8 @@ import ProfilePage from './components/profile/ProfilePage';
 import LoggedOut from './components/LoggedOut';
 
 
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthContextProvider>

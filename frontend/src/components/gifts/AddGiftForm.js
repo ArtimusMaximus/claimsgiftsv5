@@ -1,7 +1,7 @@
 import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { db } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { AuthContext } from '../context/AuthContext';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
@@ -10,9 +10,11 @@ import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
 import './addgiftform.css';
 
+
 export default () => {
     const currentUser = useContext(AuthContext)
-    const user = currentUser.currentUser
+    // const user = currentUser.currentUser
+    const user = auth.currentUser
     const location = useLocation();
     const eventId = location.pathname.split("/")[2]
 
@@ -31,12 +33,15 @@ export default () => {
     const [requestor, setRequestor] = useState(user.email);
     const [eventParticipants, setEventParticipants] = useState([user.email]);
     const [giftRef] = useState(eventId);
+
+    
     
     
     const eventRef = doc(db, 'events', eventId) // add gifts to this event
     
 useEffect(() => {
     let list = [];
+    
 
     
     const getUserEvents = async () => {

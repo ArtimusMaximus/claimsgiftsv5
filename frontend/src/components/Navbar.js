@@ -1,31 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './navbar.css'
-import Swal from 'sweetalert2';
 import { AuthContext } from './context/AuthContext';
-import { db } from '../firebase';
-import { collection, getDocs, where, query, DocumentSnapshot, addDoc } from "firebase/firestore";
-import { IoMdLogOut } from 'react-icons/io'
+import { IoMdLogOut } from 'react-icons/io';
 import { HiOutlineLogin } from 'react-icons/hi';
-
+import './navbar.css'
 
  // me-auto nav classname
 export default () => {
-    const currentUser = useContext(AuthContext)
-    const user = currentUser.currentUser
+    const currentUser = useContext(AuthContext);
+    const user = currentUser.currentUser;
     const location = useLocation();
-    let navigate = useNavigate()
-
+    let navigate = useNavigate();
+    const lP = location.pathname
     
 
     return (
         <>
            <div className='navbar'>
                 <div className='navtainer'>
-                <span className='navbarlinks'><Link to={location.pathname === '/departure' ? "/" : "#"} style={{textDecoration: 'none', color: 'White'}}><h3>Claims Gifts</h3><h5>Alpha</h5></Link></span>
-                {location.pathname !== '/dashboard' && user && <Link to="/dashboard" className='navbarlinks'>Dashboard</Link>}
-                {location.pathname !== '/signup' && location.pathname !== '/' && location.pathname !== '/departure' && <Link to="/logout" className='navbarlogout'>Logout <IoMdLogOut style={{display: 'inlineFlex', alignItems: 'center'}} size={'20px'} /></Link>}
-                {location.pathname === '/departure' && <Link style={{textDecoration: 'none', color: 'White', marginLeft:'25px'}} to={'/'}><h3>Login    <HiOutlineLogin color='white' cursor={'pointer'} /></h3></Link>}
+                <span className='navbarlinks'>             <Link to={lP === '/departure' ? "/" : "#"} style={{textDecoration: 'none', color: 'White'}}><h3>Claims Gifts</h3><h5>AlPha</h5></Link></span>
+                {lP !== '/dashboard' && user       && lP !== '/departure' && !user      && <Link to="/dashboard" className='navbarlinks'>Dashboard</Link>}
+                {lP !== '/signup'    && lP !== '/' && lP !== '/departure' && lP !== '/' && <Link to="/logout" className='navbarlogout'>Logout <IoMdLogOut style={{display: 'inlineFlex', alignItems: 'center'}} size={'20px'} /></Link>}
+                {lP === '/departure' &&                    <Link style={{textDecoration: 'none', color: 'White', marginLeft:'25px'}} to={'/'}><h3>Login    <HiOutlineLogin color='white' cursor={'pointer'} /></h3></Link>}
                 </div>
             </div>
         </>
