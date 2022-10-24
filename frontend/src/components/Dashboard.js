@@ -11,14 +11,9 @@ import './swalstyles.css';
 
 
 export default () => {
-    // const user = auth.currentUser
+    const user = auth.currentUser // production
     const currentUser = useContext(AuthContext)
-    const user = currentUser.currentUser
-
-    
-    
-   
-
+    // const user = currentUser.currentUser
 
     const [userData, setUserData] = useState('')
     
@@ -26,14 +21,12 @@ export default () => {
     let userRef = doc(db, 'users', user.uid)
     useEffect(() => {
 
-        
-
         const getUserInfo = async () => {
             const docSnap = await getDoc(userRef)
 
             if (docSnap.exists()) {
                 setUserData(docSnap.data())
-                console.log('user data', docSnap.data());
+                // console.log('user data', docSnap.data());
             } else {
                 return
             }

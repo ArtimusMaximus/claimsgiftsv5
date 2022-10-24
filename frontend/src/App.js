@@ -10,7 +10,7 @@ import { AuthContext } from './components/context/AuthContext';
 
 
 function App() {
-console.log('~ V 10 21 2022 ~')
+console.log('~ V 10 24 2022 ~')
 
   const location = useLocation()
   const navigate = useNavigate()

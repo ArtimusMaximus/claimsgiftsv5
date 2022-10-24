@@ -13,8 +13,8 @@ import './addgiftform.css';
 
 export default () => {
     const currentUser = useContext(AuthContext)
-    const user = currentUser.currentUser
-    // const user = auth.currentUser // production version
+    // const user = currentUser.currentUser
+    const user = auth.currentUser // production version
     const location = useLocation();
     const eventId = location.pathname.split("/")[2]
 

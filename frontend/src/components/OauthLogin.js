@@ -53,9 +53,9 @@ export default () => {
 
             })
             .catch((error) => {
-                console.log(error.code)
-                console.log(error.message)
-                console.log(error.customData.email)
+                // console.log(error.code)
+                // console.log(error.message)
+                // console.log(error.customData?.email)
             })
     }
 
@@ -67,13 +67,6 @@ export default () => {
     }, [oAuthUser])
     
 
-
-
-    console.log(oAuthUser);
-    console.log(oAuthToken);
-    
-
-
     const handleLogin = async () => {
         try {
             await signInWithRedirect(auth, provider)
@@ -84,7 +77,6 @@ export default () => {
         }
     }
     
-
 
     return (
         <>

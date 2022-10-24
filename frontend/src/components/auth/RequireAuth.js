@@ -12,7 +12,7 @@ export default ({ children }) => {
 
     
     const user = auth.currentUser // gets currently signed in user, if no user signed in, currentUser is null
-    console.log(user); // if logged out is true
+    // console.log(user); // if logged out is true
     // use user in production, use currentUser for dev so u dont relog in over and over
 
     // const loggedIn = window.localStorage.setItem('isLoggedIn', true)
@@ -39,5 +39,5 @@ export default ({ children }) => {
 
 
 
-    return currentUser || user ? children : <Navigate to="/" />
+    return user ? children : <Navigate to="/" />
 }
