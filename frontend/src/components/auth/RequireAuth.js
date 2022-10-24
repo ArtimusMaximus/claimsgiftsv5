@@ -12,21 +12,21 @@ export default ({ children }) => {
 
     
     const user = auth.currentUser // gets currently signed in user, if no user signed in, currentUser is null
-    // console.log(user === null); // if logged out is true
+    console.log(user); // if logged out is true
     // use user in production, use currentUser for dev so u dont relog in over and over
 
     // const loggedIn = window.localStorage.setItem('isLoggedIn', true)
     // loggedIn && console.log('you have a local storage log in')
 
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            console.log('user auth object', user)
+    // onAuthStateChanged(auth, user => {
+    //     if (user) {
+    //         // console.log('user auth object', user)
             
-        } else {
-            console.log('no user');
+    //     } else {
+    //         // console.log('no user');
 
-        }
-    })
+    //     }
+    // })
 
     const currentUser = useContext(AuthContext); // this is supposed to set currentUser to null on logout, and it is, but somehow,
                                                  // am unable to read the value as null, so using google
@@ -39,5 +39,5 @@ export default ({ children }) => {
 
 
 
-    return user ? children : <Navigate to="/" />
+    return currentUser || user ? children : <Navigate to="/" />
 }

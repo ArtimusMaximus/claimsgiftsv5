@@ -1,0 +1,22 @@
+.oauthtainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#oauthButton {
+    background-color: white;
+    border: 1px solid crimson;
+    color: crimson;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    font-size: 2rem;
+}
+#noteTainer {
+    margin-top: 50px;
+    text-align: center;
+    width: 50%;
+}

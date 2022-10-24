@@ -4,7 +4,7 @@
     
     flex-direction: column;
     flex-wrap: wrap;
-    margin: 30px 50px 50px 50px;
+    margin: 5px 50px 50px 50px;
     /* border: 1px solid gainsboro; */
     border-radius: 5px;
     padding-top: 15px;
@@ -13,6 +13,7 @@
 }
 .box > label {
     font-size: 3rem;
+    margin-bottom: 0px;
 }
 
 .box > input, label, button {
@@ -70,5 +71,9 @@ button {
     font-style: bold;
     font-weight: 700;
     font-size: 2.5rem;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
     
 }

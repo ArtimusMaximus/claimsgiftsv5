@@ -4,7 +4,11 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { AuthContext } from "./context/AuthContext";
 import Swal from "sweetalert2";
+import { AiOutlineGoogle } from 'react-icons/ai'
 import './login.css'
+
+
+
 
 export default () => {
     const [error, setError] = useState(false)
@@ -38,7 +42,7 @@ export default () => {
         <>
             <div className="box">
                 <label>Welcome!</label>
-                <p>Please login to continue...</p>
+                <p style={{marginTop:'5px', marginBottom: '5px'}}>Please login to continue...</p>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <input
@@ -65,9 +69,13 @@ export default () => {
                     {error && <span style={{color:'crimson', paddingTop: '15px'}}>Wrong email or password!</span>}
                 </form>
                 <div className="newuser">
-                    <p>New User?</p><p><Link id="signup" to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
+                    <p style={{marginTop:'5px', marginBottom: '5px'}}>New User?</p><p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
+                    <p style={{marginTop:'5px', marginBottom: '5px'}}>Or...</p>
+                    <p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/oauth">Sign In via Google <AiOutlineGoogle /></Link></p>
                 </div>
             </div>
+
+            
         </>
     )
 }

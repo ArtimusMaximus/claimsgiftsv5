@@ -12,10 +12,10 @@ import emailjs from '@emailjs/browser';
 
 export default () => {
     const currentUser = useContext(AuthContext)
-    // const user = currentUser.currentUser.uid
-    const user2 = auth.currentUser.uid
-    // const userEmail = currentUser.currentUser?.email
-    const userEmail = auth.currentUser.email
+    const user2 = currentUser.currentUser.uid
+    // const user2 = auth.currentUser.uid // production version
+    const userEmail = currentUser.currentUser?.email
+    // const userEmail = auth.currentUser.email // production version
     const [eventName, setEventName] = useState('')
     const date = new Date(Date.now()).toLocaleString().slice(0, 9)
     const splitDate = date?.split('/')
