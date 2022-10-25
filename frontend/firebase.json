@@ -6,10 +6,16 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [{
+    "rewrites": [
+      {
       "source": "**",
       "destination": "/index.html"
-    }]
+      },
+      {
+        "source": "/verify/**",
+        "dynamicLinks": true
+      }
+    ]
   },
   "firestore": {
     "rules": "firestore.rules",

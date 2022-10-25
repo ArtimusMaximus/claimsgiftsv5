@@ -190,5 +190,14 @@
     left: 0;
     position: relative;
   }
+  #dot {
+    background-color: green;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    z-index: 5;
+    position: absolute;
+    
+  }
 
   

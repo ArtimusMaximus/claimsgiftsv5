@@ -1,4 +1,4 @@
-import { getRedirectResult, signInWithRedirect, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getRedirectResult, signInWithRedirect, GoogleAuthProvider, signInWithPopup, sendEmailVerification, FacebookAuthProvider } from "firebase/auth";
 import { doc, DocumentSnapshot, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,8 @@ import './oauthlogin.css';
 export default () => {
     const { dispatch } = useContext(AuthContext)
     const navigate = useNavigate()
-    const provider = new GoogleAuthProvider();
+    const gProvider = new GoogleAuthProvider();
+    // const fbProvider = new FacebookAuthProvider();
     const [oAuthUser, setoAuthUser] = useState({})
     const [oAuthToken, setoAuthToken] = useState('')
 
@@ -28,9 +29,10 @@ export default () => {
             // console.log('doesnt exist yet');
             await setDoc(doc(db, 'users', user.uid), {
                 email: user.email,
+                emailVerified: true,
                 img: user.photoURL || '',
                 timeStamp: serverTimestamp(),
-                username: user.displayName || ''
+                username: user.displayName || '',
             })
             navigate('/dashboard')
         }
@@ -42,34 +44,45 @@ export default () => {
             .then((result) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
-                const user = result.user
+                const user = result.user;
                 
-                setoAuthToken(token)
-                setoAuthUser(user)
+                setoAuthToken(token);
+                setoAuthUser(user);
 
                 dispatch({ type: 'LOGIN', payload: user })
 
-                checkForExistingUser(user)
+                checkForExistingUser(user);
 
             })
             .catch((error) => {
-                // console.log(error.code)
-                // console.log(error.message)
-                // console.log(error.customData?.email)
+                //  console.log(error.code)
+                //  console.log(error.message)
+                //  console.log(error.customData?.email)
             })
     }
 
     useEffect(() => {
-
         redirResults();
-
-    
-    }, [oAuthUser])
+    }, [])
     
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        // let authP = e.target.name
+        
         try {
-            await signInWithRedirect(auth, provider)
+            // switch(authP) {
+            //     case "google":
+            //         await signInWithRedirect(auth, gProvider)
+            //         break;
+            //     case "facebook":
+            //         await signInWithRedirect(auth, fbProvider)
+            //         break;
+            //     default:
+            //         console.log('Error, try again.')
+            // }
+            await signInWithRedirect(auth, gProvider)
+            
         } catch (error) {
             if (error) { 
                 console.log(error)
@@ -82,10 +95,12 @@ export default () => {
         <>
         <div className="oauthTainer">
             <h1>Sign in with Google</h1>
-            <button id="oauthButton" onClick={handleLogin}><FcGoogle />&nbsp;&nbsp;Google OAuth2</button>
+            <button className="oauthButton" name="google" onClick={e => handleLogin(e)}><FcGoogle />&nbsp;&nbsp;Google OAuth2</button>
+            {/* <h1>Sign in with Facebook</h1>
+            <button className="oauthButton" name="facebook" onClick={e => handleLogin(e)}><FcGoogle />&nbsp;&nbsp;Facebook OAuth2</button> */}
             <div id="noteTainer">
                 <span>Note:</span>
-                <span>This will redirect you to choose your email and redirect you back to your dashboard.</span>
+                <span>This will redirect you to choose your email and then back to your dashboard.</span>
             </div>
         </div>
         </>

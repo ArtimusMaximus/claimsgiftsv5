@@ -40,4 +40,5 @@ export default ({ children }) => {
 
 
     return user ? children : <Navigate to="/" />
+    
 }

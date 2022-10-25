@@ -2,3 +2,7 @@
     height: 100%;
 }
 
+#verifyemailBtn {
+    min-height: fit-content;
+    padding: 1px;
+}

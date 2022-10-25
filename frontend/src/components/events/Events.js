@@ -12,7 +12,7 @@ export default ({ data }) => {
 
     const showEventInfo = (index) => {
         let eventInfo = data[index].events
-        console.log(eventInfo);
+        
 
         Swal.fire({
             title: '<span style="font-style: italic;"><b>Event Details</b></span>',

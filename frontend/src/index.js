@@ -13,6 +13,7 @@ import RedirectPage from './components/RedirectPage';
 import ProfilePage from './components/profile/ProfilePage';
 import LoggedOut from './components/LoggedOut';
 import OauthLogin from './components/OauthLogin';
+import VerifyEmail from './components/VerifyEmail';
 
 
 
@@ -25,6 +26,7 @@ root.render(
       <Route path="/" element={<App />}>
         <Route path="/" element={<Login />} />
         <Route path="/oauth" element={<OauthLogin />} />
+        <Route path="/auth" element={<VerifyEmail />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="/dashboard/user/:profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
