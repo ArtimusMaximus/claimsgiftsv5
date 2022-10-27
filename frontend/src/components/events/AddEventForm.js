@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { FaEnvelopeOpenText } from 'react-icons/fa'
 import { TbMailbox } from 'react-icons/tb'
 import emailjs from '@emailjs/browser';
+import { propsDate } from './dateformat';
 
 
 export default () => {
@@ -16,21 +17,13 @@ export default () => {
     const user2 = auth.currentUser.uid // production version
     // const userEmail = currentUser.currentUser?.email
     const userEmail = auth.currentUser.email // production version
+
     const [eventName, setEventName] = useState('')
-    const date = new Date(Date.now()).toLocaleString().slice(0, 9)
-    const splitDate = date?.split('/')
-    const propsDate = (splitDate[2]?.length > 4 ? splitDate[2]?.slice(0, -1) : splitDate[2]) + '-' + (splitDate[0]?.length < 2 ? '0' + splitDate[0] + '-' : splitDate[0] + '-') + (splitDate[1]?.length < 2 ? '0' + splitDate[1] : splitDate[1])
     const [eventDate, setEventDate] = useState(propsDate)
     const [eventOwner, setEventOwner] = useState(userEmail)
     const [eventRef, setEventRef] = useState(user2)
     const [didSubmit, setDidSubmit] = useState(false)
     const [eventParticipants, setEventParticipants] = useState([userEmail])
-    
-    
-    
-    ///////////invite/////////
-    const [didInvite, setDidInvite] = useState(false)
-    ///////////real time events ////////
     
     
     /////////////check events//////
@@ -40,7 +33,6 @@ export default () => {
     ///////////////////////////// fetch user events ///////////////////////////
    
     const [docData, setDocData] = useState([])
-    // const q = query(collection(db, "events"), where("events.eventRef", "==", user2)); /* original query */
     const q1 = query(collection(db, "events"), where("eventParticipants", "array-contains", userEmail));
     const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
     
@@ -53,13 +45,8 @@ export default () => {
                 const querySnapshot = await getDocs(q1);
                 querySnapshot.forEach((doc) => {
                     list.push({id: doc.id, ...doc.data(), appendedInvite})
-                    const d = doc.data()
-                    // doc.data() is never undefined for query doc snapshots
-                    // console.log(doc.id, " => ", d);
                 });
                 setDocData(list)
-
-                
             } catch (error) {
                 console.log(error)
             }
@@ -70,11 +57,9 @@ export default () => {
             let invites = [];
             querySnapshot.docs.forEach((doc) => {
                 invites.push({id: doc.id, ...doc.data()})
-                
             });
             setInviteData(invites)
             
-
         }, error => console.log(error))
 
         return () => {
@@ -162,7 +147,6 @@ export default () => {
                     confirmButtonColor: 'crimson'
                 })
                 .then((result) => console.log(result.isConfirmed))
-                .then(() => setDidInvite(prev => !prev))
                 .then(() => addDoc(collection(db, "invites"), {
                     invitee: inviteeEmail.trim().toLowerCase(),
                     event: eName,
@@ -179,7 +163,6 @@ export default () => {
         
     }
     
-
 
     const handleCheckEventClick = () => {
         // console.log(inviteData)

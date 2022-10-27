@@ -12,8 +12,8 @@ import './addgiftform.css';
 
 
 export default () => {
-    const currentUser = useContext(AuthContext)
-    // const user = currentUser.currentUser
+    // const currentUser = useContext(AuthContext) // development
+    // const user = currentUser.currentUser // development
     const user = auth.currentUser // production version
     const location = useLocation();
     const eventId = location.pathname.split("/")[2]
@@ -230,7 +230,7 @@ useEffect(() => {
     }
     
     const handleRemove = async () => {
-        const yourItems = giftArray.filter(i => currentUser.currentUser.email === i.requestor)
+        const yourItems = giftArray.filter(i => user.email === i.requestor)
         const items = yourItems.map(i => i.giftName)
         
         const { value: item } = await Swal.fire({

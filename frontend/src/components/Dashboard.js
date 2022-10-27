@@ -17,10 +17,12 @@ import { useNavigate } from 'react-router-dom';
 
 export default () => {
     const user = auth.currentUser // production
+
     const currentUser = useContext(AuthContext)
+    // const user = currentUser.currentUser // development
     const navigate = useNavigate()
     
-    // const user = currentUser.currentUser
+    
 
     const [userData, setUserData] = useState('')
     
@@ -40,17 +42,17 @@ export default () => {
         }
         getUserInfo();
 
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                user.emailVerified === false && Swal.fire({
-                    title:'Before you can add events and gifts you must verify your email!',
-                    confirmButtonColor: 'pink',
-                })
-                console.log(user);
-            } else {
-                console.log('no user');
-            }
-        })
+        // onAuthStateChanged(auth, user => {
+        //     if (user) {
+        //         user.emailVerified === false && Swal.fire({
+        //             title:'Before you can add events and gifts you must verify your email!',
+        //             confirmButtonColor: 'pink',
+        //         })
+        //         console.log(user);
+        //     } else {
+        //         console.log('no user');
+        //     }
+        // })
 
         // const updateE = async () => {
         //     try {
@@ -65,7 +67,7 @@ export default () => {
         
         
 
-    }, [user.emailVerified])
+    }, [])
 
     // let actionCodeSettings = {
     //     url: 'https://claims.gifts/dashboard',
@@ -78,12 +80,17 @@ export default () => {
                     .then(() => {
                         Swal.fire({
                             title: 'Your verification email has been sent!',
-                            text: 'Please check your spam folder.',
+                            html: '<u>Please check your spam folder.</u>',
                             confirmButtonColor:'crimson'
                         })
                     })
             } catch(e) {
-                console.log(e);
+                if (e.code === 'auth/too-many-requests') {
+                    Swal.fire({
+                        title: 'The server is busy, please try again in 10 seconds...',
+                        confirmButtonColor: 'crimson'
+                    })
+                }
             }
     }
     
