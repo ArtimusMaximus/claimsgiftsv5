@@ -65,16 +65,14 @@ useEffect(() => {
         const userInfo = await getDoc(userRef)
         if (userInfo.exists) {
             setUserData({
-                username: userInfo.data().username,
-                img: userInfo.data().img
+                username: userInfo.data().username || '',
+                img: userInfo.data().img || ''
             })
         } else {
             console.log('no data');
         }
     }
     getUserInfo()
-
-    
 
     // console.log('use effect fired')
 
@@ -96,6 +94,8 @@ useEffect(() => {
     }
     
     // const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
+
+    
 
 }, [didSubmit])
 
