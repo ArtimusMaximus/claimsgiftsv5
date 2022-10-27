@@ -59,7 +59,7 @@ export default () => {
                 <label>Welcome!</label>
                 <p style={{marginTop:'5px', marginBottom: '5px'}}>Please login to continue...</p>
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className="inputDivs">
                         <input
                             placeholder="email"
                             onChange={e => setEmail(e.target.value)} 
@@ -68,7 +68,7 @@ export default () => {
                             className="signLoginInputs"
                         />
                     </div>     
-                    <div>
+                    <div className="inputDivs">
                         <input
                             type="password"
                             placeholder="password"
@@ -78,7 +78,7 @@ export default () => {
                             className="signLoginInputs"
                         />
                     </div>
-                <div>
+                <div className="inputDivs">
                     <button type="submit" className="btnInvert">Login</button>
                 </div>
                     {error && <span style={{color:'crimson', paddingTop: '15px'}}>{errorText}</span>}

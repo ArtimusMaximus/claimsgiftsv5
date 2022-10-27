@@ -38,7 +38,7 @@ export default ({ data }) => {
                 {data?.map((i, index) => 
                 (
                     <tr key={i.id + inc++} className={index % 2 === 0 ? 'firstTableRow' : 'secondTableRow'}>
-                        <td className="firsttd"><Link to={`${i.id}`}>{i.events?.eventName}</Link>&nbsp; &nbsp;{i.events?.eventDate}</td>
+                        <td className="firsttd"><Link to={`${i.id}`}>{i.events?.eventName}</Link>&nbsp; &nbsp;{i.events?.eventDate.split('-')[1] + '-' + i.events?.eventDate.split('-')[2] + '-' + i.events?.eventDate.split('-')[0]}</td>
                         
                         <td className="infoTd"><a onClick={() => showEventInfo(index)}><BsInfoCircle size={'25px'}  /></a></td>
                     </tr>

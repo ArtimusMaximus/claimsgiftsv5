@@ -10,6 +10,7 @@ import { GiCheckMark } from 'react-icons/gi';
 import { deleteUser, onAuthStateChanged, sendEmailVerification, updateProfile } from 'firebase/auth';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { SignedIn } from './events/dateformat';
 
 
 
@@ -65,7 +66,7 @@ export default () => {
         // }
         // updateE();
         
-        
+     
 
     }, [])
 
@@ -100,12 +101,12 @@ export default () => {
     return (
         <>  
             <div className='dashboardTainer'>
-                <h2 style={{textAlign: 'center', marginBottom: '10px', marginTop:'10px'}}>Welcome to your dashboard <br /></h2>
+                <h2 style={{textAlign: 'center', marginBottom: '10px', marginTop:'10px'}} id="welcomeh2">Welcome to your dashboard <br /></h2>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                     <EditProfile currentUser={user} userData={userData} />
                 </div>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                    {user.emailVerified === false && <button id="verifyemailBtn" className='btnInvert' onClick={verifyEmail}><GiCheckMark />Send Verification Email</button>}
+                    {/* {user.emailVerified === false && <button id="verifyemailBtn" className='btnInvert' onClick={verifyEmail}><GiCheckMark />Send Verification Email</button>} */}
                 </div>
                 <AddEventForm />
             </div>

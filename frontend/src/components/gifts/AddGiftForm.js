@@ -143,7 +143,7 @@ useEffect(() => {
             title: eventParticipants && `Event participants: \n${eventParticipants.join(' ')}`,
             
         })
-        if(email) {
+        if (email) {
             // console.log('event participants ' , eventParticipants, email)
             // updatePartici()
             // console.log(eventParticipants)
@@ -153,7 +153,6 @@ useEffect(() => {
                 // text: `Save user email to friends list?`,
                 // showDenyButton: true
             })
-            .then((result) => console.log(result))
             .then(() => setEventParticipants(prev => [...prev, email]))    
             // .then(() => updateDoc(eventRef, {
             //     eventParticipants: arrayUnion(...eventParticipants)

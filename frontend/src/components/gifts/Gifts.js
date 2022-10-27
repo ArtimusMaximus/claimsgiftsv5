@@ -208,7 +208,7 @@ export default ({ giftArray, user }) => {
                             <td className="requesteeTd">
                             <span id="imgDiv">
                                 {
-                                    i?.img && <img src={i.img} width={'25px'} height={'25px'} style={{borderRadius: '50%'}} />
+                                    i?.img && <div className='imageCropper'><img src={i.img} width={'100%'} /></div>
                                 }
                                 
                                 {

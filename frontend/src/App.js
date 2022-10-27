@@ -10,7 +10,7 @@ import { AuthContext } from './components/context/AuthContext';
 
 
 function App() {
-console.log('~ V 10 24 2022 ~')
+console.log('~ V 10 27 2022 ~')
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ console.log('~ V 10 24 2022 ~')
   useEffect(() => {
     // if (id !== to userEvents) { redirect to 'an event with this id does not exist' page?}
    
-  }, [id])
+  }, [])
   
 
   const { dispatch } = useContext(AuthContext)

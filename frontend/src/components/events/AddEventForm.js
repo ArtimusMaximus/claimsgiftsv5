@@ -109,7 +109,7 @@ export default () => {
                 'Events':
                     {...eventNames}
             },
-            inputPlaceholder: 'Your events...'
+            inputPlaceholder: 'Your events...',
         })
         if (event) {
             const eName = docData[event].events.eventName
@@ -142,21 +142,40 @@ export default () => {
                         .catch(err => console.log(err))
                 }
 
-                Swal.fire({
-                    title: `Invitation sent to ${inviteeEmail}'s 'message invite center', as well as via an automated email.`,
-                    confirmButtonColor: 'crimson'
+                const { value: acceptEmail } = await Swal.fire({
+                    title: `Invitation sent to ${inviteeEmail}'s 'message invite center'.`,
+                    confirmButtonColor: 'crimson',
+                    text: 'Send an automated email to this user regarding their invitation?',
+                    input: 'checkbox',
+                    inputValue: 1,
                 })
-                .then((result) => console.log(result.isConfirmed))
-                .then(() => addDoc(collection(db, "invites"), {
-                    invitee: inviteeEmail.trim().toLowerCase(),
-                    event: eName,
-                    invitedBy: userEmail,
-                    eventDate: eDate,
-                    eventId: eventId,
-                }))
-                
-                .then(() => handleEmail())
-                .catch((err) => console.log(err))
+                if (acceptEmail) {
+                    Swal.fire({
+                        title: `Event invitation sent to users dashboard invites and to email ${inviteeEmail}!`,
+                        confirmButtonColor: 'crimson'
+                    })
+                    .then((result) => console.log(result.isConfirmed))
+                    .then(() => addDoc(collection(db, "invites"), {
+                        invitee: inviteeEmail.trim().toLowerCase(),
+                        event: eName,
+                        invitedBy: userEmail,
+                        eventDate: eDate,
+                        eventId: eventId,
+                    }))
+                    
+                    .then(() => handleEmail())
+                    .catch((err) => console.log(err))
+                } else {
+                    console.log('got to else clause');
+                    addDoc(collection(db, "invites"), {
+                        invitee: inviteeEmail.trim().toLowerCase(),
+                        event: eName,
+                        invitedBy: userEmail,
+                        eventDate: eDate,
+                        eventId: eventId,
+                    })
+                }
+               
             }
 
         }
@@ -192,10 +211,10 @@ export default () => {
                 const eventConfirmed = filtAcceptedInvites[choice]
                 const eventConfirmedId = filtAcceptedInvites[choice].eventId
                 const inviteDocId = filtAcceptedInvites[choice].id
-                console.log(filtAcceptedInvites[choice])
-                console.log(inviteDocId);
+                // console.log(filtAcceptedInvites[choice])
+                // console.log(inviteDocId);
                 
-                console.log('event confirmed id', eventConfirmedId)
+                // console.log('event confirmed id', eventConfirmedId)
 
                 const fixedDate = eventConfirmed.eventDate.slice(5) + '-' + eventConfirmed.eventDate.slice(0, 4)
                 
@@ -203,7 +222,6 @@ export default () => {
                     title: `You have been been added to "The List" \nFor event: \n"${eventConfirmed.event}" \n${fixedDate}`,
                     confirmButtonColor: 'crimson'
                 })
-                .then((result) => console.log(result.isConfirmed))
                 // .then(() => setAgreedEvent(true))
                 .then(() => updateDoc(doc(db, 'invites', inviteDocId),
                 { acceptedInvite: true }
@@ -238,7 +256,7 @@ export default () => {
                     const singleDocRef = doc(db, "events", eventConfirmedId)
                     const docSnap = await getDoc(singleDocRef)
                     if (docSnap.exists()) {
-                        console.log(docSnap.data())
+                        // console.log(docSnap.data())
                         arr.push({id: docSnap.id, ...docSnap.data()})
                         setAppendedInvite(docSnap.data())
                         setDocData(prev => [...prev, {id: docSnap.id, ...docSnap.data()}])

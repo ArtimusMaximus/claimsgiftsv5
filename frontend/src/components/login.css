@@ -28,6 +28,7 @@ input {
     margin: 3px;
     width: fit-content;
 }
+
 input::placeholder {
     font-style: italic;
 }
