@@ -31,7 +31,7 @@ console.log('~ V 10 24 2022 ~')
     await signOut(auth).then(() => {
       console.log('Successfully logged out!');
 
-      // dispatch({ type: 'LOGOUT' })
+      dispatch({ type: 'LOGOUT' })
       
       navigate('/departure')
     })

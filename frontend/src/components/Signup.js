@@ -12,25 +12,23 @@ export default () => {
     const navigate = useNavigate();
     const [error, setError] = useState(false)
     const [passMatchError, setPassMatchError] = useState(false)
-    const [passLengthError, setPassLengthError] = useState(false)
+    const [passMatchErrorMessage, setPassMatchErrorMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPass, setConfirmPass] = useState('')
 
     const errorStyles = {
-        fontWeight: '600',
-        fontSize: '16px',
+        
         color:'crimson', 
         paddingTop: '15px',
-        fontStyle: 'italic'
+        
     }
 
-    useEffect(() => {
-        setError(false)
-        setPassMatchError(false)
-        setPassLengthError(false)
-    }, [])
+    // useEffect(() => {
+       
+        
+    // }, [])
     
     const { dispatch } = useContext(AuthContext)
 
@@ -49,7 +47,7 @@ export default () => {
 
         if (password !== confirmPass) {
             setPassMatchError(true)
-            setErrorMessage('Both password fields must match!')
+            setPassMatchErrorMessage('Both password fields must match!')
             return
         }
         // password.length !== 6 ? setError(minLengthErrMessage) : console.log('k');
@@ -70,17 +68,18 @@ export default () => {
             navigate('/dashboard')
         } catch (error) {
             console.log(error)
-            Swal.fire({
-                title: 'An error occured!',
-                html: `Firebase error: "${error}"`,
-                confirmButtonColor: 'crimson'
-            })
-            
-            if (password.length && confirmPass.length < 6) {
-                setPassLengthError(true)
-                setErrorMessage('Six character minimum password length!')
-            } 
-            
+            setError(true)
+            switch
+                (error.code) {
+                    case "auth/email-already-in-use":
+                        setErrorMessage('This email has already been registered!')
+                        break;
+                    case "auth/weak-password":
+                        setErrorMessage('Six character minimum password length!')
+                        break;
+                    default:
+                        console.log('An unexpected error occured, please try again!');
+                }
         }
     }
 
@@ -110,9 +109,9 @@ export default () => {
                     <div>
                         <button>Sign Up</button>
                     </div>
-                    {passLengthError && <p style={errorStyles}>{errorMessage} </p>}
-                    {/* {passMatchError && <p style={errorStyles}>{errorMessage} </p>} */}
                     {error && <span style={errorStyles}>{errorMessage} </span>}
+                    {/* {passMatchError && <p style={errorStyles}>{errorMessage} </p>} */}
+                    {passMatchError && <span style={errorStyles}>{passMatchErrorMessage} </span>}
                 </form>
                 <div className="newuser">
                     <p>Already have an account?</p><p><Link id="login" to="/" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Login</Link></p>

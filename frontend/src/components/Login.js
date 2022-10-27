@@ -14,7 +14,7 @@ export default () => {
     const [error, setError] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    
+    const [errorText, setErrorText] = useState('')
 
     const navigate = useNavigate();
 
@@ -34,7 +34,22 @@ export default () => {
             })
             .catch((error) => {
                 setError(true)
-                console.log(error);
+                console.log(error.code);
+                switch 
+                    (error.code) {
+                        case "auth/user-not-found":
+                            setErrorText('No account registered under this email!')
+                            break;
+                        case "wrong-password":
+                            setErrorText('Wrong email or password!')
+                            break;
+                        case "account-exists-with-different-credential":
+                            setErrorText('An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.')
+                            break;
+                        default:
+                            setErrorText('An unexpected error occured, please try again!')
+                    }
+                
             });
     }
     
@@ -66,7 +81,7 @@ export default () => {
                 <div>
                     <button type="submit" className="btnInvert">Login</button>
                 </div>
-                    {error && <span style={{color:'crimson', paddingTop: '15px'}}>Wrong email or password!</span>}
+                    {error && <span style={{color:'crimson', paddingTop: '15px'}}>{errorText}</span>}
                 </form>
                 <div className="newuser">
                     <p style={{marginTop:'5px', marginBottom: '5px'}}>New User?</p><p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
