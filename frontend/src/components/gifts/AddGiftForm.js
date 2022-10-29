@@ -9,7 +9,7 @@ import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
 import './addgiftform.css';
-import { BsFileBreakFill } from 'react-icons/bs';
+
 
 
 export default () => {
@@ -98,20 +98,16 @@ useEffect(() => {
     
     // const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
 
-    
-
 }, [didSubmit])
-
-
 
 // console.log(eventParticipants);
 
     const handleSubmit = async e => {
-        console.log(e.target.name);
+        let defaultCost = 0
+        
         e?.preventDefault();
         if (giftName === '') return Swal.fire({ title: 'Must enter a gift name!', confirmButtonColor:'crimson' })
-        if (giftCost === '') return setGiftCost(0)
-        // if (giftCost !== typeof 'number') return Swal.fire({ title: 'Gift cost must be a number!', confirmButtonColor:'crimson' })
+        
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
             // if (userName === '') ?? wtf is this ; don't game and debug
@@ -125,7 +121,7 @@ useEffect(() => {
                         giftRef: giftRef,
                         username: userData.username,
                         img: userData.img,
-                        giftCost: giftCost
+                        giftCost: giftCost !== '' ? giftCost : defaultCost
                     }
                 )
             })
@@ -183,26 +179,33 @@ useEffect(() => {
     }
     updatePartici()
     
-    const search = (data) => {
-        let keys = ['giftName', 'requestor', 'username', 'giftCost']
+    const search = (data, choice) => {
+        let keys = ['giftName', 'requestor', 'username']
 
-        return data.filter((item) =>
-            keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase()))
-        )
+        if(choice === 1000) { // all
+            return data.filter(i => i.giftCost <= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        } else if (choice === 201) { 
+            return data.filter((i => i.giftCost >= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
+        } else if (choice) { 
+            return data.filter((i => i.giftCost >= choice - 25 && i.giftCost <= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
+        } else {
+            return data.filter((item) =>
+            keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        }
     }
 // i believe we are going to need to combine these twon functions
-    const dollarAmount = (data, choice) => {
-        if(choice === 1000) {
-            return data.filter(i => i.giftCost <= choice)
-        }
-        if (choice) { // all
-            return data.filter((i => i.giftCost >= choice - 25 && i.giftCost <= choice))
-        } 
-        
-    }
+// later that day... I believe you are correct
+    // const dollarAmount = (data, choice) => {
+    //     if(choice === 1000) {
+    //         return data.filter(i => i.giftCost <= choice)
+    //     }
+    //     if (choice) { // all
+    //         return data.filter((i => i.giftCost >= choice - 25 && i.giftCost <= choice))
+    //     }  
+    // }
     const handleSelect = e => {
         e.preventDefault();
-        console.log(e.target.value);
+        
         if (!e.target.value) {
             return 
             
@@ -221,58 +224,41 @@ useEffect(() => {
                 case '100':
                     setChosen(100)
                     break;
+                case '125':
+                    setChosen(125)
+                    break;
+                case '150':
+                    setChosen(150)
+                    break;
+                case '175':
+                    setChosen(175)
+                    break;
+                case '200':
+                    setChosen(200)
+                    break;
+                case '201':
+                    setChosen(201)
+                    break;
                 case '1000':
                     setChosen(1000)
                     break;
                 default:
                     setChosen(100000)
                 }
-                console.log(chosen);
+                
         }
         
     }
     
-
     const onTheList = eventParticipants.includes(user.email)
-    // console.log('event data ', eventData, 'gift array ', giftArray)
 
     const updateGiftArray = async (remGiftName) => {
-        // console.log(remGiftLink);
-        // console.log(remGiftName); //works
-        // console.log(moddedArray);
-        // console.log(remObject);
-
         try {
-            // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
-            // await updateDoc(eventRef, {
-            //     gifts: arrayRemove({
-            //         // {
-            //         //     giftArray // adds the entire array as a nested array item #10-
-            //         // }
-            //         giftName: remGiftName, 
-            //         giftLink: remGiftLink, 
-            //         claimed: isClaimed,
-            //         // claimee: requestor,
-            //         requestor: requestor, 
-            //         giftRef: giftRef
-            //         })
-            // })
             await updateDoc(eventRef, {
                 gifts: (
-                    // {
-                    //     giftArray // adds the entire array as a nested array item #10-
-                    // }
-                    // ...giftArray and giftArray being passed seems to do the same thing
-                    
                         giftArray.filter(i => i !== remGiftName)
-                    // claimed: 'false',
-                    // giftLink: 'www.com',
-                    // giftName: 'new event to the left window plz',
-                    // giftRef: '39yUj2kcdyyeDoPYIfrF',
-                    // requestor: 'admin11@aol.com'
                 )
             })
-            
             // console.log(eventRef)
             } catch (error) {
                 console.log(error)
@@ -369,18 +355,24 @@ useEffect(() => {
                 <span>
                     <input className='searchInput' type="text" value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
-                </span>
                 <select id="selectValue" name="cost" onChange={e =>handleSelect(e)}>
                     <optgroup label="Filter Choices">
-                        <option value="1000">All</option>
+                        <option value="1000">All Items</option>
                         <option value="25">Up to 25$</option>
                         <option value="50">25 to 50$</option>
                         <option value="75">50 to 75$</option>
                         <option value="100">75 to 100$</option>
+                        <option value="125">100 to 125$</option>
+                        <option value="150">125 to 150$</option>
+                        <option value="175">150 to 175$</option>
+                        <option value="200">175 to 200$</option>
+                        <option value="201">200$ and up</option>
                     </optgroup>
                 </select>
+                </span>
+                
             </div>
-            <Gifts giftArray={giftArray && search(giftArray) && dollarAmount(giftArray, chosen)} user={user}/>
+            <Gifts giftArray={giftArray && search(giftArray, chosen)} user={user}/>
         </>) : (
             <div style={{textAlign: 'center'}}>
                 <h1>You must be added to the event list to participate!</h1>

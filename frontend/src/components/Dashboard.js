@@ -117,7 +117,7 @@ export default () => {
                     <EditProfile currentUser={user} userData={userData} />
                 </div>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                    {!user.emailVerified === false && <button id="verifyemailBtn" className='btnInvert' onClick={verifyEmail}><GiCheckMark />Send Verification Email</button>}
+                    {/* {!user.emailVerified === false && <button id="verifyemailBtn" className='btnInvert' onClick={verifyEmail}><GiCheckMark />Send Verification Email</button>} */}
                 </div>
                 <AddEventForm />
             </div>

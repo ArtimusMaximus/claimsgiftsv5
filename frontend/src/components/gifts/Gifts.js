@@ -41,7 +41,7 @@ export default ({ giftArray, user }) => {
         //     })
         // }
         // updateClaimed()
-        console.log(giftArray);
+        
         
 
         
@@ -56,12 +56,12 @@ export default ({ giftArray, user }) => {
     const handleEdit = async (e, index) => {
         e.preventDefault()
         
-        console.log(giftArray[index]);
+        
         let name = giftArray[index].giftName
         let link = giftArray[index].giftLink
         let cost = giftArray[index]?.giftCost
 
-        console.log(giftArray);
+        
 
         const { value : editedText } = await Swal.fire({
             title: 'Edit values...',
@@ -269,9 +269,9 @@ export default ({ giftArray, user }) => {
                             <td className="requesteeTd">
                             <span id="imgDiv">
                                 {
-                                    i?.img && <div className='imageCropper'><img src={i.img} width={'100%'} /></div>
+                                    i?.img && <div className='imageCropper'><img src={i.img} height={'30px'} /></div>
                                 }
-                                
+                                <span>
                                 {
                                     user.email === i.requestor 
                                     ? "You"
@@ -279,6 +279,7 @@ export default ({ giftArray, user }) => {
                                     ? i.username
                                     : i.requestor
                                 }
+                                </span>
                             </span>
                                 
                             </td>
