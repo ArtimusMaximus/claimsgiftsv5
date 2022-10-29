@@ -67,6 +67,7 @@
 
   tr {
       height: 57px;
+      
   }
 
   /* .thclaimed {
@@ -119,10 +120,24 @@
     width: 5px;
   
   }
+  .editSpan {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+   
+    width: 20px;
+    height: 20px;
+  }
 
   .giftNametd {
     text-align: left;
     font-size: 1.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+
   }
   @media screen and (min-width: 1300px) {
     .giftNametd {
@@ -141,6 +156,7 @@
   .firstTableRow {
     /* background-color: aliceblue; */
     background-color: rgba(220, 20, 60, .25);
+    
   }
   .firstTableRow > td {
     border-radius: 4px;
@@ -206,5 +222,7 @@
     width: 30px;
     height: 30px;
   }
+
+  
 
   

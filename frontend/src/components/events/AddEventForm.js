@@ -13,10 +13,10 @@ import { propsDate } from './dateformat';
 
 export default () => {
     const currentUser = useContext(AuthContext)
-    // const user2 = currentUser.currentUser.uid
-    const user2 = auth.currentUser.uid // production version
-    // const userEmail = currentUser.currentUser?.email
-    const userEmail = auth.currentUser.email // production version
+    const user2 = currentUser.currentUser.uid // development
+    const userEmail = currentUser.currentUser?.email // development
+    // const userEmail = auth.currentUser.email // production version
+    // const user2 = auth.currentUser.uid // production version
 
     const [eventName, setEventName] = useState('')
     const [eventDate, setEventDate] = useState(propsDate)
@@ -206,7 +206,7 @@ export default () => {
                 showCancelButton: true,
             })
             if (choice) {
-                console.log(choice)
+                // console.log(choice)
                 
                 const eventConfirmed = filtAcceptedInvites[choice]
                 const eventConfirmedId = filtAcceptedInvites[choice].eventId
@@ -233,11 +233,11 @@ export default () => {
                     const docRef = doc(db, "events", eventConfirmedId)
                     const docSnap = await getDoc(docRef)
                     if (docSnap.exists()) {
-                        console.log('docSnap .data()', docSnap.data())
+                        // console.log('docSnap .data()', docSnap.data())
                         list.push(docSnap.data().eventParticipants)
                         setEventParticipants(prev => prev, ...list)
                     } else {
-                        console.log('no such doc!');
+                        console.log('No such doc!');
                     }
                     console.log(list)
                 }

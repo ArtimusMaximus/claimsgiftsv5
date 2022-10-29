@@ -6,6 +6,7 @@ import { auth, db } from "../firebase";
 import { AuthContext } from "./context/AuthContext";
 import { FcGoogle } from 'react-icons/fc'
 import './oauthlogin.css';
+import Swal from "sweetalert2";
 
 
 
@@ -24,6 +25,11 @@ export default () => {
         const docSnap = await getDoc(userRef)
         if (docSnap.exists()) {
             // console.log('already exists!!!!!!');
+            let timerInterval;
+            
+
+
+
             navigate('/dashboard')
         } else {
             // console.log('doesnt exist yet');
@@ -45,6 +51,16 @@ export default () => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
+
+                if (result) {
+                    Swal.fire({
+                        title: 'Loading...',
+                        timer: 1000,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        }
+                    })
+                }
                 
                 setoAuthToken(token);
                 setoAuthUser(user);

@@ -9,17 +9,19 @@ import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
 import './addgiftform.css';
+import { BsFileBreakFill } from 'react-icons/bs';
 
 
 export default () => {
-    // const currentUser = useContext(AuthContext) // development
-    // const user = currentUser.currentUser // development
-    const user = auth.currentUser // production version
+    const currentUser = useContext(AuthContext) // development
+    const user = currentUser.currentUser // development
+    // const user = auth.currentUser // production version
     const location = useLocation();
     const eventId = location.pathname.split("/")[2]
 
     const [giftName, setGiftName] = useState('');
     const [giftLink, setGiftLink] = useState('');
+    const [giftCost, setGiftCost] = useState('');
     const [remObject, setRemObject] = useState('');
     const [userData, setUserData] = useState({
         username: '',
@@ -32,6 +34,7 @@ export default () => {
     const [didSubmit, setDidSubmit] = useState(false);
     const [requestor, setRequestor] = useState(user.email);
     const [eventParticipants, setEventParticipants] = useState([user.email]);
+    const [chosen, setChosen] = useState(1000)
     const [giftRef] = useState(eventId);
 
     
@@ -104,8 +107,11 @@ useEffect(() => {
 // console.log(eventParticipants);
 
     const handleSubmit = async e => {
+        console.log(e.target.name);
         e?.preventDefault();
-        if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'crimson'}) 
+        if (giftName === '') return Swal.fire({ title: 'Must enter a gift name!', confirmButtonColor:'crimson' })
+        if (giftCost === '') return setGiftCost(0)
+        // if (giftCost !== typeof 'number') return Swal.fire({ title: 'Gift cost must be a number!', confirmButtonColor:'crimson' })
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
             // if (userName === '') ?? wtf is this ; don't game and debug
@@ -118,7 +124,8 @@ useEffect(() => {
                         requestor: requestor, 
                         giftRef: giftRef,
                         username: userData.username,
-                        img: userData.img
+                        img: userData.img,
+                        giftCost: giftCost
                     }
                 )
             })
@@ -129,6 +136,7 @@ useEffect(() => {
             setDidSubmit(current => !current)
             setGiftName('')
             setGiftLink('')
+            setGiftCost('')
         }
 
     const sweetModal = async () => {
@@ -176,11 +184,54 @@ useEffect(() => {
     updatePartici()
     
     const search = (data) => {
-        let keys = ['giftName', 'requestor', 'username']
+        let keys = ['giftName', 'requestor', 'username', 'giftCost']
+
         return data.filter((item) =>
             keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase()))
         )
     }
+// i believe we are going to need to combine these twon functions
+    const dollarAmount = (data, choice) => {
+        if(choice === 1000) {
+            return data.filter(i => i.giftCost <= choice)
+        }
+        if (choice) { // all
+            return data.filter((i => i.giftCost >= choice - 25 && i.giftCost <= choice))
+        } 
+        
+    }
+    const handleSelect = e => {
+        e.preventDefault();
+        console.log(e.target.value);
+        if (!e.target.value) {
+            return 
+            
+        } else {
+            switch
+            (e.target.value) {
+                case '25':
+                    setChosen(25)
+                    break;
+                case '50':
+                    setChosen(50)
+                    break;
+                case '75':
+                    setChosen(75)
+                    break;
+                case '100':
+                    setChosen(100)
+                    break;
+                case '1000':
+                    setChosen(1000)
+                    break;
+                default:
+                    setChosen(100000)
+                }
+                console.log(chosen);
+        }
+        
+    }
+    
 
     const onTheList = eventParticipants.includes(user.email)
     // console.log('event data ', eventData, 'gift array ', giftArray)
@@ -300,11 +351,15 @@ useEffect(() => {
             </div>
             <div className='formContainer'>
                     <form onSubmit={handleSubmit}>
-                        <input className='giftInputs' value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
-                        
-                        <input className='giftInputs' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
+                        <input className='giftInputs giftNameIn' value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
+                        <br />
+                        <input className='giftInputs giftIns40' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
                         <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'pink'} id="pasteicon" /><div>Paste&nbsp;</div></i>
+                        <br />
+                        <input  className='giftInputs giftIns40' type='number' value={giftCost} name="giftcost" placeholder='Gift Cost' onChange={e => setGiftCost(e.target.value)} />
+                        
                         <div>
+                            
                             <button type="submit" className='btnInvert addGift'>Add Gift</button>
                             <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift btnInvert'>Remove Gift</button>
                         </div>
@@ -315,8 +370,17 @@ useEffect(() => {
                     <input className='searchInput' type="text" value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
                 </span>
+                <select id="selectValue" name="cost" onChange={e =>handleSelect(e)}>
+                    <optgroup label="Filter Choices">
+                        <option value="1000">All</option>
+                        <option value="25">Up to 25$</option>
+                        <option value="50">25 to 50$</option>
+                        <option value="75">50 to 75$</option>
+                        <option value="100">75 to 100$</option>
+                    </optgroup>
+                </select>
             </div>
-            <Gifts giftArray={giftArray && search(giftArray)} user={user}/>
+            <Gifts giftArray={giftArray && search(giftArray) && dollarAmount(giftArray, chosen)} user={user}/>
         </>) : (
             <div style={{textAlign: 'center'}}>
                 <h1>You must be added to the event list to participate!</h1>
