@@ -44,13 +44,24 @@
 }
 
 .swal2-label {
-    width: 100px;
+   /* width: fit-content; */
 }
 .swal2-radio > label > input {
     width: 50px;
 }
+.swal2-checkbox {
+    /* width: fit-content; */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px;
+    width: fit-content;
+}
 
-
+.swal2-show {
+    /* width: fit-content; */
+}
 
 /* buttons below */
 

@@ -66,11 +66,9 @@ export default () => {
                     )
                     setHiddenEvents(...arr)
                 
-                
             }
         }
         getHiddenEventsList()
-        console.log('hidden evens in useeffect ', hiddenEvents);
 
         const unsubscribe = onSnapshot(queryInvites, querySnapshot => {
             let invites = [];
@@ -121,7 +119,7 @@ export default () => {
 
         const { value: event } = await Swal.fire({
             title: 'Please select event to share:',
-            text: 'Note: this will invite the user via their dashboard invites, as well as send them an automated email invite.',
+            text: 'Note: this will invite the user via their dashboard invites, as well as (optionally) send them an automated email invite.',
             confirmButtonColor: 'crimson',
             input: 'select',
             inputOptions: {
@@ -173,7 +171,6 @@ export default () => {
                         title: `Event invitation sent to users dashboard invites and to email ${inviteeEmail}!`,
                         confirmButtonColor: 'crimson'
                     })
-                    .then((result) => console.log(result.isConfirmed))
                     .then(() => addDoc(collection(db, "invites"), {
                         invitee: inviteeEmail.trim().toLowerCase(),
                         event: eName,
@@ -185,7 +182,6 @@ export default () => {
                     .then(() => handleEmail())
                     .catch((err) => console.log(err))
                 } else {
-                    console.log('got to else clause');
                     addDoc(collection(db, "invites"), {
                         invitee: inviteeEmail.trim().toLowerCase(),
                         event: eName,
@@ -334,8 +330,7 @@ export default () => {
     const handleHide = async () => {
         const eventsToHide = docData.map(i => i.events.eventName)
         const eventsToHideRef = docData.map(i => i.id)
-        console.log(docData);
-        console.log('inside handleHide function ' , hiddenEvents);
+    
         let c = ['Hide', 'Unhide']
 
         const { value: choice } = await Swal.fire({
@@ -343,6 +338,7 @@ export default () => {
             confirmButtonColor: 'crimson',
             showCancelButton: true,
             input: 'radio',
+            inputValue: '0',
             inputOptions: {
                 ...c
             }
@@ -385,10 +381,7 @@ export default () => {
                 }
             })
             if (unhideChoice) {
-                console.log(hiddenEvents[unhideChoice]);
                 let updatedHideList = hiddenEvents.filter(e => !hiddenEvents[unhideChoice].choiceRef.includes(e.choiceRef))
-                console.log(updatedHideList);
-
                 const docRef = doc(db, 'users', user2)
                 await updateDoc(docRef, {
                     hideEventsList: updatedHideList
@@ -396,20 +389,14 @@ export default () => {
                 setHiddenEvents(updatedHideList)
             }
         }
-
-
-        
-        
-        
+  
     }
-    console.log('hidden events ', hiddenEvents);
 
     const filterHiddenEvents = (docData, hiddenEvents) => {
-    let hideChoice = hiddenEvents.map(i => i.choiceRef)
-       return docData.filter(e => !hideChoice.includes(e.id))
+    let hideChoice = hiddenEvents?.map(i => i?.choiceRef)
+       return docData.filter(e => !hideChoice?.includes(e.id))
     }
     
-
     return (
         <>
             <div className="formContainer">
@@ -423,9 +410,9 @@ export default () => {
                     </div>
                     <div id="invitesTainer">
 
-                        <div>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>
-                        <div>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'#dc143c'} /></a></div>
-                        <div>Hide Event&nbsp;<a onClick={handleHide}><BiHide color={'#dc143c'} /></a></div>
+                        <div className='chkInvHide'>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>
+                        <div className='chkInvHide'>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'#dc143c'} /></a></div>
+                        <div className='chkInvHide'>Hide Event&nbsp;<a onClick={handleHide}><BiHide color={'#dc143c'} /></a></div>
                     </div>
                 </form>
                 

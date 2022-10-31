@@ -9,6 +9,8 @@ import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
 import './addgiftform.css';
+import emailjs from '@emailjs/browser';
+import { BsFileBreakFill } from 'react-icons/bs';
 
 
 
@@ -245,7 +247,6 @@ useEffect(() => {
                 default:
                     setChosen(100000)
                 }
-                
         }
         
     }
@@ -282,27 +283,82 @@ useEffect(() => {
         if (item) {
             const gift = yourItems[item].giftName
             const eventId = yourItems[item].giftRef
+            const giftIsClaimed = yourItems[item].claimed
 
             const remGiftName = yourItems[item]
             setRemObject(remGiftName)
-            
-            
 
+            let warningMessage;
+            switch
+                (giftIsClaimed) {
+                    case true:
+                        warningMessage = `Wait! Someone has claimed this gift, item: "${gift}" may have already been purchased! Are you sure you want to delete this? (Note: This is irreversible!)`
+                        break;
+                    default:
+                        warningMessage = `Are you sure you want to remove Gift: "${gift}"? (Note: This is irreversible!)`
+                }
             await Swal.fire({
-                title: `Are you sure you want to remove Gift: "${gift}"? (Note: This is irreversible!)`,
+                title: `${warningMessage}`,
                 icon: 'warning',
                 iconColor: 'crimson',
                 showCancelButton: 'true',
                 confirmButtonColor: 'crimson'
             })
-            .then((result) => {
+            .then(async (result) => {
                 if (result.isConfirmed) {
                     updateGiftArray(remGiftName)
-                    Swal.fire({
+                    const { value: email } = await Swal.fire({
                         title: `Gift: "${gift}" removed!`,
                         confirmButtonColor: 'crimson',
-                        confirmButtonText: 'Got it!'
+                        confirmButtonText: 'Got it!',
+                        input: 'checkbox',
+                        inputValue: 1,
+                        html: 'Send the claimee an automated email regarding the removal of the gift they formerly claimed?',
                     })
+                    if (email) {
+                        let tex;
+                        const { value: text } = await Swal.fire({
+                            title: 'Notes to user in automated email...',
+                            input: 'textarea',
+                            inputPlaceholder: 'E.G. Someone else already bought this item for my cat/dog',
+                            showCancelButton: true,
+                            cancelButtonText: 'Skip',
+                            confirmButtonColor: 'crimson',
+                            confirmButtonText: 'Send'
+                        })
+                        if (text) {
+                            tex = text
+                        }
+
+
+                        let claimeeEmail = remGiftName?.claimee
+                        let eName = eventData.eventName
+                        let eDate = eventData.eventDate
+                        let userE = remGiftName.requestor
+        
+                        let tempParam = {
+                            from_name: remGiftName.requestor,
+                            event_name: eName,
+                            event_date: eDate,
+                            to_email: claimeeEmail,
+                            from_email: userE,
+                            gift_name: gift,
+                            message: tex
+                        }
+                        const templateID = 'template_l4kp685';
+                        const publicKey = 'C0U6FhGhn-2kWm9SD';
+                        const handleEmail = async () => {
+                            await emailjs.send('default_service', templateID, tempParam, publicKey)
+                                .then((res) => console.log('Success ', res.status, res.text))
+                                .catch(err => console.log(err))
+                        }
+                        Swal.fire({
+                            title: 'Email sent!',
+                            html: `With your message: "${tex}"`,
+                            confirmButtonColor: 'crimson'
+                        })
+                        .then(() => handleEmail())
+                    }
                 } else {
                     Swal.fire({
                         title: 'Gift <b style="font-style: italic;">not</b> deleted!',

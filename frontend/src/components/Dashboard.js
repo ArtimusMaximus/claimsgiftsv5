@@ -66,13 +66,13 @@ export default () => {
         // }
         // updateE();
 
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                console.log(user);
-            } else {
-                console.log('nothing');
-            }
-        })
+        // onAuthStateChanged(auth, user => {
+        //     if (user) {
+                
+        //     } else {
+        //         console.log('no user');
+        //     }
+        // })
         
      
 
