@@ -67,6 +67,7 @@
 
   tr {
       height: 57px;
+      
   }
 
   /* .thclaimed {
@@ -119,10 +120,24 @@
     width: 5px;
   
   }
+  .editSpan {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+   
+    width: 20px;
+    height: 20px;
+  }
 
   .giftNametd {
     text-align: left;
     font-size: 1.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+
   }
   @media screen and (min-width: 1300px) {
     .giftNametd {
@@ -141,6 +156,7 @@
   .firstTableRow {
     /* background-color: aliceblue; */
     background-color: rgba(220, 20, 60, .25);
+    
   }
   .firstTableRow > td {
     border-radius: 4px;
@@ -185,10 +201,11 @@
     
 
   }
-  #imgDiv > img {
+  #imgDiv {
     margin-right: 3px;
-    left: 0;
     position: relative;
+    display: flex;
+    
   }
   #dot {
     background-color: green;
@@ -200,11 +217,27 @@
     
   }
 
-  .imageCropper {
+  /* .imageCropper {
     border-radius: 50%;
     overflow: hidden;
-    width: 30px;
-    height: 30px;
-  }
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    display: flex;
+    justify-content: flex-start;
+    
+  } */
 
+#textEditIn1 {
+  font-family: 'Tangerine', cursive;
+  font-size: 2.25rem;
+}
+#textEditIn2 {
+  font-family: 'Tangerine', cursive;
+  font-size: 2.25rem;
+}
+#textEditIn3 {
+  font-family: 'Tangerine', cursive;
+  font-size: 2.25rem;
+}
   

@@ -47,8 +47,14 @@ export default () => {
             <div className="container">
                 <UploadImage userId={userId} userInfo={userInfo} />
             </div>
+            <hr />
             <div className="container1">
                 <UpdateUserName userId={userId} />
+            </div>
+            <hr />
+            <div className="container1">
+                <p>Delete account</p>
+                <p>reset password</p>
             </div>
         </div>
         

@@ -17,10 +17,10 @@ import { SignedIn } from './events/dateformat';
 
 
 export default () => {
-    const user = auth.currentUser // production
+    // const user = auth.currentUser // production
 
     const currentUser = useContext(AuthContext)
-    // const user = currentUser.currentUser // development
+    const user = currentUser.currentUser // development
     const navigate = useNavigate()
     
     
@@ -65,15 +65,25 @@ export default () => {
         //     }
         // }
         // updateE();
+
+        // onAuthStateChanged(auth, user => {
+        //     if (user) {
+                
+        //     } else {
+        //         console.log('no user');
+        //     }
+        // })
         
      
 
     }, [])
 
     // let actionCodeSettings = {
-    //     url: 'https://claims.gifts/dashboard',
+    //     url: 'https://claims.gifts/?email=' + user.email,
     //     handleCodeInApp: false,
     // }
+
+    // user.sendEmailVerification(actionCodeSettings)
 
     const verifyEmail = async () => {
             try {
@@ -86,6 +96,7 @@ export default () => {
                         })
                     })
             } catch(e) {
+                console.log(e)
                 if (e.code === 'auth/too-many-requests') {
                     Swal.fire({
                         title: 'The server is busy, please try again in 10 seconds...',
@@ -106,7 +117,7 @@ export default () => {
                     <EditProfile currentUser={user} userData={userData} />
                 </div>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                    {/* {user.emailVerified === false && <button id="verifyemailBtn" className='btnInvert' onClick={verifyEmail}><GiCheckMark />Send Verification Email</button>} */}
+                    {/* {!user.emailVerified === false && <button id="verifyemailBtn" className='btnInvert' onClick={verifyEmail}><GiCheckMark />Send Verification Email</button>} */}
                 </div>
                 <AddEventForm />
             </div>

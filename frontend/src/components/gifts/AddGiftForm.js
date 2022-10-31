@@ -9,17 +9,21 @@ import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
 import './addgiftform.css';
+import emailjs from '@emailjs/browser';
+import { BsFileBreakFill } from 'react-icons/bs';
+
 
 
 export default () => {
-    // const currentUser = useContext(AuthContext) // development
-    // const user = currentUser.currentUser // development
-    const user = auth.currentUser // production version
+    const currentUser = useContext(AuthContext) // development
+    const user = currentUser.currentUser // development
+    // const user = auth.currentUser // production version
     const location = useLocation();
     const eventId = location.pathname.split("/")[2]
 
     const [giftName, setGiftName] = useState('');
     const [giftLink, setGiftLink] = useState('');
+    const [giftCost, setGiftCost] = useState('');
     const [remObject, setRemObject] = useState('');
     const [userData, setUserData] = useState({
         username: '',
@@ -32,6 +36,7 @@ export default () => {
     const [didSubmit, setDidSubmit] = useState(false);
     const [requestor, setRequestor] = useState(user.email);
     const [eventParticipants, setEventParticipants] = useState([user.email]);
+    const [chosen, setChosen] = useState(1000)
     const [giftRef] = useState(eventId);
 
     
@@ -95,17 +100,16 @@ useEffect(() => {
     
     // const queryInvites = query(collection(db, "invites"), where("invitee", "==", userEmail))
 
-    
-
 }, [didSubmit])
-
-
 
 // console.log(eventParticipants);
 
     const handleSubmit = async e => {
+        let defaultCost = 0
+        
         e?.preventDefault();
-        if (giftName === '') return Swal.fire({title:'Must enter a gift name!', confirmButtonColor:'crimson'}) 
+        if (giftName === '') return Swal.fire({ title: 'Must enter a gift name!', confirmButtonColor:'crimson' })
+        
         try {
             // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
             // if (userName === '') ?? wtf is this ; don't game and debug
@@ -118,7 +122,8 @@ useEffect(() => {
                         requestor: requestor, 
                         giftRef: giftRef,
                         username: userData.username,
-                        img: userData.img
+                        img: userData.img,
+                        giftCost: giftCost !== '' ? giftCost : defaultCost
                     }
                 )
             })
@@ -129,6 +134,7 @@ useEffect(() => {
             setDidSubmit(current => !current)
             setGiftName('')
             setGiftLink('')
+            setGiftCost('')
         }
 
     const sweetModal = async () => {
@@ -175,53 +181,85 @@ useEffect(() => {
     }
     updatePartici()
     
-    const search = (data) => {
+    const search = (data, choice) => {
         let keys = ['giftName', 'requestor', 'username']
-        return data.filter((item) =>
-            keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase()))
-        )
-    }
 
+        if(choice === 1000) { // all
+            return data.filter(i => i.giftCost <= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        } else if (choice === 201) { 
+            return data.filter((i => i.giftCost >= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
+        } else if (choice) { 
+            return data.filter((i => i.giftCost >= choice - 25 && i.giftCost <= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
+        } else {
+            return data.filter((item) =>
+            keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        }
+    }
+// i believe we are going to need to combine these twon functions
+// later that day... I believe you are correct
+    // const dollarAmount = (data, choice) => {
+    //     if(choice === 1000) {
+    //         return data.filter(i => i.giftCost <= choice)
+    //     }
+    //     if (choice) { // all
+    //         return data.filter((i => i.giftCost >= choice - 25 && i.giftCost <= choice))
+    //     }  
+    // }
+    const handleSelect = e => {
+        e.preventDefault();
+        
+        if (!e.target.value) {
+            return 
+            
+        } else {
+            switch
+            (e.target.value) {
+                case '25':
+                    setChosen(25)
+                    break;
+                case '50':
+                    setChosen(50)
+                    break;
+                case '75':
+                    setChosen(75)
+                    break;
+                case '100':
+                    setChosen(100)
+                    break;
+                case '125':
+                    setChosen(125)
+                    break;
+                case '150':
+                    setChosen(150)
+                    break;
+                case '175':
+                    setChosen(175)
+                    break;
+                case '200':
+                    setChosen(200)
+                    break;
+                case '201':
+                    setChosen(201)
+                    break;
+                case '1000':
+                    setChosen(1000)
+                    break;
+                default:
+                    setChosen(100000)
+                }
+        }
+        
+    }
+    
     const onTheList = eventParticipants.includes(user.email)
-    // console.log('event data ', eventData, 'gift array ', giftArray)
 
     const updateGiftArray = async (remGiftName) => {
-        // console.log(remGiftLink);
-        // console.log(remGiftName); //works
-        // console.log(moddedArray);
-        // console.log(remObject);
-
         try {
-            // setDoc(doc(db, 'cities')) is when you provide your own ID item (3rd arg)
-            // await updateDoc(eventRef, {
-            //     gifts: arrayRemove({
-            //         // {
-            //         //     giftArray // adds the entire array as a nested array item #10-
-            //         // }
-            //         giftName: remGiftName, 
-            //         giftLink: remGiftLink, 
-            //         claimed: isClaimed,
-            //         // claimee: requestor,
-            //         requestor: requestor, 
-            //         giftRef: giftRef
-            //         })
-            // })
             await updateDoc(eventRef, {
                 gifts: (
-                    // {
-                    //     giftArray // adds the entire array as a nested array item #10-
-                    // }
-                    // ...giftArray and giftArray being passed seems to do the same thing
-                    
                         giftArray.filter(i => i !== remGiftName)
-                    // claimed: 'false',
-                    // giftLink: 'www.com',
-                    // giftName: 'new event to the left window plz',
-                    // giftRef: '39yUj2kcdyyeDoPYIfrF',
-                    // requestor: 'admin11@aol.com'
                 )
             })
-            
             // console.log(eventRef)
             } catch (error) {
                 console.log(error)
@@ -245,27 +283,82 @@ useEffect(() => {
         if (item) {
             const gift = yourItems[item].giftName
             const eventId = yourItems[item].giftRef
+            const giftIsClaimed = yourItems[item].claimed
 
             const remGiftName = yourItems[item]
             setRemObject(remGiftName)
-            
-            
 
+            let warningMessage;
+            switch
+                (giftIsClaimed) {
+                    case true:
+                        warningMessage = `Wait! Someone has claimed this gift, item: "${gift}" may have already been purchased! Are you sure you want to delete this? (Note: This is irreversible!)`
+                        break;
+                    default:
+                        warningMessage = `Are you sure you want to remove Gift: "${gift}"? (Note: This is irreversible!)`
+                }
             await Swal.fire({
-                title: `Are you sure you want to remove Gift: "${gift}"? (Note: This is irreversible!)`,
+                title: `${warningMessage}`,
                 icon: 'warning',
                 iconColor: 'crimson',
                 showCancelButton: 'true',
                 confirmButtonColor: 'crimson'
             })
-            .then((result) => {
+            .then(async (result) => {
                 if (result.isConfirmed) {
                     updateGiftArray(remGiftName)
-                    Swal.fire({
+                    const { value: email } = await Swal.fire({
                         title: `Gift: "${gift}" removed!`,
                         confirmButtonColor: 'crimson',
-                        confirmButtonText: 'Got it!'
+                        confirmButtonText: 'Got it!',
+                        input: 'checkbox',
+                        inputValue: 1,
+                        html: 'Send the claimee an automated email regarding the removal of the gift they formerly claimed?',
                     })
+                    if (email) {
+                        let tex;
+                        const { value: text } = await Swal.fire({
+                            title: 'Notes to user in automated email...',
+                            input: 'textarea',
+                            inputPlaceholder: 'E.G. Someone else already bought this item for my cat/dog',
+                            showCancelButton: true,
+                            cancelButtonText: 'Skip',
+                            confirmButtonColor: 'crimson',
+                            confirmButtonText: 'Send'
+                        })
+                        if (text) {
+                            tex = text
+                        }
+
+
+                        let claimeeEmail = remGiftName?.claimee
+                        let eName = eventData.eventName
+                        let eDate = eventData.eventDate
+                        let userE = remGiftName.requestor
+        
+                        let tempParam = {
+                            from_name: remGiftName.requestor,
+                            event_name: eName,
+                            event_date: eDate,
+                            to_email: claimeeEmail,
+                            from_email: userE,
+                            gift_name: gift,
+                            message: tex
+                        }
+                        const templateID = 'template_l4kp685';
+                        const publicKey = 'C0U6FhGhn-2kWm9SD';
+                        const handleEmail = async () => {
+                            await emailjs.send('default_service', templateID, tempParam, publicKey)
+                                .then((res) => console.log('Success ', res.status, res.text))
+                                .catch(err => console.log(err))
+                        }
+                        Swal.fire({
+                            title: 'Email sent!',
+                            html: `With your message: "${tex}"`,
+                            confirmButtonColor: 'crimson'
+                        })
+                        .then(() => handleEmail())
+                    }
                 } else {
                     Swal.fire({
                         title: 'Gift <b style="font-style: italic;">not</b> deleted!',
@@ -300,11 +393,15 @@ useEffect(() => {
             </div>
             <div className='formContainer'>
                     <form onSubmit={handleSubmit}>
-                        <input className='giftInputs' value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
-                        
-                        <input className='giftInputs' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
+                        <input className='giftInputs giftNameIn' value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
+                        <br />
+                        <input className='giftInputs giftIns40' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
                         <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'pink'} id="pasteicon" /><div>Paste&nbsp;</div></i>
+                        <br />
+                        <input  className='giftInputs giftIns40' type='number' value={giftCost} name="giftcost" placeholder='Gift Cost' onChange={e => setGiftCost(e.target.value)} />
+                        
                         <div>
+                            
                             <button type="submit" className='btnInvert addGift'>Add Gift</button>
                             <button type="button" name='removeBtn' onClick={handleRemove} className='removeGift btnInvert'>Remove Gift</button>
                         </div>
@@ -314,9 +411,24 @@ useEffect(() => {
                 <span>
                     <input className='searchInput' type="text" value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
+                <select id="selectValue" name="cost" onChange={e =>handleSelect(e)}>
+                    <optgroup label="Filter Choices">
+                        <option value="1000">All Items</option>
+                        <option value="25">Up to 25$</option>
+                        <option value="50">25 to 50$</option>
+                        <option value="75">50 to 75$</option>
+                        <option value="100">75 to 100$</option>
+                        <option value="125">100 to 125$</option>
+                        <option value="150">125 to 150$</option>
+                        <option value="175">150 to 175$</option>
+                        <option value="200">175 to 200$</option>
+                        <option value="201">200$ and up</option>
+                    </optgroup>
+                </select>
                 </span>
+                
             </div>
-            <Gifts giftArray={giftArray && search(giftArray)} user={user}/>
+            <Gifts giftArray={giftArray && search(giftArray, chosen)} user={user}/>
         </>) : (
             <div style={{textAlign: 'center'}}>
                 <h1>You must be added to the event list to participate!</h1>

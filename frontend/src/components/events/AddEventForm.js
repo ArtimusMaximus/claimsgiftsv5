@@ -9,14 +9,15 @@ import { FaEnvelopeOpenText } from 'react-icons/fa'
 import { TbMailbox } from 'react-icons/tb'
 import emailjs from '@emailjs/browser';
 import { propsDate } from './dateformat';
+import { BiHide } from 'react-icons/bi';
 
 
 export default () => {
     const currentUser = useContext(AuthContext)
-    // const user2 = currentUser.currentUser.uid
-    const user2 = auth.currentUser.uid // production version
-    // const userEmail = currentUser.currentUser?.email
-    const userEmail = auth.currentUser.email // production version
+    const user2 = currentUser.currentUser.uid // development
+    const userEmail = currentUser.currentUser?.email // development
+    // const userEmail = auth.currentUser.email // production version
+    // const user2 = auth.currentUser.uid // production version
 
     const [eventName, setEventName] = useState('')
     const [eventDate, setEventDate] = useState(propsDate)
@@ -24,6 +25,7 @@ export default () => {
     const [eventRef, setEventRef] = useState(user2)
     const [didSubmit, setDidSubmit] = useState(false)
     const [eventParticipants, setEventParticipants] = useState([userEmail])
+    const [hiddenEvents, setHiddenEvents] = useState([])
     
     
     /////////////check events//////
@@ -52,6 +54,21 @@ export default () => {
             }
         }
         getUserEvents()
+        const getHiddenEventsList = async () => {
+            const arr = [];
+            const docRef = doc(db, 'users', user2)
+            const docSnap = await getDoc(docRef)
+            if (docSnap.exists()) {
+                // console.log(docSnap.data());
+                
+                    arr.push(
+                        docSnap.data()?.hideEventsList
+                    )
+                    setHiddenEvents(...arr)
+                
+            }
+        }
+        getHiddenEventsList()
 
         const unsubscribe = onSnapshot(queryInvites, querySnapshot => {
             let invites = [];
@@ -102,7 +119,7 @@ export default () => {
 
         const { value: event } = await Swal.fire({
             title: 'Please select event to share:',
-            text: 'Note: this will invite the user via their dashboard invites, as well as send them an automated email invite.',
+            text: 'Note: this will invite the user via their dashboard invites, as well as (optionally) send them an automated email invite.',
             confirmButtonColor: 'crimson',
             input: 'select',
             inputOptions: {
@@ -154,7 +171,6 @@ export default () => {
                         title: `Event invitation sent to users dashboard invites and to email ${inviteeEmail}!`,
                         confirmButtonColor: 'crimson'
                     })
-                    .then((result) => console.log(result.isConfirmed))
                     .then(() => addDoc(collection(db, "invites"), {
                         invitee: inviteeEmail.trim().toLowerCase(),
                         event: eName,
@@ -166,7 +182,6 @@ export default () => {
                     .then(() => handleEmail())
                     .catch((err) => console.log(err))
                 } else {
-                    console.log('got to else clause');
                     addDoc(collection(db, "invites"), {
                         invitee: inviteeEmail.trim().toLowerCase(),
                         event: eName,
@@ -206,7 +221,7 @@ export default () => {
                 showCancelButton: true,
             })
             if (choice) {
-                console.log(choice)
+                // console.log(choice)
                 
                 const eventConfirmed = filtAcceptedInvites[choice]
                 const eventConfirmedId = filtAcceptedInvites[choice].eventId
@@ -233,11 +248,11 @@ export default () => {
                     const docRef = doc(db, "events", eventConfirmedId)
                     const docSnap = await getDoc(docRef)
                     if (docSnap.exists()) {
-                        console.log('docSnap .data()', docSnap.data())
+                        // console.log('docSnap .data()', docSnap.data())
                         list.push(docSnap.data().eventParticipants)
                         setEventParticipants(prev => prev, ...list)
                     } else {
-                        console.log('no such doc!');
+                        console.log('No such doc!');
                     }
                     console.log(list)
                 }
@@ -286,9 +301,9 @@ export default () => {
             inputPlaceholder: `Events to remove...`
         })
         if (selection) {
-            console.log(selection);
-            console.log(eventsToRemove[selection]);
-            console.log(eventsToRemoveId[selection]);
+            // console.log(selection);
+            // console.log(eventsToRemove[selection]);
+            // console.log(eventsToRemoveId[selection]);
 
             Swal.fire({
                 title: 'Removing this event cannot be undone!',
@@ -312,8 +327,76 @@ export default () => {
 
         }
     }
+    const handleHide = async () => {
+        const eventsToHide = docData.map(i => i.events.eventName)
+        const eventsToHideRef = docData.map(i => i.id)
     
+        let c = ['Hide', 'Unhide']
 
+        const { value: choice } = await Swal.fire({
+            title: 'Please select if you are hiding or unhiding an event...',
+            confirmButtonColor: 'crimson',
+            showCancelButton: true,
+            input: 'radio',
+            inputValue: '0',
+            inputOptions: {
+                ...c
+            }
+        })
+        if (choice === '0') { // hide
+            const { value: hideSelect } = await Swal.fire({
+                title: 'Please select which event to hide:',
+                input: 'select',
+                confirmButtonColor: 'crimson',
+                inputOptions: {
+                    ...eventsToHide,
+                },
+                inputPlaceholder: '<b>Events to hide...</b>'
+            })
+            if (hideSelect) {
+                const chosen = eventsToHide[hideSelect]
+                const chosenRef = eventsToHideRef[hideSelect]
+                
+                if (hiddenEvents.length !== 0) {
+                    setHiddenEvents(prev => [...prev, { choice: chosen, choiceRef: chosenRef }])
+                } else {
+                    setHiddenEvents([{ choice: chosen, choiceRef: chosenRef }])
+                }
+    
+                const docRef = doc(db, 'users', user2)
+                await updateDoc(docRef, {
+                    hideEventsList: arrayUnion({choice: chosen, choiceRef: chosenRef})
+                })
+                setDidSubmit(prev => !prev)    
+            }
+        } else if (choice === '1') { // unhide
+            let hidden = hiddenEvents.map(i => i.choice)
+            const { value: unhideChoice } = await Swal.fire({
+                title: 'Select which event to unhide...',
+                showCancelButton: true,
+                confirmButtonColor: 'crimson',
+                input: 'select',
+                inputOptions: {
+                    ...hidden
+                }
+            })
+            if (unhideChoice) {
+                let updatedHideList = hiddenEvents.filter(e => !hiddenEvents[unhideChoice].choiceRef.includes(e.choiceRef))
+                const docRef = doc(db, 'users', user2)
+                await updateDoc(docRef, {
+                    hideEventsList: updatedHideList
+                })
+                setHiddenEvents(updatedHideList)
+            }
+        }
+  
+    }
+
+    const filterHiddenEvents = (docData, hiddenEvents) => {
+    let hideChoice = hiddenEvents?.map(i => i?.choiceRef)
+       return docData.filter(e => !hideChoice?.includes(e.id))
+    }
+    
     return (
         <>
             <div className="formContainer">
@@ -323,16 +406,19 @@ export default () => {
                     <div style={{display: 'flex', justifyContent: 'center'}}>
                         <button type="submit" className='addEvent btnInvert' onClick={() => setDidSubmit(false)}>Add Event</button>
                         <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent btnInvert'>Remove Event</button>
+                        
                     </div>
                     <div id="invitesTainer">
-                        <div>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>
-                        <div>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'#dc143c'} /></a></div>
+
+                        <div className='chkInvHide'>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>
+                        <div className='chkInvHide'>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'#dc143c'} /></a></div>
+                        <div className='chkInvHide'>Hide Event&nbsp;<a onClick={handleHide}><BiHide color={'#dc143c'} /></a></div>
                     </div>
                 </form>
                 
             </div>
             
-                <Events data={docData}   /> {/* lastly: send event blob here*/} {/* docData was the original */}
+                <Events data={docData && filterHiddenEvents(docData, hiddenEvents)}   /> {/* lastly: send event blob here*/} {/* docData was the original */}
             
         </>
     )

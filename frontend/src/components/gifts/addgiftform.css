@@ -21,6 +21,7 @@
     font-weight: 700;
     font: bold;
     font-size: 2rem;
+    width: 30%;
 
 }
 
@@ -60,7 +61,8 @@ ul {
     
 }
 .searchContainer > span > input {
-    width: 200px;
+    /* width: 200px; */
+    width: 55%;
 }
 
 .searchContainer > span > button {
@@ -170,6 +172,15 @@ input:disabled {
     font: bold;
     font-size: 2rem;
 }
+.giftIns40 {
+    width: 88%;
+}
+.giftCostIn {
+    width: 88%;
+}
+.giftNameIn {
+    width: 88%;
+}
 
 .giftInputs:focus {
     color: crimson;
@@ -211,5 +222,20 @@ input:disabled {
     border-radius: 5px;
     background-color: #dc143c;
 }
+#costInput {
+    width: 100px;
 
+}
+
+#selectValue {
+    font-family: 'Tangerine', cursive;
+    font-size: 2rem;
+    padding-bottom: 5px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+}
 

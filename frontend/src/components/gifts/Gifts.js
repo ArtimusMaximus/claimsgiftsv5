@@ -5,6 +5,7 @@ import { BsInfoCircle } from 'react-icons/bs';
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import Swal from 'sweetalert2';
 import { db } from '../../firebase';
+import { GrEdit } from 'react-icons/gr'
 
 import './addgiftform.css';
 import './gifts.css';
@@ -17,11 +18,15 @@ export default ({ giftArray, user }) => {
     const [isClaimed, setIsClaimed] = useState(Boolean)
     const [toggle, setToggle] = useState(true)
     const [show, setShow] = useState(false)
+    const [wasEdited, setWasEdited] = useState(false)
+    const [newName, setNewName] = useState('')
+    const [newLink, setNewLink] = useState('')
 
     // console.log(giftArray[0]?.giftLink);
     
     const location = useLocation()
     const eventId = location.pathname?.split("/")[2]
+    const eventRef = doc(db, 'events', eventId)
     
     let inc = 0;
     
@@ -37,15 +42,68 @@ export default ({ giftArray, user }) => {
         // }
         // updateClaimed()
         
+        
 
         
-    }, [isClaimed])
+    }, [isClaimed, wasEdited])
 
     const updateClaimed = async () => {
         const docRef = doc(db, "events", eventId)
         await updateDoc(docRef, {
             gifts: [...giftArray]
         })
+    }
+    const handleEdit = async (e, index) => {
+        e.preventDefault()
+        
+        
+        let name = giftArray[index].giftName
+        let link = giftArray[index].giftLink
+        let cost = giftArray[index]?.giftCost
+
+        
+
+        const { value : editedText } = await Swal.fire({
+            title: 'Edit values...',
+            confirmButtonColor: 'crimson',
+            html: ` <div style="display: flex; align-items:center; justify-content:center; flex-direction: column;">
+                    <label>Item Name</label><input id="textEditIn1" placeholder="${name}" />
+                    <label>Item Link</label><input id="textEditIn2" placeholder="${link !== '' ? link : ''}" />
+                    <label>Item Cost</label><input id="textEditIn3" placeholder="${cost ? cost : '$'}" />
+                    </div>`,
+            focusConfirm: false,
+            preConfirm: () => {
+                return [
+                    document.getElementById('textEditIn1').value,
+                    document.getElementById('textEditIn2').value,
+                    document.getElementById('textEditIn3').value
+                ]
+            }
+
+        })
+        if (editedText) {
+            let updatedGiftArr = [...giftArray]
+            updatedGiftArr[index].giftName = editedText[0]
+            updatedGiftArr[index].giftLink = editedText[1]
+            updatedGiftArr[index].giftCost = editedText[2]
+            if (editedText[0] === '') {
+                updatedGiftArr[index].giftName = name
+            }
+            if (editedText[1] === '') {
+                updatedGiftArr[index].giftLink = link
+            }
+            if (editedText[2] === '') {
+                updatedGiftArr[index].giftCost = cost || '0'
+            }
+
+            await updateDoc(eventRef, {
+                gifts: (
+                    updatedGiftArr
+                )
+            })
+            // setWasEdited(prev => !prev)
+        }
+
     }
 
     const handleChange = (e) => {
@@ -202,15 +260,18 @@ export default ({ giftArray, user }) => {
                             <td className="giftNametd">{user.email === i.requestor 
                                 ? <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => giftInfo(index)}><BsInfoCircle size={'17px'} /></a>
                                 : <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'17px'} /></a>
-                                } {<b>{i.giftName}</b>}
+                                } {<b id={`${index}`}>{i.giftName}</b>}
+                                <a className='editSpan'>
+                                    {<GrEdit onClick={e => handleEdit(e, index)} />}
+                                </a>
                             </td>
                             <td><a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a></td>
                             <td className="requesteeTd">
                             <span id="imgDiv">
                                 {
-                                    i?.img && <div className='imageCropper'><img src={i.img} width={'100%'} /></div>
+                                    i?.img && <div className='imageCropper'><img src={i.img} height={'30px'} style={{borderRadius: '50%'}} /></div>
                                 }
-                                
+                                <span>
                                 {
                                     user.email === i.requestor 
                                     ? "You"
@@ -218,6 +279,7 @@ export default ({ giftArray, user }) => {
                                     ? i.username
                                     : i.requestor
                                 }
+                                </span>
                             </span>
                                 
                             </td>
