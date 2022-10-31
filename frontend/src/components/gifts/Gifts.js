@@ -11,7 +11,7 @@ import './addgiftform.css';
 import './gifts.css';
 
 
-export default ({ giftArray, user }) => {
+export default ({ giftArray, user, inFocus }) => {
     // {giftArray && giftArray.map(i => (<ul key={i.giftName}><li><b>Gift: </b>{i.giftName}</li><li><b>Link: </b>{i.giftLink}</li><li><b>Requestor: </b>{i.requestor}</li><b>Claimed: </b><li>{i.claimed ? "claimed" : i.requestor === user.email ? 'Unavailable to requestor!' : "not claimed"}</li></ul>))}
     const [checked, setChecked] = useState(false)
     const [notChecked, setNotChecked] = useState(true)
@@ -42,7 +42,7 @@ export default ({ giftArray, user }) => {
         // }
         // updateClaimed()
         
-        
+        console.log(inFocus);
 
         
     }, [isClaimed, wasEdited])
@@ -240,6 +240,7 @@ export default ({ giftArray, user }) => {
         }
     }
     // console.log(giftArray.map(i => i?.username))
+    console.log(inFocus);
 
     return (
         <>
@@ -297,7 +298,8 @@ export default ({ giftArray, user }) => {
                             <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee)}><BsInfoCircle size={'20px'} /></a>}</td>
                         </tr>    
                     )}
-                    {giftArray.length === 0 && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}
+                    {giftArray.length === 0 && !inFocus && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}
+                    {giftArray.length === 0 && inFocus && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Nothing matches your search...</h2></td></tr>)}
                 </tbody>
             </table>
             <span className={giftArray.length === 0 ? 'thclaimed' : 'thclaimed2'}>

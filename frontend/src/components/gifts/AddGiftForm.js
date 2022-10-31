@@ -1,5 +1,5 @@
 import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { auth, db } from '../../firebase';
 import { AuthContext } from '../context/AuthContext';
@@ -15,9 +15,9 @@ import { BsFileBreakFill } from 'react-icons/bs';
 
 
 export default () => {
-    const currentUser = useContext(AuthContext) // development
-    const user = currentUser.currentUser // development
-    // const user = auth.currentUser // production version
+    // const currentUser = useContext(AuthContext) // development
+    // const user = currentUser.currentUser // development
+    const user = auth.currentUser // production version
     const location = useLocation();
     const eventId = location.pathname.split("/")[2]
 
@@ -38,6 +38,8 @@ export default () => {
     const [eventParticipants, setEventParticipants] = useState([user.email]);
     const [chosen, setChosen] = useState(1000)
     const [giftRef] = useState(eventId);
+    const searchInput = useRef(null)
+    const [inFocus, setInFocus] = useState(false)
 
     
     
@@ -103,6 +105,7 @@ useEffect(() => {
 }, [didSubmit])
 
 // console.log(eventParticipants);
+// console.log(giftArray);
 
     const handleSubmit = async e => {
         let defaultCost = 0
@@ -185,12 +188,12 @@ useEffect(() => {
         let keys = ['giftName', 'requestor', 'username']
 
         if(choice === 1000) { // all
-            return data.filter(i => i.giftCost <= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+            return data.filter(i => keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase())))
         } else if (choice === 201) { 
-            return data.filter((i => i.giftCost >= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
+            return data.filter((i => i?.giftCost >= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
         } else if (choice) { 
-            return data.filter((i => i.giftCost >= choice - 25 && i.giftCost <= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
-        } else {
+            return data.filter((i => i?.giftCost >= choice - 25 && i?.giftCost <= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
+        } else  if (!choice) {
             return data.filter((item) =>
             keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
         }
@@ -287,6 +290,7 @@ useEffect(() => {
 
             const remGiftName = yourItems[item]
             setRemObject(remGiftName)
+            let mes = 'Send the claimee an automated email regarding the removal of the gift they formerly claimed?'
 
             let warningMessage;
             switch
@@ -311,12 +315,12 @@ useEffect(() => {
                         title: `Gift: "${gift}" removed!`,
                         confirmButtonColor: 'crimson',
                         confirmButtonText: 'Got it!',
-                        input: 'checkbox',
+                        input: giftIsClaimed ? 'checkbox' : '',
                         inputValue: 1,
-                        html: 'Send the claimee an automated email regarding the removal of the gift they formerly claimed?',
+                        html: giftIsClaimed ? `${mes}` : ``,
                     })
-                    if (email) {
-                        let tex;
+                    if (email && giftIsClaimed) {
+                        let tex = ''
                         const { value: text } = await Swal.fire({
                             title: 'Notes to user in automated email...',
                             input: 'textarea',
@@ -409,9 +413,9 @@ useEffect(() => {
             </div>
             <div className='searchContainer'>
                 <span>
-                    <input className='searchInput' type="text" value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
+                    <input className='searchInput' type="text" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
-                <select id="selectValue" name="cost" onChange={e =>handleSelect(e)}>
+                <select id="selectValue" name="cost" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} onChange={e =>handleSelect(e)}>
                     <optgroup label="Filter Choices">
                         <option value="1000">All Items</option>
                         <option value="25">Up to 25$</option>
@@ -428,7 +432,7 @@ useEffect(() => {
                 </span>
                 
             </div>
-            <Gifts giftArray={giftArray && search(giftArray, chosen)} user={user}/>
+            <Gifts giftArray={giftArray && search(giftArray, chosen)} user={user} inFocus={inFocus}/>
         </>) : (
             <div style={{textAlign: 'center'}}>
                 <h1>You must be added to the event list to participate!</h1>

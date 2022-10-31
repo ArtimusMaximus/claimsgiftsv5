@@ -10,6 +10,7 @@ import { GiCheckMark } from 'react-icons/gi';
 import { deleteUser, onAuthStateChanged, sendEmailVerification, updateProfile } from 'firebase/auth';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+
 import { SignedIn } from './events/dateformat';
 
 
@@ -17,10 +18,10 @@ import { SignedIn } from './events/dateformat';
 
 
 export default () => {
-    // const user = auth.currentUser // production
+    const user = auth.currentUser // production
 
     const currentUser = useContext(AuthContext)
-    const user = currentUser.currentUser // development
+    // const user = currentUser.currentUser // development
     const navigate = useNavigate()
     
     
