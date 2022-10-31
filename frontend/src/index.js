@@ -14,6 +14,7 @@ import ProfilePage from './components/profile/ProfilePage';
 import LoggedOut from './components/LoggedOut';
 import OauthLogin from './components/OauthLogin';
 import VerifyEmail from './components/VerifyEmail';
+import About from './components/About';
 
 
 
@@ -32,6 +33,7 @@ root.render(
         <Route path="/dashboard/user/:profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
         <Route path="/dashboard/:id" element={<RequireAuth><AddGiftForm /></RequireAuth>} />
         <Route path="/departure" element={<LoggedOut />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<RedirectPage />} />
       </Route>
     </Routes>

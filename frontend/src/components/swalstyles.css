@@ -43,6 +43,12 @@
     font-size: 1rem;
 }
 
+.swal2-label {
+    width: 100px;
+}
+.swal2-radio > label > input {
+    width: 50px;
+}
 
 
 

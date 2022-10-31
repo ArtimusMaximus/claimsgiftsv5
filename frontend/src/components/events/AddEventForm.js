@@ -9,6 +9,7 @@ import { FaEnvelopeOpenText } from 'react-icons/fa'
 import { TbMailbox } from 'react-icons/tb'
 import emailjs from '@emailjs/browser';
 import { propsDate } from './dateformat';
+import { BiHide } from 'react-icons/bi';
 
 
 export default () => {
@@ -24,6 +25,7 @@ export default () => {
     const [eventRef, setEventRef] = useState(user2)
     const [didSubmit, setDidSubmit] = useState(false)
     const [eventParticipants, setEventParticipants] = useState([userEmail])
+    const [hiddenEvents, setHiddenEvents] = useState([])
     
     
     /////////////check events//////
@@ -52,6 +54,23 @@ export default () => {
             }
         }
         getUserEvents()
+        const getHiddenEventsList = async () => {
+            const arr = [];
+            const docRef = doc(db, 'users', user2)
+            const docSnap = await getDoc(docRef)
+            if (docSnap.exists()) {
+                // console.log(docSnap.data());
+                
+                    arr.push(
+                        docSnap.data()?.hideEventsList
+                    )
+                    setHiddenEvents(...arr)
+                
+                
+            }
+        }
+        getHiddenEventsList()
+        console.log('hidden evens in useeffect ', hiddenEvents);
 
         const unsubscribe = onSnapshot(queryInvites, querySnapshot => {
             let invites = [];
@@ -286,9 +305,9 @@ export default () => {
             inputPlaceholder: `Events to remove...`
         })
         if (selection) {
-            console.log(selection);
-            console.log(eventsToRemove[selection]);
-            console.log(eventsToRemoveId[selection]);
+            // console.log(selection);
+            // console.log(eventsToRemove[selection]);
+            // console.log(eventsToRemoveId[selection]);
 
             Swal.fire({
                 title: 'Removing this event cannot be undone!',
@@ -312,6 +331,83 @@ export default () => {
 
         }
     }
+    const handleHide = async () => {
+        const eventsToHide = docData.map(i => i.events.eventName)
+        const eventsToHideRef = docData.map(i => i.id)
+        console.log(docData);
+        console.log('inside handleHide function ' , hiddenEvents);
+        let c = ['Hide', 'Unhide']
+
+        const { value: choice } = await Swal.fire({
+            title: 'Please select if you are hiding or unhiding an event...',
+            confirmButtonColor: 'crimson',
+            showCancelButton: true,
+            input: 'radio',
+            inputOptions: {
+                ...c
+            }
+        })
+        if (choice === '0') { // hide
+            const { value: hideSelect } = await Swal.fire({
+                title: 'Please select which event to hide:',
+                input: 'select',
+                confirmButtonColor: 'crimson',
+                inputOptions: {
+                    ...eventsToHide,
+                },
+                inputPlaceholder: '<b>Events to hide...</b>'
+            })
+            if (hideSelect) {
+                const chosen = eventsToHide[hideSelect]
+                const chosenRef = eventsToHideRef[hideSelect]
+                
+                if (hiddenEvents.length !== 0) {
+                    setHiddenEvents(prev => [...prev, { choice: chosen, choiceRef: chosenRef }])
+                } else {
+                    setHiddenEvents([{ choice: chosen, choiceRef: chosenRef }])
+                }
+    
+                const docRef = doc(db, 'users', user2)
+                await updateDoc(docRef, {
+                    hideEventsList: arrayUnion({choice: chosen, choiceRef: chosenRef})
+                })
+                setDidSubmit(prev => !prev)    
+            }
+        } else if (choice === '1') { // unhide
+            let hidden = hiddenEvents.map(i => i.choice)
+            const { value: unhideChoice } = await Swal.fire({
+                title: 'Select which event to unhide...',
+                showCancelButton: true,
+                confirmButtonColor: 'crimson',
+                input: 'select',
+                inputOptions: {
+                    ...hidden
+                }
+            })
+            if (unhideChoice) {
+                console.log(hiddenEvents[unhideChoice]);
+                let updatedHideList = hiddenEvents.filter(e => !hiddenEvents[unhideChoice].choiceRef.includes(e.choiceRef))
+                console.log(updatedHideList);
+
+                const docRef = doc(db, 'users', user2)
+                await updateDoc(docRef, {
+                    hideEventsList: updatedHideList
+                })
+                setHiddenEvents(updatedHideList)
+            }
+        }
+
+
+        
+        
+        
+    }
+    console.log('hidden events ', hiddenEvents);
+
+    const filterHiddenEvents = (docData, hiddenEvents) => {
+    let hideChoice = hiddenEvents.map(i => i.choiceRef)
+       return docData.filter(e => !hideChoice.includes(e.id))
+    }
     
 
     return (
@@ -323,16 +419,19 @@ export default () => {
                     <div style={{display: 'flex', justifyContent: 'center'}}>
                         <button type="submit" className='addEvent btnInvert' onClick={() => setDidSubmit(false)}>Add Event</button>
                         <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent btnInvert'>Remove Event</button>
+                        
                     </div>
                     <div id="invitesTainer">
+
                         <div>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>
                         <div>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'#dc143c'} /></a></div>
+                        <div>Hide Event&nbsp;<a onClick={handleHide}><BiHide color={'#dc143c'} /></a></div>
                     </div>
                 </form>
                 
             </div>
             
-                <Events data={docData}   /> {/* lastly: send event blob here*/} {/* docData was the original */}
+                <Events data={docData && filterHiddenEvents(docData, hiddenEvents)}   /> {/* lastly: send event blob here*/} {/* docData was the original */}
             
         </>
     )

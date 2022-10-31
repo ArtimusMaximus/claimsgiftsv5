@@ -1,0 +1,9 @@
+.aboutTainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    text-align: center;
+    width: 60vw;
+    margin: auto;
+}
