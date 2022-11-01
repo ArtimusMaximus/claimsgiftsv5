@@ -257,13 +257,13 @@ export default ({ giftArray, user, inFocus }) => {
                     </tr>}
                     {giftArray && giftArray.map((i, index) =>
                         <tr key={i.giftName + inc++} className={index % 2 === 0 ? "firstTableRow" : ''}>
-                            {/* <div className="tooltip" style={show ? {display: 'block'} : {display: 'none'} }>{i.giftName}</div> */}
+                            
                             <td className="giftNametd">{user.email === i.requestor 
-                                ? <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => giftInfo(index)}><BsInfoCircle size={'17px'} /></a>
-                                : <a onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'17px'} /></a>
+                                ? <a onClick={() => giftInfo(index)}><BsInfoCircle size={'17px'} /></a>
+                                : <a onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'17px'} /></a>
                                 } {<b id={`${index}`}>{i.giftName}</b>}
                                 <a className='editSpan'>
-                                    {<GrEdit onClick={e => handleEdit(e, index)} />}
+                                    {user.email === i.requestor && <GrEdit onClick={e => handleEdit(e, index)} />}
                                 </a>
                             </td>
                             <td>{i.giftLink !== '' && <a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>

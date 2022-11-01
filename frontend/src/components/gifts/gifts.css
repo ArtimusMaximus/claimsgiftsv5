@@ -109,9 +109,7 @@
   th {
     padding: 2.5px;
   }
-  /* td {
-    margin: 5px;
-  } */
+  
 
   .requesteeTd {
     font-size: 1.25rem;
@@ -137,7 +135,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    border-radius: 3px;
+    border-radius: 4px;
 
   }
   @media screen and (min-width: 1300px) {

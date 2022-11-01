@@ -78,7 +78,7 @@ export default ({ userId, userInfo }) => {
     return (
         <>
             <div className="avatarContainer">
-                <div>Upload an Avatar</div>
+                <div>Choose an Avatar</div>
                 <div>
                     <img src={data.url ? data.url : userInfo.img !== undefined ? userInfo.img : blankProfile} width="auto" height="125px" style={{borderRadius: '50%'}}/>
                 </div>

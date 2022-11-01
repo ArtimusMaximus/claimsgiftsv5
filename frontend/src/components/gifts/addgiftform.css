@@ -238,4 +238,10 @@ input:disabled {
     border: 1px solid black;
     border-radius: 5px;
 }
+#eventBreakDown {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
 

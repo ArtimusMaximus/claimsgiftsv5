@@ -21,7 +21,7 @@ export default () => {
 
             try {
                 if (docSnap.exists()) {
-                    setUserInfo({ username: docSnap.data().username, img: docSnap.data().img })
+                    setUserInfo({ username: docSnap.data().username, img: docSnap.data().img, userEmail: docSnap.data().email })
                 }
             } catch(error) {
                 if (error) {
@@ -36,15 +36,17 @@ export default () => {
 
         }
         getUserInfo();
+        
 
     }, [])
-    
+    console.log(userInfo);
     
 
     return (
         <>
         <div className="containAll">
             <div className="container">
+               <h3>{userInfo.userEmail}</h3>
                 <UploadImage userId={userId} userInfo={userInfo} />
             </div>
             <hr />

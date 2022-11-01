@@ -1,14 +1,16 @@
 import { arrayUnion, doc, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useContext, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { auth, db } from '../../firebase';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
+import { BsBoxArrowInRight, BsInfoCircle } from 'react-icons/bs';
 import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
 import { AuthContext } from '../context/AuthContext';
 import emailjs from '@emailjs/browser';
+import { searchBarInfo } from './searchbarinfo';
 import './addgiftform.css';
 
 
@@ -396,7 +398,8 @@ useEffect(() => {
         <>
         {onTheList || user.email === eventData.eventOwner ? (<>
             <div>
-                {eventData && <h2 style={{marginTop: '10px', marginBottom:'10px'}}>Event: {eventData.eventName}</h2>}
+                {eventData && <h2 style={{marginTop: '10px', marginBottom:'5px'}}>Event: {eventData.eventName}</h2>}
+                <span id="eventBreakDown">Go to event breakdown <Link to={`/dashboard/eventinfo/${eventId}`} style={{textDecoration: 'none', color: 'crimson'}}><BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link></span>
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                     <span id="addeventparti">Add event participants</span>
                     <MdGroupAdd id="addPartIcon" size={'36px'} onClick={sweetModal} />
@@ -420,7 +423,7 @@ useEffect(() => {
             </div>
             <div className='searchContainer'>
                 <span>
-                    <input className='searchInput' type="text" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
+                   <a onClick={searchBarInfo}><BsInfoCircle size={'25px'} /></a><input className='searchInput' type="text" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
                 <select id="selectValue" name="cost" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} onChange={e =>handleSelect(e)}>
                     <optgroup label="Filter Choices">
