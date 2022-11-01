@@ -14,10 +14,10 @@ import { BiHide } from 'react-icons/bi';
 
 export default () => {
     const currentUser = useContext(AuthContext)
-    const user2 = currentUser.currentUser.uid // development
-    const userEmail = currentUser.currentUser?.email // development
-    // const userEmail = auth.currentUser.email // production version
-    // const user2 = auth.currentUser.uid // production version
+    // const user2 = currentUser.currentUser.uid // development
+    // const userEmail = currentUser.currentUser?.email // development
+    const userEmail = auth.currentUser.email // production version
+    const user2 = auth.currentUser.uid // production version
 
     const [eventName, setEventName] = useState('')
     const [eventDate, setEventDate] = useState(propsDate)
@@ -357,7 +357,7 @@ export default () => {
                 const chosen = eventsToHide[hideSelect]
                 const chosenRef = eventsToHideRef[hideSelect]
                 
-                if (hiddenEvents.length !== 0) {
+                if (hiddenEvents) {
                     setHiddenEvents(prev => [...prev, { choice: chosen, choiceRef: chosenRef }])
                 } else {
                     setHiddenEvents([{ choice: chosen, choiceRef: chosenRef }])
@@ -412,7 +412,7 @@ export default () => {
 
                         <div className='chkInvHide'>Check Event Invites &nbsp;<a onClick={handleCheckEventClick}><TbMailbox size={'35px'} color={'#dc143c'} /></a></div>
                         <div className='chkInvHide'>Invite User to attend &nbsp;<a onClick={handleInviteClick}><FaEnvelopeOpenText size={'35px'} color={'#dc143c'} /></a></div>
-                        <div className='chkInvHide'>Hide Event&nbsp;<a onClick={handleHide}><BiHide color={'#dc143c'} /></a></div>
+                        {docData.length > 0 && <div className='chkInvHide'>Hide Event&nbsp;<a onClick={handleHide}><BiHide color={'#dc143c'} /></a></div>}
                     </div>
                 </form>
                 

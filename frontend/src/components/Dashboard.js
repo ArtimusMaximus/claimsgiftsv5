@@ -10,6 +10,7 @@ import { GiCheckMark } from 'react-icons/gi';
 import { deleteUser, onAuthStateChanged, sendEmailVerification, updateProfile } from 'firebase/auth';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+
 import { SignedIn } from './events/dateformat';
 
 

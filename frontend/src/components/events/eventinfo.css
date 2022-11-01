@@ -1,0 +1,77 @@
+.eventInfoTainer {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;  */
+    align-items: center;
+    width: 70vw;
+    margin-left: 15vw;
+    height: 100vh;
+    
+}
+.eventInfoTainer > h2 {
+    margin: 5px 0px 5px 0px;
+    text-align: center;
+}
+.eventInfoTainer > h3 {
+    margin: 5px 0px 5px 0px;
+    text-align: center;
+}
+.eventInfoTainer > h5 {
+    margin: 5px 0px 15px 0px;
+    text-align: center;
+}
+
+
+
+.tableTainer {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;  */
+    align-items: center;
+}
+
+.tableTainer > table > th {
+    font-size: 3rem;
+}
+#dropDownTainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+#dropDownTainer > select {
+    font-family: 'Tangerine', cursive;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+#dropDownTainer > select > optgroup > option {
+    font-family: 'Tangerine', cursive;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+.firstRowColor {
+    background-color: rgba(220, 20, 60, .25); 
+}
+.firstRowColor > td {
+    border-radius: 4px;
+}
+.total {
+    border: 1px solid crimson;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 2rem;
+}
+.eInfoSelect {
+    border-radius: 4px;
+    margin-right: 5px;
+}
+.hideTainer {
+    display: none;
+}
+.noData {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+

@@ -4,7 +4,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { AuthContext } from "./context/AuthContext";
 import Swal from "sweetalert2";
-import { AiOutlineGoogle } from 'react-icons/ai'
+import { AiOutlineGoogle } from 'react-icons/ai';
+import oauth2 from '../Oauth_logo2.svg.png';
+import { AiOutlineYahoo } from 'react-icons/ai';
 import './login.css'
 
 
@@ -86,7 +88,8 @@ export default () => {
                 <div className="newuser">
                     <p style={{marginTop:'5px', marginBottom: '5px'}}>New User?</p><p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
                     <p style={{marginTop:'5px', marginBottom: '5px'}}>Or...</p>
-                    <p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/oauth">Sign In via Google <AiOutlineGoogle /></Link></p>
+                    <p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/oauth">Sign In via <AiOutlineGoogle width={'40px'} /> <AiOutlineYahoo width={'40px'} /> </Link></p>
+                    {/* <img src={oauth2} width={'40px'} /> */}
                 </div>
             </div>
 

@@ -15,6 +15,7 @@ import LoggedOut from './components/LoggedOut';
 import OauthLogin from './components/OauthLogin';
 import VerifyEmail from './components/VerifyEmail';
 import About from './components/About';
+import EventInfo from './components/events/EventInfo';
 
 
 
@@ -30,6 +31,7 @@ root.render(
         <Route path="/auth" element={<VerifyEmail />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+        <Route path="/dashboard/eventinfo/:event" element={<RequireAuth><EventInfo /></RequireAuth>} />
         <Route path="/dashboard/user/:profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
         <Route path="/dashboard/:id" element={<RequireAuth><AddGiftForm /></RequireAuth>} />
         <Route path="/departure" element={<LoggedOut />} />
