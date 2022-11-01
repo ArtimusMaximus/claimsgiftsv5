@@ -73,7 +73,8 @@ useEffect(() => {
         if (userInfo.exists) {
             setUserData({
                 username: userInfo.data().username || '',
-                img: userInfo.data().img || ''
+                img: userInfo.data().img || '',
+                userEmail: userInfo.data().email
             })
         } else {
             console.log('no data');
@@ -189,13 +190,16 @@ useEffect(() => {
 
         if(choice === 1000) { // all
             return data.filter(i => keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase())))
-        } else if (choice === 201) { 
+        } else if (choice === 201) {
             return data.filter((i => i?.giftCost >= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
-        } else if (choice) { 
+        } else  if (choice === 'yourClaims') {
+            return data.filter((i) => i?.claimee === user.email && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        } else if (choice) {
             return data.filter((i => i?.giftCost >= choice - 25 && i?.giftCost <= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
-        } else  if (!choice) {
-            return data.filter((item) =>
-            keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        // } else  if (!choice) {
+        //     console.log('!choice fired');
+        //     return data.filter((item) =>
+        //     keys.some((key) => item[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
         }
     }
 // i believe we are going to need to combine these twon functions
@@ -246,6 +250,9 @@ useEffect(() => {
                     break;
                 case '1000':
                     setChosen(1000)
+                    break;
+                case 'yourClaims':
+                    setChosen('yourClaims')
                     break;
                 default:
                     setChosen(100000)
@@ -427,6 +434,7 @@ useEffect(() => {
                         <option value="175">150 to 175$</option>
                         <option value="200">175 to 200$</option>
                         <option value="201">200$ and up</option>
+                        <option value="yourClaims">Your claims</option>
                     </optgroup>
                 </select>
                 </span>
