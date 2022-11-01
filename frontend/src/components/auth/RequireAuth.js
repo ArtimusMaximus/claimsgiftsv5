@@ -39,6 +39,6 @@ export default ({ children }) => {
 
 
 
-    return currentUser ? children : <Navigate to="/" />
+    return user ? children : <Navigate to="/" />
     
 }

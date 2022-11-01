@@ -14,10 +14,10 @@ import { BiHide } from 'react-icons/bi';
 
 export default () => {
     const currentUser = useContext(AuthContext)
-    const user2 = currentUser.currentUser.uid // development
-    const userEmail = currentUser.currentUser?.email // development
-    // const userEmail = auth.currentUser.email // production version
-    // const user2 = auth.currentUser.uid // production version
+    // const user2 = currentUser.currentUser.uid // development
+    // const userEmail = currentUser.currentUser?.email // development
+    const userEmail = auth.currentUser.email // production version
+    const user2 = auth.currentUser.uid // production version
 
     const [eventName, setEventName] = useState('')
     const [eventDate, setEventDate] = useState(propsDate)
