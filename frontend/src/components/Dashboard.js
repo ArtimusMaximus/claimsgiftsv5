@@ -18,10 +18,10 @@ import { SignedIn } from './events/dateformat';
 
 
 export default () => {
-    const user = auth.currentUser // production
+    // const user = auth.currentUser // production
 
     const currentUser = useContext(AuthContext)
-    // const user = currentUser.currentUser // development
+    const user = currentUser.currentUser // development
     const navigate = useNavigate()
     
     

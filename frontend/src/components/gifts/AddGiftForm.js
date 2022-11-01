@@ -1,23 +1,24 @@
-import { arrayUnion, doc, getDocs, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { arrayUnion, doc, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
+import React, { useEffect, useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { auth, db } from '../../firebase';
-import { AuthContext } from '../context/AuthContext';
 import Swal from 'sweetalert2'
 import Gifts from './Gifts';
 import { IoRefreshSharp } from 'react-icons/io5';
 import { FaPaste } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md'
-import './addgiftform.css';
+import { AuthContext } from '../context/AuthContext';
 import emailjs from '@emailjs/browser';
-import { BsFileBreakFill } from 'react-icons/bs';
+import './addgiftform.css';
+
+
 
 
 
 export default () => {
-    // const currentUser = useContext(AuthContext) // development
-    // const user = currentUser.currentUser // development
-    const user = auth.currentUser // production version
+    const currentUser = useContext(AuthContext) // development
+    const user = currentUser.currentUser // development
+    // const user = auth.currentUser // production version
     const location = useLocation();
     const eventId = location.pathname.split("/")[2]
 
@@ -38,7 +39,6 @@ export default () => {
     const [eventParticipants, setEventParticipants] = useState([user.email]);
     const [chosen, setChosen] = useState(1000)
     const [giftRef] = useState(eventId);
-    const searchInput = useRef(null)
     const [inFocus, setInFocus] = useState(false)
 
     

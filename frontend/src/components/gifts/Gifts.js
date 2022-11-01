@@ -42,7 +42,7 @@ export default ({ giftArray, user, inFocus }) => {
         // }
         // updateClaimed()
         
-        console.log(inFocus);
+        // console.log(inFocus);
 
         
     }, [isClaimed, wasEdited])
@@ -240,7 +240,7 @@ export default ({ giftArray, user, inFocus }) => {
         }
     }
     // console.log(giftArray.map(i => i?.username))
-    console.log(inFocus);
+    // console.log(inFocus);
 
     return (
         <>
@@ -266,7 +266,7 @@ export default ({ giftArray, user, inFocus }) => {
                                     {<GrEdit onClick={e => handleEdit(e, index)} />}
                                 </a>
                             </td>
-                            <td><a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a></td>
+                            <td>{i.giftLink !== '' && <a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
                             <td className="requesteeTd">
                             <span id="imgDiv">
                                 {
