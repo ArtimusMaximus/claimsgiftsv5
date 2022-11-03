@@ -1,14 +1,16 @@
 import { collection, setDoc, updateDoc, doc, arrayUnion, where, query, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { BsInfoCircle } from 'react-icons/bs';
+import { BsFileBreakFill, BsInfoCircle } from 'react-icons/bs';
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import Swal from 'sweetalert2';
 import { db } from '../../firebase';
 import { GrEdit } from 'react-icons/gr'
+import { MdCallSplit } from 'react-icons/md'
 
 import './addgiftform.css';
 import './gifts.css';
+import { GiSawClaw } from 'react-icons/gi';
 
 
 export default ({ giftArray, user, inFocus }) => {
@@ -17,10 +19,12 @@ export default ({ giftArray, user, inFocus }) => {
     const [notChecked, setNotChecked] = useState(true)
     const [isClaimed, setIsClaimed] = useState(Boolean)
     const [toggle, setToggle] = useState(true)
+    const [splittable, setSplittable] = useState(false)
     const [show, setShow] = useState(false)
     const [wasEdited, setWasEdited] = useState(false)
     const [newName, setNewName] = useState('')
     const [newLink, setNewLink] = useState('')
+    const [claimeeArray, setClaimeeArray] = useState([])
 
     // console.log(giftArray[0]?.giftLink);
     
@@ -43,25 +47,20 @@ export default ({ giftArray, user, inFocus }) => {
         // updateClaimed()
         
         // console.log(inFocus);
+        
+        setClaimeeArray(giftArray)
 
         
     }, [isClaimed, wasEdited])
 
-    const updateClaimed = async () => {
-        const docRef = doc(db, "events", eventId)
-        await updateDoc(docRef, {
-            gifts: [...giftArray]
-        })
-    }
+    console.log(giftArray);
+
     const handleEdit = async (e, index) => {
         e.preventDefault()
-        
         
         let name = giftArray[index].giftName
         let link = giftArray[index].giftLink
         let cost = giftArray[index]?.giftCost
-
-        
 
         const { value : editedText } = await Swal.fire({
             title: 'Edit values...',
@@ -106,51 +105,84 @@ export default ({ giftArray, user, inFocus }) => {
 
     }
 
-    const handleChange = (e) => {
+    const updateClaimed = async () => {
+        
+        const docRef = doc(db, "events", eventId)
+        await updateDoc(docRef, {
+            gifts: [...giftArray]
+        })
+    }
+
+    const handleClaim = async (e) => {
         console.log(e.target.id)
             return Swal.fire({
                 title: 'Would you like to claim this gift?',
-                inputLabel: 'Email',
                 confirmButtonColor: 'crimson',
                 showCancelButton: true,
-                cancelButtonColor: 'gray'
+                cancelButtonColor: 'gray',
             })
-            .then((result) => {
-                if (result.isConfirmed) {
-                    setIsClaimed(true)
-                    
-                    setChecked(current => !current)
-                    
-                    giftArray[e.target.id].claimed = true
-                    giftArray[e.target.id].claimee = user.email
- 
-                    updateClaimed()
-                } else {
-                    return
-                }
-                Swal.fire({
-                    title: `${user.email} has claimed this gift!`,
-                    confirmButtonColor: 'crimson'
-                })
+            .then( async (result) => {
+            if (result.isConfirmed) {
                 
+                setChecked(current => !current)
+
+                giftArray[e.target.id].claimed = true
+                giftArray[e.target.id].claimee = user.email
+                
+               updateClaimed()
+               setIsClaimed(true)
+            } else {
+                return
+            }
+            if (giftArray[e.target.id].splittable === false) {
+
+            const { value: split } = await Swal.fire({
+                    title: `${user.email} has claimed this gift!`,
+                    confirmButtonColor: 'crimson',
+                    text: 'Allow others to split?',
+                    input: 'checkbox',
+                    inputValue: 0
+                })
+                if (split) {
+                    giftArray[e.target.id].splittable = true
+                    console.log(split, typeof split);
+                    setSplittable(true)
+                    updateClaimed()
+                }
+            }            
             })
             .catch((error) => console.log(error))
         }
     const handleUnclaim = (e) => {
+        let msg;
+        switch
+            (giftArray[e.target.id].splittable) {
+                case true:
+                    msg = '(This will remove all splittees)'
+                    break;
+                default:
+                    msg = ''
+            }
         return Swal.fire({
             title: 'You have this gift claimed, would you like to unclaim it?',
+            html: `${msg}`,
             showCancelButton: true,
             confirmButtonColor: 'crimson'
         })
         .then((result) => {
             if (result.isConfirmed) {
-                setIsClaimed(false)
-                setNotChecked(current => !current)
                 
+                // const filterOutClaimee = claimeeArray[e.target.id].filter(i => i === user.email)
+                // console.log(filterOutClaimee);
+
+                giftArray[e.target.id].claimee = '' // this needs to change to an updated array filtering out the unclaimer
                 giftArray[e.target.id].claimed = false
-                giftArray[e.target.id].claimee = ''
+                giftArray[e.target.id].splittable = false
+                giftArray[e.target.id].splittees = ''
 
                 updateClaimed()
+                setIsClaimed(false)
+                setNotChecked(current => !current)
             } else {
                 return
             }
@@ -161,11 +193,68 @@ export default ({ giftArray, user, inFocus }) => {
         })
         
     }
+    const handleSplit = async (e) => {
+        let num = parseInt(e.target.id.slice(5))
+        console.log(num);
+        const claimee = giftArray[num].claimee
+        let existingSplittees = giftArray[num]?.splittees
+        if (user.email === claimee) {
+            return Swal.fire({
+                title: 'You are the initial item claimee. To remove the option to split with others, unclaim this item!',
+                icon: 'warning',
+                confirmButtonColor: 'crimson',
+                confirmButtonText: 'Confirmed'
+            })
+        } else if (existingSplittees?.includes(user.email)) {
+            const { value: remove } = await Swal.fire({
+                title: 'You are already on the splittee list, would you like to remove yourself from this list?',
+                confirmButtonColor: 'crimson',
+                showCancelButton: true,
+                input: 'checkbox',
+                inputValue: 0,
+
+            })
+            if (remove === 1) {
+                const filterYourselfOut = existingSplittees.filter(i => i !== user.email)
+                console.log(filterYourselfOut);
+                giftArray[num].splittees = filterYourselfOut
+                updateClaimed();
+            }
+        } else {
+            const { value: confirmSplit } = await Swal.fire({
+                title: `${claimee} has claimed this item and is allowing for others to split.`,
+                html: `Would you like to split this item with ${claimee} and potential others?`,
+                confirmButtonColor: 'crimson',
+                input: 'checkbox',
+                inputValue: 0,
+                showCancelButton: true
+    
+            })
+            if (confirmSplit) {
+                let arr = [];
+                
+                console.log(existingSplittees);
+                if (existingSplittees !== undefined && existingSplittees !== '') {
+                    arr.push(...giftArray[num]?.splittees, user.email)
+                } else {
+                    arr.push(user.email)
+                }
+                
+                
+                giftArray[num].splittees = arr
+                console.log(giftArray[num]?.splittees);
+                updateClaimed();
+            }
+        }
+    }
+
+
+
     const handleToggle = () => {
         setToggle(prev => !prev)
     }
 
-    const claimedInfo = async (claimee) => {
+    const claimedInfo = async (claimee, splittees) => {
         // console.log(claimee);
         await Swal.fire({
             title: 'This will reveal who has claimed this item!',
@@ -182,7 +271,7 @@ export default ({ giftArray, user, inFocus }) => {
                 })
             } else if (result.isConfirmed) {
                 Swal.fire({
-                    title: `Item Claimee: ${claimee}`,
+                    title: `Item Claimee(s): ${splittees.length >= 1 ? claimee + ', ' : claimee} ${splittees === undefined || splittees === '' ? '' : splittees?.map(i => i).join(', ')} `,
                     confirmButtonColor: 'crimson'
                 })
             } else {
@@ -288,14 +377,16 @@ export default ({ giftArray, user, inFocus }) => {
                                 {
                                     user.email === i.requestor && toggle 
                                     ? '?¿' 
-                                    : i.claimed
-                                    ?  <input className='cb' id={index} type="checkbox" value={checked} disabled={user.email === i.claimee ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} />
-                                    :  <input className='cb' id={index} type="checkbox" value={notChecked} checked={i.claimed} onChange={e => handleChange(e)} />
+                                    : i.claimed && i.splittable
+                                    ?  <><input className='cb' id={index} type="checkbox" value={checked} disabled={i.claimee.includes(user.email) ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} /><a className="splitLink"><MdCallSplit onClick={e => handleSplit(e)} id={'split' + index} /></a></>
+                                    : i.claimed && !i.splittable
+                                    ? <input className='cb' id={index} type="checkbox" value={checked} disabled={i.claimee.includes(user.email) ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} />
+                                    : <input className='cb' id={index} type="checkbox" value={notChecked} checked={i.claimed} onChange={e => handleClaim(e)} />
                                     
                                 }
                                 
                             </td>
-                            <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee)}><BsInfoCircle size={'20px'} /></a>}</td>
+                            <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee, i.splittees)}><BsInfoCircle size={'20px'} /></a>}</td>
                         </tr>    
                     )}
                     {giftArray.length === 0 && !inFocus && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}

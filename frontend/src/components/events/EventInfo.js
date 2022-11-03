@@ -37,18 +37,23 @@ export default () => {
 
     }, [])
     console.log(eventsData);
-    console.log(user);
+    // console.log(user);
 
-    const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email)
+    const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email) // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
+    // const splitUsersList = eventsData?.gifts?.map(i => i.splittees)
+    // console.log(splitUsersList);
+    // const itemsSplit = eventsData?.gifts?.filter(i => i.splittees !== undefined && i.splittees !== '' && i.splittees?.includes(user.email))
+    const itemsSplit = eventsData?.gifts?.filter(i => i.splittees?.includes(user.email))
+    console.log(itemsSplit);
     const claimedGuestsList = itemsClaimed?.map(i => i.requestor)
     const s = [...new Set(claimedGuestsList)]
-    console.log(claimedGuestsList);
-    console.log(s);
+    // console.log(claimedGuestsList);
+    // console.log(s);
 
     const userKeys = eventsData?.eventParticipants // all users
     const unAccountedFor = userKeys?.filter(i => !s.includes(i))
-    console.log(unAccountedFor);
-    console.log(itemsClaimed);
+    // console.log(unAccountedFor);
+    // console.log(itemsClaimed);
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -63,11 +68,17 @@ export default () => {
         }
     }
 
-    const filterData = (eventsData) => {
+    const filterData = (eventsData, itemsSplit) => {
         let s = eventsData?.filter((gift) => gift?.requestor === selection)
         if (selection === 'All') {
+            console.log(eventsData);
             return eventsData
+        } else if (selection === 'splits') {
+            console.log(itemsSplit);
+            // let spl = eventsData?.filter((gift) => gift.splittees !== undefined && gift.splittees !== '' && gift.splittees.includes(user.email))
+            return itemsSplit
         } else {
+            console.log('hit else statement');
             return s
         }
     }
@@ -95,7 +106,7 @@ export default () => {
     return (
         <>
             <div className="eventInfoTainer">
-                <h2>Event Breakdown: </h2>
+                <h2>Event Summary: </h2>
                 {eventsData && <h3>{eventsData.events?.eventName} on {dateFormat}</h3>}
                 {eventsData && <h5 style={{textAlign: 'center'}}>Event created by "{eventsData.events?.eventOwner}"</h5>}
                 <Link to={`/dashboard/${loc}`} style={{textDecoration: 'none', color: 'crimson'}}>Go to this event <BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link>
@@ -106,6 +117,7 @@ export default () => {
                         <optgroup label="Users">
                             <option value="All">All User gifts you have claimed</option>
                             {eventsData?.eventParticipants?.map(i => <option key={i} value={`${i}`}>{i}</option>)}
+                            <option value="splits">Items you are splitting</option>
                         </optgroup>
                     </select>
                     <span style={{marginRight: '5px', backgroundColor: 'white', padding: '3px', borderRadius: '4px'}}><label>Guest List</label><a onClick={guestList}><BsCardChecklist size={'30px'} color={'crimson'} style={{marginLeft: '3px'}} /></a></span>
@@ -129,7 +141,7 @@ export default () => {
                             </tr> */}
                             
                             {/* {itemsClaimed?.map((i, index) => <tr key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink}</td><td>{i.giftCost}$</td></tr>)} */}
-                            {mapIt(itemsClaimed)}
+                            {eventsData && mapIt(itemsClaimed)}
                             
                             <tr ><td colSpan={'4'}><span className="total">Estimated Total: {total}$</span></td></tr>
                         </tbody>

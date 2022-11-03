@@ -196,6 +196,8 @@ useEffect(() => {
             return data.filter((i => i?.giftCost >= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
         } else  if (choice === 'yourClaims') {
             return data.filter((i) => i?.claimee === user.email && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        } else  if (choice === 'yourSplits') {
+            return data.filter((i) => i?.splittees !== undefined && i.splittees !== '' && i.splittees.includes(user.email) && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
         } else if (choice) {
             return data.filter((i => i?.giftCost >= choice - 25 && i?.giftCost <= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
         // } else  if (!choice) {
@@ -255,6 +257,9 @@ useEffect(() => {
                     break;
                 case 'yourClaims':
                     setChosen('yourClaims')
+                    break;
+                case 'yourSplits':
+                    setChosen('yourSplits')
                     break;
                 default:
                     setChosen(100000)
@@ -399,7 +404,7 @@ useEffect(() => {
         {onTheList || user.email === eventData.eventOwner ? (<>
             <div>
                 {eventData && <h2 style={{marginTop: '10px', marginBottom:'5px'}}>Event: {eventData.eventName}</h2>}
-                <span id="eventBreakDown">Go to event breakdown <Link to={`/dashboard/eventinfo/${eventId}`} style={{textDecoration: 'none', color: 'crimson'}}><BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link></span>
+                <span id="eventBreakDown">Go to event summary <Link to={`/dashboard/eventinfo/${eventId}`} style={{textDecoration: 'none', color: 'crimson'}}><BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link></span>
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                     <span id="addeventparti">Add event participants</span>
                     <MdGroupAdd id="addPartIcon" size={'36px'} onClick={sweetModal} />
@@ -438,6 +443,7 @@ useEffect(() => {
                         <option value="200">175 to 200$</option>
                         <option value="201">200$ and up</option>
                         <option value="yourClaims">Your claims</option>
+                        <option value="yourSplits">Your splits</option>
                     </optgroup>
                 </select>
                 </span>

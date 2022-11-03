@@ -199,6 +199,7 @@ export default () => {
     
 
     const handleCheckEventClick = () => {
+        
         // console.log(inviteData)
         // console.log('docData ', docData);
 
