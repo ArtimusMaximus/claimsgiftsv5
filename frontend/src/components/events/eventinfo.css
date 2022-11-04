@@ -60,6 +60,7 @@
     border-radius: 4px;
     padding: 10px;
     font-size: 2rem;
+    margin-top: 15px;
 }
 .eInfoSelect {
     border-radius: 4px;
@@ -73,5 +74,9 @@
     align-content: center;
     justify-content: center;
     text-align: center;
+}
+
+table > tbody > tr {
+    height: 67px;
 }
 

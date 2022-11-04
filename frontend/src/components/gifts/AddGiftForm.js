@@ -427,7 +427,7 @@ useEffect(() => {
                     </form> 
             </div>
             <div className='searchContainer'>
-                <span>
+                <span id="filterSpan">
                    <a onClick={searchBarInfo}><BsInfoCircle size={'25px'} /></a><input className='searchInput' type="text" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
                     <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
                 <select id="selectValue" name="cost" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} onChange={e =>handleSelect(e)}>

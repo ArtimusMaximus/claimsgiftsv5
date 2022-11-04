@@ -206,7 +206,7 @@ input:disabled {
 }
 
 #refreshBtn {
-    margin-left: 5px;
+    margin: 10px 1px 10px 1px;
     color: crimson;
     padding: 2px;
     border-radius: 5px;
@@ -231,7 +231,7 @@ input:disabled {
     font-family: 'Tangerine', cursive;
     font-size: 2rem;
     padding-bottom: 5px;
-    
+    width: 125px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -244,4 +244,5 @@ input:disabled {
     justify-content: center;
     margin-bottom: 10px;
 }
+
 

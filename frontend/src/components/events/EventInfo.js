@@ -1,3 +1,4 @@
+import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react"
 import { BsBoxArrowInRight, BsCardChecklist } from "react-icons/bs";
@@ -15,6 +16,7 @@ export default () => {
     const [eventsData, setEventsData] = useState([]);
     const [selection, setSelection] = useState('All');
     const [splitPrice, setSplitPrice] = useState(false)
+    const [loading, setLoading] = useState(true)
     const user = auth.currentUser
     const date = eventsData?.events?.eventDate
     const dateFormat = date?.slice(5, 7) + '-' + date?.slice(8, 10) + '-' + date?.slice(0,4) 
@@ -35,6 +37,13 @@ export default () => {
             }
         }
         getEventInfo();
+        
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            
+            setLoading(false)
+        })
+        return unsubscribe
+        
 
     }, [])
     console.log(eventsData);
@@ -63,7 +72,7 @@ export default () => {
         console.log(selection);
     }
     const formatGiftLink = (link) => {
-        if (link.slice(0, 4).toLowerCase() === 'http') {
+        if (link?.slice(0, 4).toLowerCase() === 'http') {
             return link
         } else {
             return 'https://' + link
@@ -71,17 +80,25 @@ export default () => {
     }
 
     const filterData = (eventsData) => {
-        let eD = eventsData?.filter(i => i.claimee === user?.email)
-        let iS = eventsData?.filter(i => i.splittees?.includes(user?.email))
+        let eD = eventsData?.filter(i => i?.claimee === user?.email)
+        let iS = eventsData?.filter(i => i?.splittees?.includes(user?.email))
+
+        let combinedArr = []
+        eventsData && combinedArr.push(...eD, ...iS)
+        console.log(combinedArr);
 
         console.log(eD);
         console.log(iS);
 
-        let s0 = eventsData?.filter(i => i.claimee === user?.email)
+        let s0 = eventsData?.filter(i => i?.claimee === user?.email)
         let s = s0?.filter((gift) => gift?.requestor === selection)
         if (selection === 'All') {
+            // console.log(eventsData);
+
+            return combinedArr
+        } else if (selection === 'individual') {
             
-            console.log(eventsData);
+            // let spl = eventsData?.filter((gift) => gift.splittees !== undefined && gift.splittees !== '' && gift.splittees.includes(user.email))
             return eD
         } else if (selection === 'splits') {
             
@@ -101,9 +118,9 @@ export default () => {
     const mapIt = (data) => {
         const filt = filterData(data)
         
-        let sum = filt?.map(i => parseInt(i.giftCost))
+        let sum = filt?.map(i => parseInt(i?.giftCost))
         total = sum?.reduce((a, b) => a + b, 0)
-        return filt?.map((i, index) => <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink !== '' && <a href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td><td>{selection === 'splits' ? parseInt(i.giftCost) / (i.splittees.length + 1) : i.giftCost}$</td></tr>)
+        return filt?.map((i, index) => <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}><td>{i?.giftName}</td><td>{i?.username || i?.requestor}</td><td>{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td><td>{selection === 'splits' || selection === 'All' ? parseInt(i?.giftCost) / (i?.splittees.length + 1) : i?.giftCost}$</td></tr>)
     }
     const guestList = () => {
         return Swal.fire({
@@ -128,7 +145,8 @@ export default () => {
                     <label style={{backgroundColor: 'white', padding: '3px', borderRadius: '4px', marginLeft: '3px'}}>Filter by: </label>
                     <select className="eInfoSelect" onChange={e => handleChange(e)}>
                         <optgroup label="Users">
-                            <option value="All">All User gifts you have claimed</option>
+                            <option value="All">All gift claims</option>
+                            <option value="individual">Individual gift claims</option>
                             {eventsData?.eventParticipants?.map(i => <option key={i} value={`${i}`}>{i}</option>)}
                             <option value="splits">Items you are splitting</option>
                         </optgroup>
@@ -154,9 +172,9 @@ export default () => {
                             </tr> */}
                             
                             {/* {itemsClaimed?.map((i, index) => <tr key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink}</td><td>{i.giftCost}$</td></tr>)} */}
-                            {eventsData && mapIt(itemsClaimed)}
+                            {!loading && eventsData && mapIt(itemsClaimed)}
                             
-                            <tr ><td colSpan={'4'}><span className="total">Estimated Total: {total}$</span></td></tr>
+                            <tr ><td colSpan={'4'}><span className="total">Overall est. Total: {total}$</span></td></tr>
                         </tbody>
                     </table>
                 </div>

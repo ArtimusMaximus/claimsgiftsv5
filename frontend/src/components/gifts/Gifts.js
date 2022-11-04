@@ -196,7 +196,7 @@ export default ({ giftArray, user, inFocus }) => {
     const handleSplit = async (e) => {
         let num = parseInt(e.target.id.slice(5))
         console.log(num);
-        const claimee = giftArray[num].claimee
+        const claimee = giftArray[num]?.claimee
         let existingSplittees = giftArray[num]?.splittees
         if (user.email === claimee) {
             return Swal.fire({
@@ -355,7 +355,7 @@ export default ({ giftArray, user, inFocus }) => {
                                     {user.email === i.requestor && <GrEdit onClick={e => handleEdit(e, index)} />}
                                 </a>
                             </td>
-                            <td>{i.giftLink !== '' && <a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
+                            <td className='giftLinkTd'>{i.giftLink !== '' && <a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
                             <td className="requesteeTd">
                             <span id="imgDiv">
                                 {
@@ -378,7 +378,7 @@ export default ({ giftArray, user, inFocus }) => {
                                     user.email === i.requestor && toggle 
                                     ? '?¿' 
                                     : i.claimed && i.splittable
-                                    ?  <><input className='cb' id={index} type="checkbox" value={checked} disabled={i.claimee.includes(user.email) ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} /><a className="splitLink"><MdCallSplit onClick={e => handleSplit(e)} id={'split' + index} /></a></>
+                                    ?  <><input className='cb' id={index} type="checkbox" value={checked} disabled={i.claimee.includes(user.email) ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} /><a className="splitLink"><MdCallSplit onClick={e => handleSplit(e)} id={'split' + index} color={'crimson'} width={'25px'} /></a></>
                                     : i.claimed && !i.splittable
                                     ? <input className='cb' id={index} type="checkbox" value={checked} disabled={i.claimee.includes(user.email) ? false : true} checked={i.claimed} onChange={e => handleUnclaim(e)} />
                                     : <input className='cb' id={index} type="checkbox" value={notChecked} checked={i.claimed} onChange={e => handleClaim(e)} />
