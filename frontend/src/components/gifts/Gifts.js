@@ -133,7 +133,7 @@ export default ({ giftArray, user, inFocus }) => {
             } else {
                 return
             }
-            if (giftArray[e.target.id].splittable === false) {
+            if (giftArray[e.target.id].splittable === false || giftArray[e.target.id].splittable === undefined) {
 
             const { value: split } = await Swal.fire({
                     title: `${user.email} has claimed this gift!`,

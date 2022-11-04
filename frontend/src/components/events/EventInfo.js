@@ -79,6 +79,9 @@ export default () => {
         let eD = eventsData?.filter(i => i?.claimee === user?.email)
         let iS = eventsData?.filter(i => i?.splittees?.includes(user?.email))
 
+        // iS.forEach(i => i.giftCost = i.giftCost / (i.splittees.length + 1))
+
+
         let combinedArr = []
         eventsData && combinedArr.push(...eD, ...iS)
         console.log(combinedArr);
@@ -120,10 +123,18 @@ export default () => {
     }
     
     // we are leaving off where the filter works, now we need to adjust the price for split items. perhaps another parameter for type of incoming data to adjust sum
-
+    let roundDifference;
     let total;
     const mapIt = (data) => {
         const filt = filterData(data)
+        console.log(filt);
+
+        const filtSplittees = filt.filter(i => i.splittees !== undefined && i.splittees !== '')
+        console.log(filtSplittees);
+        const difference = filtSplittees.map(i => Math.round(parseInt(i.giftCost)) - (Math.round(parseInt(i.giftCost)) / (i.splittees.length + 1)) )
+        roundDifference = difference.reduce((a,b) => a + b, 0)
+        console.log(Math.round(roundDifference));
+        
         
         let sum = filt?.map(i => parseInt(i?.giftCost))
         total = sum?.reduce((a, b) => a + b, 0)
@@ -135,7 +146,7 @@ export default () => {
                     <td>
                         {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees)}><BsInfoCircle size={'20px'} /></a>}
                         {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
-                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ?  parseInt(i?.giftCost) / (i?.splittees?.length + 1) : i?.giftCost}$
+                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt(i?.giftCost) / (i?.splittees?.length + 1)) : i?.giftCost}$
                     </td>
                 </tr>
             )
@@ -147,7 +158,7 @@ export default () => {
             confirmButtonColor:'crimson'
         })
     }
-
+    
    
     
 
@@ -192,7 +203,7 @@ export default () => {
                             {/* {itemsClaimed?.map((i, index) => <tr key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink}</td><td>{i.giftCost}$</td></tr>)} */}
                             {eventsData && mapIt(itemsClaimed)}
                             
-                            <tr ><td colSpan={'4'}><span className="total">Overall est. Total: {total}$</span></td></tr>
+                            <tr ><td colSpan={'4'}><span className="total">Overall est. Total: {Math.round(total - roundDifference)}$</span></td></tr>
                         </tbody>
                     </table>
                 </div>
