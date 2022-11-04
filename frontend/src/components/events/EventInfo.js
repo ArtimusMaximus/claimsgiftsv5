@@ -7,6 +7,8 @@ import { HiOutlineExternalLink } from "react-icons/hi";
 import { Link, useParams } from "react-router-dom"
 import Swal from "sweetalert2";
 import { auth, db } from "../../firebase";
+import { BsInfoCircle } from 'react-icons/bs';
+import { MdCallSplit } from 'react-icons/md'
 import './eventinfo.css';
 
 export default () => {
@@ -15,8 +17,6 @@ export default () => {
     const [eventId] = useState(loc);
     const [eventsData, setEventsData] = useState([]);
     const [selection, setSelection] = useState('All');
-    const [splitPrice, setSplitPrice] = useState(false)
-    const [loading, setLoading] = useState(true)
     const user = auth.currentUser
     const date = eventsData?.events?.eventDate
     const dateFormat = date?.slice(5, 7) + '-' + date?.slice(8, 10) + '-' + date?.slice(0,4) 
@@ -38,11 +38,7 @@ export default () => {
         }
         getEventInfo();
         
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            
-            setLoading(false)
-        })
-        return unsubscribe
+        
         
 
     }, [])
@@ -110,7 +106,18 @@ export default () => {
             return s
         }
     }
-    console.log(filterData(eventsData?.eventParticipants))
+    
+    const splitteeList = (arr) => {
+       
+        let newArr = [...arr]
+        
+        console.log(newArr);
+
+        Swal.fire({
+            title: 'Users you are splitting with:',
+            html: `${newArr.map(i => i).join(', ')}`
+        })
+    }
     
     // we are leaving off where the filter works, now we need to adjust the price for split items. perhaps another parameter for type of incoming data to adjust sum
 
@@ -120,7 +127,18 @@ export default () => {
         
         let sum = filt?.map(i => parseInt(i?.giftCost))
         total = sum?.reduce((a, b) => a + b, 0)
-        return filt?.map((i, index) => <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}><td>{i?.giftName}</td><td>{i?.username || i?.requestor}</td><td>{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td><td>{selection === 'splits' || selection === 'All' ? parseInt(i?.giftCost) / (i?.splittees.length + 1) : i?.giftCost}$</td></tr>)
+        return filt?.map((i, index) => 
+                <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}>
+                    <td>{i?.giftName}{i?.splittees !== undefined && i?.splittees !== '' && <MdCallSplit color="crimson" size={'25px'} />}</td>
+                    <td>{i?.username || i?.requestor}</td>
+                    <td>{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
+                    <td>
+                        {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees)}><BsInfoCircle size={'20px'} /></a>}
+                        {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
+                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ?  parseInt(i?.giftCost) / (i?.splittees?.length + 1) : i?.giftCost}$
+                    </td>
+                </tr>
+            )
     }
     const guestList = () => {
         return Swal.fire({
@@ -142,7 +160,7 @@ export default () => {
                 <Link to={`/dashboard/${loc}`} style={{textDecoration: 'none', color: 'crimson'}}>Go to this event <BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link>
                 
                 <div id="dropDownTainer">
-                    <label style={{backgroundColor: 'white', padding: '3px', borderRadius: '4px', marginLeft: '3px'}}>Filter by: </label>
+                    <label className="whiteBgOpacity" style={{padding: '3px', borderRadius: '4px', marginLeft: '3px'}}>Filter by: </label>
                     <select className="eInfoSelect" onChange={e => handleChange(e)}>
                         <optgroup label="Users">
                             <option value="All">All gift claims</option>
@@ -151,7 +169,7 @@ export default () => {
                             <option value="splits">Items you are splitting</option>
                         </optgroup>
                     </select>
-                    <span style={{marginRight: '5px', backgroundColor: 'white', padding: '3px', borderRadius: '4px'}}><label>Guest List</label><a onClick={guestList}><BsCardChecklist size={'30px'} color={'crimson'} style={{marginLeft: '3px'}} /></a></span>
+                    <span className="whiteBgOpacity" style={{marginRight: '5px', padding: '3px', borderRadius: '4px'}}><label>Guest List</label><a onClick={guestList}><BsCardChecklist size={'30px'} color={'crimson'} style={{marginLeft: '3px'}} /></a></span>
                 </div>
                 <div className={`${(itemsClaimed?.length === 0) ? 'noData' : 'hideTainer'}`}><h2>You have not claimed any gifts for this event!</h2></div>
                 <div className={`tableTainer ${(itemsClaimed?.length === 0) && 'hideTainer'}`}>
@@ -172,7 +190,7 @@ export default () => {
                             </tr> */}
                             
                             {/* {itemsClaimed?.map((i, index) => <tr key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink}</td><td>{i.giftCost}$</td></tr>)} */}
-                            {!loading && eventsData && mapIt(itemsClaimed)}
+                            {eventsData && mapIt(itemsClaimed)}
                             
                             <tr ><td colSpan={'4'}><span className="total">Overall est. Total: {total}$</span></td></tr>
                         </tbody>

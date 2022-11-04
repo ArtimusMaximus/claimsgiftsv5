@@ -2,15 +2,14 @@ import { collection, setDoc, updateDoc, doc, arrayUnion, where, query, onSnapsho
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { BsFileBreakFill, BsInfoCircle } from 'react-icons/bs';
-import { HiOutlineExternalLink } from 'react-icons/hi'
+import { HiOutlineExternalLink } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase';
 import { GrEdit } from 'react-icons/gr'
-import { MdCallSplit } from 'react-icons/md'
-
+import { MdCallSplit } from 'react-icons/md';
 import './addgiftform.css';
 import './gifts.css';
-import { GiSawClaw } from 'react-icons/gi';
+
 
 
 export default ({ giftArray, user, inFocus }) => {
@@ -198,7 +197,7 @@ export default ({ giftArray, user, inFocus }) => {
         console.log(num);
         const claimee = giftArray[num]?.claimee
         let existingSplittees = giftArray[num]?.splittees
-        if (user.email === claimee) {
+        if (user?.email === claimee) {
             return Swal.fire({
                 title: 'You are the initial item claimee. To remove the option to split with others, unclaim this item!',
                 icon: 'warning',

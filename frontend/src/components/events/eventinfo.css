@@ -8,6 +8,12 @@
     height: 100vh;
     
 }
+@media only screen and (max-width: 500px) {
+    .eventInfoTainer {
+        width: 100vw;
+        margin: 0;
+    }
+}
 .eventInfoTainer > h2 {
     margin: 5px 0px 5px 0px;
     text-align: center;
@@ -20,8 +26,6 @@
     margin: 5px 0px 15px 0px;
     text-align: center;
 }
-
-
 
 .tableTainer {
     display: flex;
@@ -65,6 +69,7 @@
 .eInfoSelect {
     border-radius: 4px;
     margin-right: 5px;
+    width: 170px;
 }
 .hideTainer {
     display: none;
@@ -79,4 +84,6 @@
 table > tbody > tr {
     height: 67px;
 }
-
+.whiteBgOpacity {
+    background-color: rgba(255, 255, 255, .75);
+}
