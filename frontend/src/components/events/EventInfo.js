@@ -14,6 +14,7 @@ export default () => {
     const [eventId] = useState(loc);
     const [eventsData, setEventsData] = useState([]);
     const [selection, setSelection] = useState('All');
+    const [splitPrice, setSplitPrice] = useState(false)
     const user = auth.currentUser
     const date = eventsData?.events?.eventDate
     const dateFormat = date?.slice(5, 7) + '-' + date?.slice(8, 10) + '-' + date?.slice(0,4) 
@@ -39,11 +40,12 @@ export default () => {
     console.log(eventsData);
     // console.log(user);
 
-    const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email) // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
+    const itemsClaimed = eventsData?.gifts // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
+    // const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email) // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
+    const itemsSplit =   eventsData?.gifts?.filter(i => i.splittees?.includes(user.email))
     // const splitUsersList = eventsData?.gifts?.map(i => i.splittees)
     // console.log(splitUsersList);
     // const itemsSplit = eventsData?.gifts?.filter(i => i.splittees !== undefined && i.splittees !== '' && i.splittees?.includes(user.email))
-    const itemsSplit = eventsData?.gifts?.filter(i => i.splittees?.includes(user.email))
     console.log(itemsSplit);
     const claimedGuestsList = itemsClaimed?.map(i => i.requestor)
     const s = [...new Set(claimedGuestsList)]
@@ -68,29 +70,40 @@ export default () => {
         }
     }
 
-    const filterData = (eventsData, itemsSplit) => {
-        let s = eventsData?.filter((gift) => gift?.requestor === selection)
+    const filterData = (eventsData) => {
+        let eD = eventsData?.filter(i => i.claimee === user?.email)
+        let iS = eventsData?.filter(i => i.splittees?.includes(user?.email))
+
+        console.log(eD);
+        console.log(iS);
+
+        let s0 = eventsData?.filter(i => i.claimee === user?.email)
+        let s = s0?.filter((gift) => gift?.requestor === selection)
         if (selection === 'All') {
+            
             console.log(eventsData);
-            return eventsData
+            return eD
         } else if (selection === 'splits') {
-            console.log(itemsSplit);
+            
             // let spl = eventsData?.filter((gift) => gift.splittees !== undefined && gift.splittees !== '' && gift.splittees.includes(user.email))
-            return itemsSplit
+            return iS
         } else {
+            
             console.log('hit else statement');
             return s
         }
     }
     console.log(filterData(eventsData?.eventParticipants))
     
+    // we are leaving off where the filter works, now we need to adjust the price for split items. perhaps another parameter for type of incoming data to adjust sum
+
     let total;
     const mapIt = (data) => {
         const filt = filterData(data)
         
         let sum = filt?.map(i => parseInt(i.giftCost))
         total = sum?.reduce((a, b) => a + b, 0)
-        return filt?.map((i, index) => <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink !== '' && <a href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td><td>{i.giftCost}$</td></tr>)
+        return filt?.map((i, index) => <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink !== '' && <a href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td><td>{selection === 'splits' ? parseInt(i.giftCost) / (i.splittees.length + 1) : i.giftCost}$</td></tr>)
     }
     const guestList = () => {
         return Swal.fire({
