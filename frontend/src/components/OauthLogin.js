@@ -60,7 +60,7 @@ export default () => {
                 if (result) {
                     Swal.fire({
                         title: 'Loading...',
-                        timer: 10000,
+                        timer: 1000,
                         didOpen: () => {
                             Swal.showLoading()
                         }

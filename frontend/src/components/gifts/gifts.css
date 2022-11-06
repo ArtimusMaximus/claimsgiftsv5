@@ -270,4 +270,7 @@
 .giftLinkTd {
   width: 15px;
 }
-  
+
+svg {
+  pointer-events: none;
+}

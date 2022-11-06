@@ -166,8 +166,8 @@ export default () => {
         <>
             <div className="eventInfoTainer">
                 <h2>Event Summary: </h2>
-                {eventsData && <h3>{eventsData.events?.eventName} on {dateFormat}</h3>}
-                {eventsData && <h5 style={{textAlign: 'center'}}>Event created by "{eventsData.events?.eventOwner}"</h5>}
+                {eventsData && <h5>"{eventsData.events?.eventName}" on {dateFormat}</h5>}
+                {eventsData && <h5 style={{textAlign: 'center'}} className="whiteBgOpacity">Event created by "{eventsData.events?.eventOwner}"</h5>}
                 <Link to={`/dashboard/${loc}`} style={{textDecoration: 'none', color: 'crimson'}}>Go to this event <BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link>
                 
                 <div id="dropDownTainer">
