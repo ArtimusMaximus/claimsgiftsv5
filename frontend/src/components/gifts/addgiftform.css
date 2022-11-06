@@ -246,3 +246,13 @@ input:disabled {
 }
 
 
+@media only screen and (max-width: 500px) {
+    #filterSpan {
+        display: inline-flex;
+        flex-wrap: wrap;
+    
+    }
+}
+
+
+

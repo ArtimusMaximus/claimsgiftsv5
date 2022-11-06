@@ -64,10 +64,12 @@
     border-radius: 50%;
   }
 
+  
+
 
   tr {
     height: 57px;
-      
+    
     border-radius: 4px;
   }
 
@@ -98,8 +100,8 @@
   .cbtd {
     margin: 0px !important;
     padding: 0px !important;
-    width: 25px;
-    height: 50px;
+    width: 35px;
+    
     font-size: 1.5rem;
     
   }
@@ -126,7 +128,7 @@
     margin-left: auto;
     align-items: center;
     justify-content: center;
-   
+    
     width: 20px;
     height: 20px;
   }
@@ -137,12 +139,15 @@
     text-align: left;
     font-size: 1.75rem;
     display: flex;
+    flex-wrap: wrap;
+    
     justify-content: center;
     align-items: center;
     margin-top: 15px;
     border-radius: 4px;
-
+    /* margin-left: 5px; */
   }
+  
   @media screen and (min-width: 1300px) {
     .giftNametd {
       font-size: 2.5rem;
@@ -152,10 +157,14 @@
     }
   }
 
-
+/* claim button table data */
   td > .cbtd {
-    width: 30px;
-    
+    width: 25px;
+    padding: 5px;
+    margin: 5px;
+  }
+  .cbtd > input {
+    width: 25px;
   }
 
   tr > .firstTableRow {
@@ -188,9 +197,22 @@
   }
   
   .giftContainer {
-    width: 100%;
+    width: 70vw;
     height: 50vh;
+    margin-left: 15vw;
+    
   }
+  table {
+    width: 100%;
+    
+  }
+  table > tbody {
+    /* width: 50%; */
+  }
+  table > tbody > tr > td {
+    height: 67px;
+}
+  
   .giftContainer > td > table > tbody > tr > td {
     margin: 0px 15px 0px 15px;
     
@@ -263,9 +285,7 @@
   justify-content: center;
   margin: 0;
 }
-.cbtd > input {
-  width: 25px;
-}
+
 
 .giftLinkTd {
   width: 15px;

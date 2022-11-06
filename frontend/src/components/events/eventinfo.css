@@ -1,18 +1,22 @@
 .eventInfoTainer {
     display: flex;
     flex-direction: column;
-    /* justify-content: center;  */
+    justify-content: center; 
     align-items: center;
     width: 70vw;
     margin-left: 15vw;
-    height: 100vh;
+    
     
 }
 @media only screen and (max-width: 500px) {
     .eventInfoTainer {
-        width: 100vw;
+        width: 100%;
         margin: 0;
     }
+    #dropDownTainer {
+        flex-direction: column;
+    }
+    
 }
 .eventInfoTainer > h2 {
     margin: 5px 0px 5px 0px;
@@ -30,8 +34,10 @@
 .tableTainer {
     display: flex;
     flex-direction: column;
-    /* justify-content: center;  */
+    justify-content: center; 
     align-items: center;
+    /* width: 80vw;
+    margin-left: 10vw; */
 }
 
 .tableTainer > table > th {
@@ -41,6 +47,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     
 }
 #dropDownTainer > select {
@@ -82,12 +89,20 @@
 }
 
 table > tbody > tr {
-    height: 67px;
+    height: 70px;
 }
 .whiteBgOpacity {
     background-color: rgba(255, 255, 255, .75);
     border-radius: 4px;
-    
+    width: fit-content;
+}
+table {
+    width: 70vw;
+}
+@media only screen and (max-width: 500px) {
+    table {
+        width: 100vw;
+    }
 }
 
 label {
@@ -99,3 +114,19 @@ label {
     margin-left: 5px;
     margin-right: 5px;
 }
+
+.forPersonCol {
+    max-width: 100px;
+    text-overflow: ellipsis;
+}
+.costCol {
+    width: 25px;
+}
+.linkCol {
+    width: 20px;
+}
+.itemCol {
+    max-width: 100px;
+    text-overflow: ellipsis;
+  }
+

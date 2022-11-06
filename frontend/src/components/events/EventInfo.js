@@ -141,10 +141,10 @@ export default () => {
         total = sum?.reduce((a, b) => a + b, 0)
         return filt?.map((i, index) => 
                 <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}>
-                    <td>{i?.giftName}{i?.splittees !== undefined && i?.splittees !== '' && <MdCallSplit color="crimson" size={'25px'} />}</td>
-                    <td>{i?.username || i?.requestor}</td>
-                    <td>{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
-                    <td>
+                    <td className="itemCol">{i?.giftName}{i?.splittees !== undefined && i?.splittees !== '' && <MdCallSplit color="crimson" size={'25px'} />}</td>
+                    <td className="forPersonCol">{i?.username || i?.requestor}</td>
+                    <td className="linkCol">{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
+                    <td className="costCol">
                         {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees)}><BsInfoCircle size={'20px'} /></a>}
                         {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost ? i.giftCost : 0) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
                         {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt(i?.giftCost ? i.giftCost : 0) / (i?.splittees?.length + 1)) : i?.giftCost ? i.giftCost : 0}$
@@ -184,6 +184,7 @@ export default () => {
                     <span className="whiteBgOpacity" style={{marginRight: '5px', padding: '3px', borderRadius: '4px'}}><label>Guest List</label><a onClick={guestList}><BsCardChecklist size={'30px'} color={'crimson'} style={{marginLeft: '3px'}} /></a></span>
                 </div>
                 <div className={`${(itemsClaimed?.length === 0) ? 'noData' : 'hideTainer'}`}><h2>You have not claimed any gifts for this event!</h2></div>
+            </div>    
                 <div className={`tableTainer ${(itemsClaimed?.length === 0) && 'hideTainer'}`}>
                     
                     <table>
@@ -192,7 +193,7 @@ export default () => {
                                 <th>Gifts claimed for this event</th>
                                 <th>For person</th>
                                 <th>Gift Link</th>
-                                <th>Estimated total spent</th>
+                                <th>Est. total spent</th>
                             </tr>
                             {/* <tr>
                                 <td>A</td>
@@ -208,7 +209,7 @@ export default () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            
         </>
     )
 }
