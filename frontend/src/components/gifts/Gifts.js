@@ -55,6 +55,7 @@ export default ({ giftArray, user, inFocus }) => {
     console.log(giftArray);
 
     const handleEdit = async (e, index) => {
+        console.log(e.target);
         e.preventDefault()
         
         let name = giftArray[index].giftName
@@ -352,8 +353,8 @@ export default ({ giftArray, user, inFocus }) => {
                                 ? <a onClick={() => giftInfo(index)}><BsInfoCircle size={'17px'} /></a>
                                 : <a onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'17px'} /></a>
                                 } {<b id={`${index}`}>{i.giftName}</b>}
-                                <a className='editSpan'>
-                                    {user.email === i.requestor && <GrEdit onClick={e => handleEdit(e, index)} />}
+                                <a className='editSpan' onClick={e => handleEdit(e, index)}>
+                                    {user.email === i.requestor && <GrEdit  />}
                                 </a>
                             </td>
                             <td className='giftLinkTd'>{i.giftLink !== '' && <a rel="noopener noreferrer" href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>

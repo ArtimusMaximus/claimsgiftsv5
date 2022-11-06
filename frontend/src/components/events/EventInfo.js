@@ -32,6 +32,7 @@ export default () => {
             const docSnap = await getDoc(docRef)
             if (docSnap.exists()) {
                 const data = docSnap.data()
+                console.log(docSnap.data());
                 arr.push(data)
                 setEventsData(...arr)
             }
@@ -131,12 +132,12 @@ export default () => {
 
         const filtSplittees = filt.filter(i => i.splittees !== undefined && i.splittees !== '')
         console.log(filtSplittees);
-        const difference = filtSplittees.map(i => Math.round(parseInt(i.giftCost)) - (Math.round(parseInt(i.giftCost)) / (i.splittees.length + 1)) )
+        const difference = filtSplittees.map(i => Math.round(parseInt(i.giftCost ? i.giftCost : 0)) - (Math.round(parseInt(i.giftCost ? i.giftCost : 0)) / (i.splittees.length + 1)) )
         roundDifference = difference.reduce((a,b) => a + b, 0)
         console.log(Math.round(roundDifference));
         
         
-        let sum = filt?.map(i => parseInt(i?.giftCost))
+        let sum = filt?.map(i => parseInt(i?.giftCost ? i.giftCost : 0))
         total = sum?.reduce((a, b) => a + b, 0)
         return filt?.map((i, index) => 
                 <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}>
@@ -145,8 +146,8 @@ export default () => {
                     <td>{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
                     <td>
                         {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees)}><BsInfoCircle size={'20px'} /></a>}
-                        {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
-                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt(i?.giftCost) / (i?.splittees?.length + 1)) : i?.giftCost}$
+                        {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost ? i.giftCost : 0) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
+                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt(i?.giftCost ? i.giftCost : 0) / (i?.splittees?.length + 1)) : i?.giftCost ? i.giftCost : 0}$
                     </td>
                 </tr>
             )
