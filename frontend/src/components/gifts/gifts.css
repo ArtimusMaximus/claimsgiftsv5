@@ -120,7 +120,7 @@
     font-size: 1.25rem;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    width: 75px;
+    width: 57px;
   
   }
   .editSpan {
@@ -140,15 +140,15 @@
     font-size: 1.75rem;
     display: flex;
     flex-wrap: wrap;
-    
+    text-overflow: ellipsis;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 12px;
     border-radius: 4px;
     /* margin-left: 5px; */
   }
   
-  @media screen and (min-width: 1300px) {
+  @media screen and (min-width: 600px) {
     .giftNametd {
       font-size: 2.5rem;
     }
@@ -170,6 +170,7 @@
   tr > .firstTableRow {
     border-radius: 4px;
   }
+  
 
   .firstTableRow {
     /* background-color: aliceblue; */
@@ -201,11 +202,21 @@
     height: 50vh;
     margin-left: 15vw;
     
-  }
-  table {
-    width: 100%;
     
   }
+  /* table {
+    width: 50%;
+    
+  } */
+  #giftsTable {
+    width: 60vw;
+  }
+  @media only screen and (max-width: 600px) {
+    #giftsTable {
+        width: 90vw;
+        margin-left: 0;
+    }
+}
   table > tbody {
     /* width: 50%; */
   }

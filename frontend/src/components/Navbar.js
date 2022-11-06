@@ -13,7 +13,7 @@ export default () => {
     const params = useParams()
     let navigate = useNavigate();
     const lP = location.pathname
-    console.log(params, lP);
+    // console.log(params, lP);
     
 
     return (

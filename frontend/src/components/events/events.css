@@ -8,8 +8,17 @@
     padding: 0px 2px 5px 2px;
     margin: 5px;
     table-layout: fixed;
-    
-    
+    width: 50vw;
+}
+@media only screen and (max-width: 800px) {
+    .eventsTable {
+        width: 75vw;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .eventsTable {
+        width: 90vw;
+    }
 }
 .eventsTable thead tr th {
     text-decoration: underline;
@@ -25,11 +34,12 @@
     
 }
 
-table {
+/* table {
     width: 55vw;
     
-    /* text-align: center; */
+     text-align: center; 
 }
+*/
 
 @media screen and (max-width: 700px) {
     table {

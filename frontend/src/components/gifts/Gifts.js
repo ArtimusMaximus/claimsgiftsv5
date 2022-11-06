@@ -52,7 +52,7 @@ export default ({ giftArray, user, inFocus }) => {
         
     }, [isClaimed, wasEdited])
 
-    console.log(giftArray);
+    // console.log(giftArray);
 
     const handleEdit = async (e, index) => {
         console.log(e.target);
@@ -200,7 +200,7 @@ export default ({ giftArray, user, inFocus }) => {
         console.log(num);
         const claimee = giftArray[num]?.claimee
         let existingSplittees = giftArray[num]?.splittees
-        if (num && claimee && user.email === claimee) {
+        if (user.email === claimee) {
             return await Swal.fire({
                 title: 'You are the initial item claimee. To remove the option to split with others, unclaim this item!',
                 icon: 'warning',
@@ -337,7 +337,7 @@ export default ({ giftArray, user, inFocus }) => {
         <>
         <div className='giftContainer'>
                 
-            <table>
+            <table id="giftsTable">
                 <tbody>
                     {giftArray.length !== 0 && <tr id="rowForHeaders">
                         <th>Gift</th>
@@ -391,7 +391,7 @@ export default ({ giftArray, user, inFocus }) => {
                             <td className='infoButton'>{<a onClick={() => claimedInfo(i.claimee, i.splittees)}><BsInfoCircle size={'20px'} /></a>}</td>
                         </tr>    
                     )}
-                    {giftArray.length === 0 && !inFocus && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}
+                    {giftArray.length === 0 && !inFocus && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{height: '200px', marginTop:'150px', width: '80vw'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Add a gift and a gift link using the inputs above to get started...</h2></td></tr>)}
                     {giftArray.length === 0 && inFocus && (<tr style={{textAlign: 'left', display: 'flex', justifyContent:'center', alignItems:'center'}}><td style={{marginTop: '200px'}}><h2 style={{marginTop:'0px', fontStyle: 'italic', border: '1px dotted crimson', padding: '5px', borderRadius: '5px'}}>Nothing matches your search...</h2></td></tr>)}
                 </tbody>
             </table>

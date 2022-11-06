@@ -55,7 +55,7 @@ export default () => {
                 // const credential = GoogleAuthProvider.credentialFromResult(result);
                 // const token = credential.accessToken;
                 const user = result.user;
-                console.log(user);
+                // console.log(user);
 
                 if (result) {
                     Swal.fire({

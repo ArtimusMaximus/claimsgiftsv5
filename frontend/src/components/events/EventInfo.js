@@ -21,7 +21,7 @@ export default () => {
     const date = eventsData?.events?.eventDate
     const dateFormat = date?.slice(5, 7) + '-' + date?.slice(8, 10) + '-' + date?.slice(0,4) 
     
-
+    console.log(date);
 
     
     useEffect(() => {
@@ -43,16 +43,23 @@ export default () => {
         
 
     }, [])
-    console.log(eventsData);
+    // console.log(eventsData);
     // console.log(user);
+
+   
 
     const itemsClaimed = eventsData?.gifts // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
     // const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email) // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
-    const itemsSplit =   eventsData?.gifts?.filter(i => i.splittees?.includes(user.email))
+    
+    const whatsClaimed = itemsClaimed?.filter(i => i?.claimee === user?.email)
+    console.log(whatsClaimed);
+
+    const itemsSplit = eventsData?.gifts?.filter(i => i.splittees?.includes(user.email))
+    console.log(itemsSplit);
     // const splitUsersList = eventsData?.gifts?.map(i => i.splittees)
     // console.log(splitUsersList);
     // const itemsSplit = eventsData?.gifts?.filter(i => i.splittees !== undefined && i.splittees !== '' && i.splittees?.includes(user.email))
-    console.log(itemsSplit);
+    // console.log(itemsSplit);
     const claimedGuestsList = itemsClaimed?.map(i => i.requestor)
     const s = [...new Set(claimedGuestsList)]
     // console.log(claimedGuestsList);
@@ -66,7 +73,7 @@ export default () => {
     const handleChange = (e) => {
         e.preventDefault()
         setSelection(e.target.value)
-        console.log(selection);
+        // console.log(selection);
     }
     const formatGiftLink = (link) => {
         if (link?.slice(0, 4).toLowerCase() === 'http') {
@@ -85,10 +92,10 @@ export default () => {
 
         let combinedArr = []
         eventsData && combinedArr.push(...eD, ...iS)
-        console.log(combinedArr);
+        // console.log(combinedArr);
 
-        console.log(eD);
-        console.log(iS);
+        // console.log(eD);
+        // console.log(iS);
 
         let s0 = eventsData?.filter(i => i?.claimee === user?.email)
         let s = s0?.filter((gift) => gift?.requestor === selection)
@@ -115,7 +122,7 @@ export default () => {
        
         let newArr = [...arr]
         
-        console.log(newArr);
+        // console.log(newArr);
 
         Swal.fire({
             title: 'Users you are splitting with:',
@@ -128,13 +135,15 @@ export default () => {
     let total;
     const mapIt = (data) => {
         const filt = filterData(data)
-        console.log(filt);
+        
+        
+        // console.log(filt);
 
-        const filtSplittees = filt.filter(i => i.splittees !== undefined && i.splittees !== '')
-        console.log(filtSplittees);
-        const difference = filtSplittees.map(i => Math.round(parseInt(i.giftCost ? i.giftCost : 0)) - (Math.round(parseInt(i.giftCost ? i.giftCost : 0)) / (i.splittees.length + 1)) )
-        roundDifference = difference.reduce((a,b) => a + b, 0)
-        console.log(Math.round(roundDifference));
+        const filtSplittees = filt?.filter(i => i.splittees !== undefined && i.splittees !== '')
+        // console.log(filtSplittees);
+        const difference = filtSplittees?.map(i => Math.round(parseInt(i.giftCost ? i.giftCost : 0)) - (Math.round(parseInt(i.giftCost ? i.giftCost : 0)) / (i.splittees.length + 1)) )
+        roundDifference = difference?.reduce((a,b) => a + b, 0)
+        // console.log(Math.round(roundDifference));
         
         
         let sum = filt?.map(i => parseInt(i?.giftCost ? i.giftCost : 0))
@@ -161,7 +170,7 @@ export default () => {
     }
     
    
-    
+  
 
     return (
         <>
@@ -170,8 +179,8 @@ export default () => {
                 {eventsData && <h5>"{eventsData.events?.eventName}" on {dateFormat}</h5>}
                 {eventsData && <h5 style={{textAlign: 'center'}} className="whiteBgOpacity">Event created by "{eventsData.events?.eventOwner}"</h5>}
                 <Link to={`/dashboard/${loc}`} style={{textDecoration: 'none', color: 'crimson'}}>Go to this event <BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link>
-                
-                <div id="dropDownTainer">
+                <hr />
+                <div id="dropDownTainer" style={{display: `${whatsClaimed?.length !== 0 || itemsSplit.length !== 0 ? '' : 'none'}`}}>
                     <label className="whiteBgOpacity" style={{padding: '3px', borderRadius: '4px', marginLeft: '3px'}}>Filter by: </label>
                     <select className="eInfoSelect" onChange={e => handleChange(e)}>
                         <optgroup label="Users">
@@ -183,11 +192,11 @@ export default () => {
                     </select>
                     <span className="whiteBgOpacity" style={{marginRight: '5px', padding: '3px', borderRadius: '4px'}}><label>Guest List</label><a onClick={guestList}><BsCardChecklist size={'30px'} color={'crimson'} style={{marginLeft: '3px'}} /></a></span>
                 </div>
-                <div className={`${(itemsClaimed?.length === 0) ? 'noData' : 'hideTainer'}`}><h2>You have not claimed any gifts for this event!</h2></div>
+                <div className={`tableTainer ${(whatsClaimed?.length !== 0 || itemsSplit.length !== 0) ? 'hideTainer' : ''}`}><h2>You have not claimed any gifts for this event!</h2></div>
             </div>    
-                <div className={`tableTainer ${(itemsClaimed?.length === 0) && 'hideTainer'}`}>
+                <div className={`tableTainer ${(whatsClaimed?.length !== 0 || itemsSplit.length !== 0) ? '' : 'hideTainer'}`}>
                     
-                    <table>
+                    <table id="eventInfoTable">
                         <tbody>
                             <tr>
                                 <th>Gifts claimed for this event</th>
