@@ -114,7 +114,7 @@ export default ({ giftArray, user, inFocus }) => {
     }
 
     const handleClaim = async (e) => {
-        console.log(e.target.id)
+        // console.log(e.target.id)
             return Swal.fire({
                 title: 'Would you like to claim this gift?',
                 confirmButtonColor: 'crimson',
@@ -145,7 +145,7 @@ export default ({ giftArray, user, inFocus }) => {
                 })
                 if (split) {
                     giftArray[e.target.id].splittable = true
-                    console.log(split, typeof split);
+                    // console.log(split, typeof split);
                     setSplittable(true)
                     updateClaimed()
                 }

@@ -1,22 +1,27 @@
 .eventInfoTainer {
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    
     align-items: center;
     width: 70vw;
     margin-left: 15vw;
     
     
 }
+
 @media only screen and (max-width: 500px) {
-    .eventInfoTainer {
-        width: 100%;
-        margin: 0;
+    #eventInfoTable {
+        width: 96vw;
     }
     #dropDownTainer {
         flex-direction: column;
     }
     
+}
+@media only screen and (min-width: 600px) {
+    #eventInfoTable {
+        width: 60%;
+    }
 }
 .eventInfoTainer > h2 {
     margin: 5px 0px 5px 0px;
@@ -34,7 +39,7 @@
 .tableTainer {
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    height: 100vh;
     align-items: center;
     /* width: 80vw;
     margin-left: 10vw; */
@@ -99,11 +104,7 @@ table > tbody > tr {
 table {
     width: 70vw;
 }
-@media only screen and (max-width: 500px) {
-    .eventInfoTable {
-        width: 100vw;
-    }
-}
+
 
 label {
     display: inline-flex;
@@ -115,7 +116,7 @@ label {
     margin-right: 5px;
 }
 
-.forPersonCol {
+/* .forPersonCol {
     max-width: 100px;
     text-overflow: ellipsis;
 }
@@ -128,5 +129,5 @@ label {
 .itemCol {
     max-width: 100px;
     text-overflow: ellipsis;
-  }
+} */
 

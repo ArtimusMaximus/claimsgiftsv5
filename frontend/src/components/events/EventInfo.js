@@ -126,6 +126,7 @@ export default () => {
 
         Swal.fire({
             title: 'Users you are splitting with:',
+            confirmButtonColor: 'crimson',
             html: `${newArr.map(i => i).join(', ')}`
         })
     }

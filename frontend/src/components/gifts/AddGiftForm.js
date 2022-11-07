@@ -403,7 +403,7 @@ useEffect(() => {
         <>
         {onTheList || user.email === eventData.eventOwner ? (<>
             <div>
-                {eventData && <h2 style={{marginTop: '10px', marginBottom:'5px'}}>Event: {eventData.eventName}</h2>}
+                {eventData && <h2 style={{marginTop: '10px', marginBottom:'5px'}}>Event: "{eventData.eventName}"</h2>}
                 <span id="eventBreakDown"><Link to={`/dashboard/eventinfo/${eventId}`} style={{textDecoration: 'none', color: 'crimson'}}>Go to event summary<BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link></span>
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                     <a style={{textDecoration: 'none', color: 'crimson'}} id="addeventparti">Add event participants</a>

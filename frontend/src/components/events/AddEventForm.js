@@ -400,9 +400,12 @@ export default () => {
     
     return (
         <>
+        <hr />
             <div className="formContainer">
+                
                 <form onSubmit={handleSubmit}>
                     <div className='inputsTainer'>
+                    <h3>Add an Event...</h3>
                         <input className="eventNameDate" value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
                         <input className="eventNameDate" value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
                     </div>
