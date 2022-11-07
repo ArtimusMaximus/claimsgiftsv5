@@ -32,7 +32,7 @@ export default () => {
             const docSnap = await getDoc(docRef)
             if (docSnap.exists()) {
                 const data = docSnap.data()
-                console.log(docSnap.data());
+                // console.log(docSnap.data());
                 arr.push(data)
                 setEventsData(...arr)
             }
@@ -52,10 +52,10 @@ export default () => {
     // const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email) // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
     
     const whatsClaimed = itemsClaimed?.filter(i => i?.claimee === user?.email)
-    console.log(whatsClaimed);
+    // console.log(whatsClaimed);
 
     const itemsSplit = eventsData?.gifts?.filter(i => i.splittees?.includes(user.email))
-    console.log(itemsSplit);
+    // console.log(itemsSplit);
     // const splitUsersList = eventsData?.gifts?.map(i => i.splittees)
     // console.log(splitUsersList);
     // const itemsSplit = eventsData?.gifts?.filter(i => i.splittees !== undefined && i.splittees !== '' && i.splittees?.includes(user.email))
