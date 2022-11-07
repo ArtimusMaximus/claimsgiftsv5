@@ -130,7 +130,8 @@ export default () => {
         Swal.fire({
             title: `(${newArr.length}) Users splitting item "${i.giftName}":`,
             confirmButtonColor: 'crimson',
-            html: `${newArr.map(i => i).join(', ')}`
+            html: `${newArr.map(i => i).join(', ')}<br /><br /> Person in charge of purchasing item: "${claimee}"`,
+            
         })
     }
     
