@@ -15,15 +15,7 @@
     width: 50vw;
 } */
 
-.searchInput {
-    width: 250px;
-    font-family: 'Tangerine', cursive;
-    font-weight: 700;
-    font: bold;
-    font-size: 2rem;
-    width: 30%;
 
-}
 
 button {
     width: 20vw;
@@ -129,21 +121,7 @@ input:disabled {
 #giftLinkInput {
     
 }
-#iconEl {
-    display: inline-flex;
-    justify-content: center;
-    align-self: baseline;
-    margin-top: 10px;
-    flex-wrap: wrap;
-    margin-right: 3px;
-}
-#iconEl > div {
-    margin-left: 3px;
-    font-size: 1.5rem;
-    background-color: rgb(255, 192, 203, .75);
-    border-radius: 5px;
-    
-}
+
 
 #pasteicon {
     cursor: pointer;
@@ -156,9 +134,6 @@ input:disabled {
     border: 1px solid crimson;
     border-radius: 3px;
     padding: 1px;
-}
-#iconEl > div {
-    margin: 0;
 }
 
 #addeventparti {
@@ -206,7 +181,7 @@ input:disabled {
 }
 
 #refreshBtn {
-    margin-left: 5px;
+    margin: 10px 1px 10px 1px;
     color: crimson;
     padding: 2px;
     border-radius: 5px;
@@ -231,7 +206,7 @@ input:disabled {
     font-family: 'Tangerine', cursive;
     font-size: 2rem;
     padding-bottom: 5px;
-    
+    width: 125px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -245,3 +220,81 @@ input:disabled {
     margin-bottom: 10px;
 }
 
+
+@media only screen and (max-width: 500px) {
+    #filterSpan {
+        display: inline-flex;
+        flex-wrap: wrap;
+    
+    }
+}
+/* #iconEl {
+    display: inline-flex;
+    /* justify-content: center;
+    align-self: baseline; 
+    justify-content: end;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    margin-right: 3px;
+}
+ */
+.iconEl {
+    position: absolute;
+    display: inline-block;
+    width: 30px;
+    height:30px;
+    
+    
+}
+/* #iconEl > div {
+    margin-left: 3px;
+    font-size: 1.5rem;
+    background-color: rgb(255, 192, 203, .75);
+    border-radius: 5px;
+    margin: 0;
+}
+ */
+
+
+.searchInput {
+    width: 250px;
+    font-family: 'Tangerine', cursive;
+    font-weight: 700;
+    font: bold;
+    font-size: 2rem;
+    width: 30%;
+
+}
+.giftLinkInput {
+    
+    width: 250px;
+    
+
+}
+#iconDiv {
+    position: relative;
+    margin: 5px;
+    
+   
+}
+#bgW {
+    
+}
+#iconEl {
+    background-color: rgb(255, 255, 255, 1);
+    padding: 4px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+hr {
+    background-color: rgb(255, 255, 255, .75);
+    color: rgb(255, 255, 255, .75);
+    width: 60%;
+    opacity: .45;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

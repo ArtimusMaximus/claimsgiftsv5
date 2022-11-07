@@ -1,3 +1,4 @@
+import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react"
 import { BsBoxArrowInRight, BsCardChecklist } from "react-icons/bs";
@@ -6,6 +7,8 @@ import { HiOutlineExternalLink } from "react-icons/hi";
 import { Link, useParams } from "react-router-dom"
 import Swal from "sweetalert2";
 import { auth, db } from "../../firebase";
+import { BsInfoCircle } from 'react-icons/bs';
+import { MdCallSplit } from 'react-icons/md'
 import './eventinfo.css';
 
 export default () => {
@@ -18,7 +21,7 @@ export default () => {
     const date = eventsData?.events?.eventDate
     const dateFormat = date?.slice(5, 7) + '-' + date?.slice(8, 10) + '-' + date?.slice(0,4) 
     
-
+    console.log(date);
 
     
     useEffect(() => {
@@ -29,34 +32,51 @@ export default () => {
             const docSnap = await getDoc(docRef)
             if (docSnap.exists()) {
                 const data = docSnap.data()
+                // console.log(docSnap.data());
                 arr.push(data)
                 setEventsData(...arr)
             }
         }
         getEventInfo();
+        
+        
+        
 
     }, [])
-    console.log(eventsData);
-    console.log(user);
+    // console.log(eventsData);
+    // console.log(user);
 
-    const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email)
+   
+
+    const itemsClaimed = eventsData?.gifts // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
+    // const itemsClaimed = eventsData?.gifts?.filter(i => i.claimee === user?.email) // i believe the solution is to pass one arg, and filter the preferred arg 4:00pm
+    
+    const whatsClaimed = itemsClaimed?.filter(i => i?.claimee === user?.email)
+    // console.log(whatsClaimed);
+
+    const itemsSplit = eventsData?.gifts?.filter(i => i.splittees?.includes(user.email))
+    // console.log(itemsSplit);
+    // const splitUsersList = eventsData?.gifts?.map(i => i.splittees)
+    // console.log(splitUsersList);
+    // const itemsSplit = eventsData?.gifts?.filter(i => i.splittees !== undefined && i.splittees !== '' && i.splittees?.includes(user.email))
+    // console.log(itemsSplit);
     const claimedGuestsList = itemsClaimed?.map(i => i.requestor)
     const s = [...new Set(claimedGuestsList)]
-    console.log(claimedGuestsList);
-    console.log(s);
+    // console.log(claimedGuestsList);
+    // console.log(s);
 
     const userKeys = eventsData?.eventParticipants // all users
     const unAccountedFor = userKeys?.filter(i => !s.includes(i))
-    console.log(unAccountedFor);
-    console.log(itemsClaimed);
+    // console.log(unAccountedFor);
+    // console.log(itemsClaimed);
 
     const handleChange = (e) => {
         e.preventDefault()
         setSelection(e.target.value)
-        console.log(selection);
+        // console.log(selection);
     }
     const formatGiftLink = (link) => {
-        if (link.slice(0, 4).toLowerCase() === 'http') {
+        if (link?.slice(0, 4).toLowerCase() === 'http') {
             return link
         } else {
             return 'https://' + link
@@ -64,22 +84,83 @@ export default () => {
     }
 
     const filterData = (eventsData) => {
-        let s = eventsData?.filter((gift) => gift?.requestor === selection)
+        let eD = eventsData?.filter(i => i?.claimee === user?.email)
+        let iS = eventsData?.filter(i => i?.splittees?.includes(user?.email))
+
+        // iS.forEach(i => i.giftCost = i.giftCost / (i.splittees.length + 1))
+
+
+        let combinedArr = []
+        eventsData && combinedArr.push(...eD, ...iS)
+        // console.log(combinedArr);
+
+        // console.log(eD);
+        // console.log(iS);
+
+        let s0 = eventsData?.filter(i => i?.claimee === user?.email)
+        let s = s0?.filter((gift) => gift?.requestor === selection)
         if (selection === 'All') {
-            return eventsData
+            // console.log(eventsData);
+
+            return combinedArr
+        } else if (selection === 'individual') {
+            
+            // let spl = eventsData?.filter((gift) => gift.splittees !== undefined && gift.splittees !== '' && gift.splittees.includes(user.email))
+            return eD
+        } else if (selection === 'splits') {
+            
+            // let spl = eventsData?.filter((gift) => gift.splittees !== undefined && gift.splittees !== '' && gift.splittees.includes(user.email))
+            return iS
         } else {
+            
+            console.log('hit else statement');
             return s
         }
     }
-    console.log(filterData(eventsData?.eventParticipants))
     
+    const splitteeList = (arr) => {
+       
+        let newArr = [...arr]
+        
+        // console.log(newArr);
+
+        Swal.fire({
+            title: 'Users you are splitting with:',
+            confirmButtonColor: 'crimson',
+            html: `${newArr.map(i => i).join(', ')}`
+        })
+    }
+    
+    // we are leaving off where the filter works, now we need to adjust the price for split items. perhaps another parameter for type of incoming data to adjust sum
+    let roundDifference;
     let total;
     const mapIt = (data) => {
         const filt = filterData(data)
         
-        let sum = filt?.map(i => parseInt(i.giftCost))
+        
+        // console.log(filt);
+
+        const filtSplittees = filt?.filter(i => i.splittees !== undefined && i.splittees !== '')
+        // console.log(filtSplittees);
+        const difference = filtSplittees?.map(i => Math.round(parseInt(i.giftCost ? i.giftCost : 0)) - (Math.round(parseInt(i.giftCost ? i.giftCost : 0)) / (i.splittees.length + 1)) )
+        roundDifference = difference?.reduce((a,b) => a + b, 0)
+        // console.log(Math.round(roundDifference));
+        
+        
+        let sum = filt?.map(i => parseInt(i?.giftCost ? i.giftCost : 0))
         total = sum?.reduce((a, b) => a + b, 0)
-        return filt?.map((i, index) => <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink !== '' && <a href={formatGiftLink(i.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td><td>{i.giftCost}$</td></tr>)
+        return filt?.map((i, index) => 
+                <tr className={index % 2 === 0 ? 'firstRowColor' : ''} key={index}>
+                    <td className="itemCol">{i?.giftName}{i?.splittees !== undefined && i?.splittees !== '' && <MdCallSplit color="crimson" size={'25px'} />}</td>
+                    <td className="forPersonCol">{i?.username || i?.requestor}</td>
+                    <td className="linkCol">{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
+                    <td className="costCol">
+                        {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees)}><BsInfoCircle size={'20px'} /></a>}
+                        {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost ? i.giftCost : 0) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
+                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt(i?.giftCost ? i.giftCost : 0) / (i?.splittees?.length + 1)) : i?.giftCost ? i.giftCost : 0}$
+                    </td>
+                </tr>
+            )
     }
     const guestList = () => {
         return Swal.fire({
@@ -88,38 +169,41 @@ export default () => {
             confirmButtonColor:'crimson'
         })
     }
-
-   
     
+   
+  
 
     return (
         <>
             <div className="eventInfoTainer">
-                <h2>Event Breakdown: </h2>
-                {eventsData && <h3>{eventsData.events?.eventName} on {dateFormat}</h3>}
-                {eventsData && <h5 style={{textAlign: 'center'}}>Event created by "{eventsData.events?.eventOwner}"</h5>}
+                <h2>Event Summary: </h2>
+                {eventsData && <h5>"{eventsData.events?.eventName}" on {dateFormat}</h5>}
+                {eventsData && <h5 style={{textAlign: 'center'}} className="whiteBgOpacity">Event created by "{eventsData.events?.eventOwner}"</h5>}
                 <Link to={`/dashboard/${loc}`} style={{textDecoration: 'none', color: 'crimson'}}>Go to this event <BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link>
-                
-                <div id="dropDownTainer">
-                    <label style={{backgroundColor: 'white', padding: '3px', borderRadius: '4px', marginLeft: '3px'}}>Filter by: </label>
+                <hr />
+                <div id="dropDownTainer" style={{display: `${whatsClaimed?.length !== 0 || itemsSplit.length !== 0 ? '' : 'none'}`}}>
+                    <label className="whiteBgOpacity" style={{padding: '3px', borderRadius: '4px', marginLeft: '3px'}}>Filter by: </label>
                     <select className="eInfoSelect" onChange={e => handleChange(e)}>
                         <optgroup label="Users">
-                            <option value="All">All User gifts you have claimed</option>
+                            <option value="All">All gift claims</option>
+                            <option value="individual">Individual gift claims</option>
                             {eventsData?.eventParticipants?.map(i => <option key={i} value={`${i}`}>{i}</option>)}
+                            <option value="splits">Items you are splitting</option>
                         </optgroup>
                     </select>
-                    <span style={{marginRight: '5px', backgroundColor: 'white', padding: '3px', borderRadius: '4px'}}><label>Guest List</label><a onClick={guestList}><BsCardChecklist size={'30px'} color={'crimson'} style={{marginLeft: '3px'}} /></a></span>
+                    <span className="whiteBgOpacity" style={{marginRight: '5px', padding: '3px', borderRadius: '4px'}}><label>Guest List</label><a onClick={guestList}><BsCardChecklist size={'30px'} color={'crimson'} style={{marginLeft: '3px'}} /></a></span>
                 </div>
-                <div className={`${(itemsClaimed?.length === 0) ? 'noData' : 'hideTainer'}`}><h2>You have not claimed any gifts for this event!</h2></div>
-                <div className={`tableTainer ${(itemsClaimed?.length === 0) && 'hideTainer'}`}>
+                <div className={`tableTainer ${(whatsClaimed?.length !== 0 || itemsSplit.length !== 0) ? 'hideTainer' : ''}`}><h2>You have not claimed any gifts for this event!</h2></div>
+            </div>    
+                <div className={`tableTainer ${(whatsClaimed?.length !== 0 || itemsSplit.length !== 0) ? '' : 'hideTainer'}`}>
                     
-                    <table>
+                    <table id="eventInfoTable">
                         <tbody>
                             <tr>
                                 <th>Gifts claimed for this event</th>
                                 <th>For person</th>
                                 <th>Gift Link</th>
-                                <th>Estimated total spent</th>
+                                <th>Est. total spent</th>
                             </tr>
                             {/* <tr>
                                 <td>A</td>
@@ -129,13 +213,13 @@ export default () => {
                             </tr> */}
                             
                             {/* {itemsClaimed?.map((i, index) => <tr key={index}><td>{i.giftName}</td><td>{i.username || i.requestor}</td><td>{i.giftLink}</td><td>{i.giftCost}$</td></tr>)} */}
-                            {mapIt(itemsClaimed)}
+                            {eventsData && mapIt(itemsClaimed)}
                             
-                            <tr ><td colSpan={'4'}><span className="total">Estimated Total: {total}$</span></td></tr>
+                            <tr ><td colSpan={'4'}><span className="total">Overall est. Total: {Math.round(total - roundDifference)}$</span></td></tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
+            
         </>
     )
 }

@@ -191,13 +191,15 @@ useEffect(() => {
         let keys = ['giftName', 'requestor', 'username']
 
         if(choice === 1000) { // all
-            return data.filter(i => keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase())))
+            return data.filter(i => keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
         } else if (choice === 201) {
-            return data.filter((i => i?.giftCost >= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
+            return data.filter((i => i?.giftCost >= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
         } else  if (choice === 'yourClaims') {
             return data.filter((i) => i?.claimee === user.email && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
+        } else  if (choice === 'yourSplits') {
+            return data.filter((i) => i?.splittees !== undefined && i.splittees !== '' && i.splittees.includes(user.email) && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase())))
         } else if (choice) {
-            return data.filter((i => i?.giftCost >= choice - 25 && i?.giftCost <= choice && keys.some((key) => i[key].toLowerCase().includes(searchQuery.toLowerCase()))))
+            return data.filter((i => i?.giftCost >= choice - 25 && i?.giftCost <= choice && keys.some((key) => i[key]?.toLowerCase().includes(searchQuery.toLowerCase()))))
         // } else  if (!choice) {
         //     console.log('!choice fired');
         //     return data.filter((item) =>
@@ -255,6 +257,9 @@ useEffect(() => {
                     break;
                 case 'yourClaims':
                     setChosen('yourClaims')
+                    break;
+                case 'yourSplits':
+                    setChosen('yourSplits')
                     break;
                 default:
                     setChosen(100000)
@@ -398,20 +403,25 @@ useEffect(() => {
         <>
         {onTheList || user.email === eventData.eventOwner ? (<>
             <div>
-                {eventData && <h2 style={{marginTop: '10px', marginBottom:'5px'}}>Event: {eventData.eventName}</h2>}
-                <span id="eventBreakDown">Go to event breakdown <Link to={`/dashboard/eventinfo/${eventId}`} style={{textDecoration: 'none', color: 'crimson'}}><BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link></span>
+                {eventData && <h2 style={{marginTop: '10px', marginBottom:'5px'}}>Event: "{eventData.eventName}"</h2>}
+                <span id="eventBreakDown"><Link to={`/dashboard/eventinfo/${eventId}`} style={{textDecoration: 'none', color: 'crimson'}}>Go to event summary<BsBoxArrowInRight size={'30px'} color={'crimson'} /></Link></span>
                 <div style={{display: 'flex', justifyContent: 'center', alignItems:'center'}}>
-                    <span id="addeventparti">Add event participants</span>
-                    <MdGroupAdd id="addPartIcon" size={'36px'} onClick={sweetModal} />
+                    <a style={{textDecoration: 'none', color: 'crimson'}} id="addeventparti">Add event participants</a>
+                    <a onClick={sweetModal} ><MdGroupAdd id="addPartIcon" size={'36px'} /></a>
                 </div>
             </div>
+            <hr />
+            <h3 style={{textAlign: 'center'}}>Add to gift list...</h3>
             <div className='formContainer'>
+                
                     <form onSubmit={handleSubmit}>
                         <input className='giftInputs giftNameIn' value={giftName} name="giftname" placeholder='Gift Name' onChange={e => setGiftName(e.target.value)} />
                         <br />
-                        <input className='giftInputs giftIns40' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
-                        <i id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'pink'} id="pasteicon" /><div>Paste&nbsp;</div></i>
-                        <br />
+                        <div id="iconDiv">
+                            <input className='giftInputs giftIns40 giftLinkInput' value={giftLink} name="giftlink" placeholder='Gift Link' onChange={e => setGiftLink(e.target.value)} />
+                            <span id='bgW'><a id="iconEl" onClick={e => pasteLink(e)}><FaPaste size={'30px'} color={'pink'} id="pasteicon" /></a></span>
+                        </div>
+                        
                         <input  className='giftInputs giftIns40' type='number' value={giftCost} name="giftcost" placeholder='Gift Cost' onChange={e => setGiftCost(e.target.value)} />
                         
                         <div>
@@ -421,25 +431,26 @@ useEffect(() => {
                         </div>
                     </form> 
             </div>
-            <div className='searchContainer'>
-                <span>
-                   <a onClick={searchBarInfo}><BsInfoCircle size={'25px'} /></a><input className='searchInput' type="text" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
-                    <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
-                <select id="selectValue" name="cost" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} onChange={e =>handleSelect(e)}>
-                    <optgroup label="Filter Choices">
-                        <option value="1000">All Items</option>
-                        <option value="25">Up to 25$</option>
-                        <option value="50">25 to 50$</option>
-                        <option value="75">50 to 75$</option>
-                        <option value="100">75 to 100$</option>
-                        <option value="125">100 to 125$</option>
-                        <option value="150">125 to 150$</option>
-                        <option value="175">150 to 175$</option>
-                        <option value="200">175 to 200$</option>
-                        <option value="201">200$ and up</option>
-                        <option value="yourClaims">Your claims</option>
-                    </optgroup>
-                </select>
+            <div className={giftArray.length === 0 ? 'thclaimed searchContainer' : 'searchContainer'}>
+                <span id="filterSpan">
+                    <a onClick={searchBarInfo}><BsInfoCircle size={'25px'} /></a><input className='searchInput' type="text" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} value={searchQuery} placeholder='Filter Results' onChange={e => setSearchQuery(e.target.value)} />
+                        <button id="refreshBtn" onClick={() => setSearchQuery('')} className="btnInvert"><IoRefreshSharp size={'30px'} /></button>
+                    <select id="selectValue" name="cost" onFocus={() => setInFocus(true)} onBlur={() => setInFocus(false)} onChange={e =>handleSelect(e)}>
+                        <optgroup label="Filter Choices">
+                            <option value="1000">All Items</option>
+                            <option value="25">Up to 25$</option>
+                            <option value="50">25 to 50$</option>
+                            <option value="75">50 to 75$</option>
+                            <option value="100">75 to 100$</option>
+                            <option value="125">100 to 125$</option>
+                            <option value="150">125 to 150$</option>
+                            <option value="175">150 to 175$</option>
+                            <option value="200">175 to 200$</option>
+                            <option value="201">200$ and up</option>
+                            <option value="yourClaims">Your claims</option>
+                            <option value="yourSplits">Your splits</option>
+                        </optgroup>
+                    </select>
                 </span>
                 
             </div>

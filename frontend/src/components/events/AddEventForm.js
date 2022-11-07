@@ -199,6 +199,7 @@ export default () => {
     
 
     const handleCheckEventClick = () => {
+        
         // console.log(inviteData)
         // console.log('docData ', docData);
 
@@ -399,10 +400,15 @@ export default () => {
     
     return (
         <>
+        <hr />
             <div className="formContainer">
+                
                 <form onSubmit={handleSubmit}>
-                    <input className="eventNameDate" value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
-                    <input className="eventNameDate" value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
+                    <div className='inputsTainer'>
+                    <h3>Add an Event...</h3>
+                        <input className="eventNameDate" value={eventName} name="eventname" placeholder='event name' onChange={e => setEventName(e.target.value)} />
+                        <input className="eventNameDate" value={eventDate} type="date" name="eventdate" placeholder='event date' onChange={e => setEventDate(e.target.value)} />
+                    </div>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
                         <button type="submit" className='addEvent btnInvert' onClick={() => setDidSubmit(false)}>Add Event</button>
                         <button type="button" name='removeBtn' onClick={e => handleRemoveEvent(e)} className='removeEvent btnInvert'>Remove Event</button>

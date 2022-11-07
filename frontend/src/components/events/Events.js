@@ -7,7 +7,7 @@ import './events.css'
 
 
 export default ({ data }) => {
-    console.log(data);
+    // console.log(data);
     let inc = 0;
 
     const showEventInfo = (index) => {

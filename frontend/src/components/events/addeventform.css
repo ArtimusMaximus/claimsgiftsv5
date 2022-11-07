@@ -7,7 +7,19 @@
 }
 
 input {
-    width: 50vw;
+    width: 25vw;
+}
+.inputsTainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+@media only screen and (max-width: 800px) {
+    input {
+        width: 65vw;
+    }
 }
 input:focus {
     color: crimson;

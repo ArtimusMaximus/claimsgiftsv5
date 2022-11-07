@@ -59,7 +59,7 @@ export default () => {
         <>
             <div className="box">
                 <label>Welcome!</label>
-                <p style={{marginTop:'5px', marginBottom: '5px'}}>Please login to continue...</p>
+                <p style={{marginTop:'5px', marginBottom: '5px'}}>Please log in to continue...</p>
                 <form onSubmit={handleSubmit}>
                     <div className="inputDivs">
                         <input
@@ -81,13 +81,14 @@ export default () => {
                         />
                     </div>
                 <div className="inputDivs">
-                    <button type="submit" className="btnInvert">Login</button>
+                    <button type="submit" className="btnInvert">Log in</button>
                 </div>
                     {error && <span style={{color:'crimson', paddingTop: '15px'}}>{errorText}</span>}
                 </form>
                 <div className="newuser">
                     <p style={{marginTop:'5px', marginBottom: '5px'}}>New User?</p><p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/signup" style={{textDecoration:'none', fontWeight: '800', color:'aqua'}}>Sign Up</Link></p>
                     <p style={{marginTop:'5px', marginBottom: '5px'}}>Or...</p>
+                    <p style={{marginTop:'5px', marginBottom: '5px'}}>use passwordless sign-in:</p>
                     <p style={{marginTop:'5px', marginBottom: '5px'}}><Link id="signup" to="/oauth">Sign In via <AiOutlineGoogle width={'40px'} /> <AiOutlineYahoo width={'40px'} /> </Link></p>
                     {/* <img src={oauth2} width={'40px'} /> */}
                 </div>

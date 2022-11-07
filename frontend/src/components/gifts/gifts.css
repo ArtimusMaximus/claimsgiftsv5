@@ -64,10 +64,13 @@
     border-radius: 50%;
   }
 
+  
+
 
   tr {
-      height: 57px;
-      
+    height: 57px;
+    
+    border-radius: 4px;
   }
 
   /* .thclaimed {
@@ -91,12 +94,14 @@
   .infoButton {
     margin-left: 0px !important;
     padding: 3px 3px 3px 3px;
+    width: 25px;
   }
 
   .cbtd {
     margin: 0px !important;
     padding: 0px !important;
-    width: 15px;
+    width: 35px;
+    
     font-size: 1.5rem;
     
   }
@@ -115,7 +120,7 @@
     font-size: 1.25rem;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    width: 5px;
+    width: 57px;
   
   }
   .editSpan {
@@ -123,22 +128,27 @@
     margin-left: auto;
     align-items: center;
     justify-content: center;
-   
+    
     width: 20px;
     height: 20px;
   }
+
+  
 
   .giftNametd {
     text-align: left;
     font-size: 1.75rem;
     display: flex;
+    flex-wrap: wrap;
+    text-overflow: ellipsis;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 12px;
     border-radius: 4px;
-
+    /* margin-left: 5px; */
   }
-  @media screen and (min-width: 1300px) {
+  
+  @media screen and (min-width: 600px) {
     .giftNametd {
       font-size: 2.5rem;
     }
@@ -147,10 +157,20 @@
     }
   }
 
-
-  td .cbtd {
+/* claim button table data */
+  td > .cbtd {
+    width: 25px;
+    padding: 5px;
+    margin: 5px;
+  }
+  .cbtd > input {
     width: 25px;
   }
+
+  tr > .firstTableRow {
+    border-radius: 4px;
+  }
+  
 
   .firstTableRow {
     /* background-color: aliceblue; */
@@ -178,9 +198,32 @@
   }
   
   .giftContainer {
-    width: 100%;
+    width: 70vw;
     height: 50vh;
+    margin-left: 15vw;
+    
+    
   }
+  /* table {
+    width: 50%;
+    
+  } */
+  #giftsTable {
+    width: 60vw;
+  }
+  @media only screen and (max-width: 600px) {
+    #giftsTable {
+        width: 90vw;
+        margin-left: 0;
+    }
+}
+  table > tbody {
+    /* width: 50%; */
+  }
+  table > tbody > tr > td {
+    height: 67px;
+}
+  
   .giftContainer > td > table > tbody > tr > td {
     margin: 0px 15px 0px 15px;
     
@@ -191,9 +234,11 @@
   }
 
   /* table {
-    margin: 0px 2px 0px 2px;
-  } */
-
+    /* margin: 0px 2px 0px 2px; */
+    /* width: 70%;
+    height: 100%; */
+  /* }  */
+  
   #imgDiv {
     display: flex;
     flex-direction: row;
@@ -240,4 +285,23 @@
   font-family: 'Tangerine', cursive;
   font-size: 2.25rem;
 }
-  
+.splitLink {
+  width: 50px;
+}
+#splitButton {
+  border: 1px dotted crimson;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+
+.giftLinkTd {
+  width: 15px;
+}
+
+svg {
+  pointer-events: none;
+}
