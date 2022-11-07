@@ -86,8 +86,10 @@ export default () => {
     const filterData = (eventsData) => {
         let eD = eventsData?.filter(i => i?.claimee === user?.email)
         let iS = eventsData?.filter(i => i?.splittees?.includes(user?.email))
+        let iSS = eventsData?.filter(i => i?.claimee === user?.email && i?.splittees?.length >= 1)
 
         // iS.forEach(i => i.giftCost = i.giftCost / (i.splittees.length + 1))
+        console.log(eD);
 
 
         let combinedArr = []
@@ -99,12 +101,13 @@ export default () => {
 
         let s0 = eventsData?.filter(i => i?.claimee === user?.email)
         let s = s0?.filter((gift) => gift?.requestor === selection)
+        console.log(s);
         if (selection === 'All') {
             // console.log(eventsData);
 
             return combinedArr
         } else if (selection === 'individual') {
-            
+            console.log('hit individual statement');
             // let spl = eventsData?.filter((gift) => gift.splittees !== undefined && gift.splittees !== '' && gift.splittees.includes(user.email))
             return eD
         } else if (selection === 'splits') {
@@ -118,14 +121,14 @@ export default () => {
         }
     }
     
-    const splitteeList = (arr) => {
+    const splitteeList = (arr, claimee, i) => {
        
-        let newArr = [...arr]
+        let newArr = [...arr, claimee]
         
         // console.log(newArr);
 
         Swal.fire({
-            title: 'Users you are splitting with:',
+            title: `(${newArr.length}) Users splitting item "${i.giftName}":`,
             confirmButtonColor: 'crimson',
             html: `${newArr.map(i => i).join(', ')}`
         })
@@ -155,9 +158,9 @@ export default () => {
                     <td className="forPersonCol">{i?.username || i?.requestor}</td>
                     <td className="linkCol">{i?.giftLink !== '' && <a href={formatGiftLink(i?.giftLink)} target="_blank"><HiOutlineExternalLink size={'25px'} /></a>}</td>
                     <td className="costCol">
-                        {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees)}><BsInfoCircle size={'20px'} /></a>}
+                        {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees, i?.claimee, i)}><BsInfoCircle size={'20px'} /></a>}
                         {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost ? i.giftCost : 0) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
-                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt((i?.giftCost ? i?.giftCost : 0) / (i?.splittees?.length + 1))) : i?.giftCost ? i?.giftCost : 0}$
+                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'individual' && i?.splittees !== undefined && i?.splittees !== '' || selection !== null && i?.splittees !== undefined && i?.splittees !== '' ? Math.round((i?.giftCost ? parseInt(i?.giftCost) : 0) / (i?.splittees?.length + 1)) : i?.giftCost ? parseInt(i?.giftCost) : 0}$
                     </td>
                 </tr>
             )
@@ -186,7 +189,7 @@ export default () => {
                     <select className="eInfoSelect" onChange={e => handleChange(e)}>
                         <optgroup label="Users">
                             <option value="All">All gift claims</option>
-                            <option value="individual">Individual gift claims</option>
+                            <option value="individual">Your claim purchases</option>
                             {eventsData?.eventParticipants?.map(i => <option key={i} value={`${i}`}>{i}</option>)}
                             <option value="splits">Items you are splitting</option>
                         </optgroup>
