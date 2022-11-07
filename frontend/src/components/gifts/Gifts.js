@@ -55,7 +55,7 @@ export default ({ giftArray, user, inFocus }) => {
     // console.log(giftArray);
 
     const handleEdit = async (e, index) => {
-        console.log(e.target);
+        // console.log(e.target);
         e.preventDefault()
         
         let name = giftArray[index].giftName
@@ -194,8 +194,8 @@ export default ({ giftArray, user, inFocus }) => {
         
     }
     const handleSplit = async (e) => {
-        console.log(e.target.id);
-        console.log(e.target);
+        // console.log(e.target.id);
+        // console.log(e.target);
         let num = parseInt(e.target.id.slice(5))
         console.log(num);
         const claimee = giftArray[num]?.claimee

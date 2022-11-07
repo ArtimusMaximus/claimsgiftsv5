@@ -21,7 +21,7 @@ export default () => {
     const date = eventsData?.events?.eventDate
     const dateFormat = date?.slice(5, 7) + '-' + date?.slice(8, 10) + '-' + date?.slice(0,4) 
     
-    console.log(date);
+    // console.log(date);
 
     
     useEffect(() => {
@@ -138,7 +138,7 @@ export default () => {
         const filt = filterData(data)
         
         
-        // console.log(filt);
+        console.log(filt);
 
         const filtSplittees = filt?.filter(i => i.splittees !== undefined && i.splittees !== '')
         // console.log(filtSplittees);
@@ -157,7 +157,7 @@ export default () => {
                     <td className="costCol">
                         {i?.splittees !== undefined && i?.splittees !== '' && <a onClick={() => splitteeList(i?.splittees)}><BsInfoCircle size={'20px'} /></a>}
                         {i?.splittees !== undefined && i?.splittees !== '' && parseInt(i.giftCost ? i.giftCost : 0) + ' split by' + '(' + (i?.splittees?.length + 1) + ') '}
-                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt(i?.giftCost ? i.giftCost : 0) / (i?.splittees?.length + 1)) : i?.giftCost ? i.giftCost : 0}$
+                        {selection === 'splits' && i?.splittees !== undefined && i?.splittees !== '' || selection === 'All' && i?.splittees !== undefined && i?.splittees !== '' ? Math.round(parseInt((i?.giftCost ? i?.giftCost : 0) / (i?.splittees?.length + 1))) : i?.giftCost ? i?.giftCost : 0}$
                     </td>
                 </tr>
             )
