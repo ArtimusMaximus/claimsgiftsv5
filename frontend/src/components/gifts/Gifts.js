@@ -24,6 +24,7 @@ export default ({ giftArray, user, inFocus }) => {
     const [newName, setNewName] = useState('')
     const [newLink, setNewLink] = useState('')
     const [claimeeArray, setClaimeeArray] = useState([])
+    const [screenWidth, setScreenWidth] = useState(Boolean)
 
     // console.log(giftArray[0]?.giftLink);
     
@@ -48,11 +49,13 @@ export default ({ giftArray, user, inFocus }) => {
         // console.log(inFocus);
         
         setClaimeeArray(giftArray)
+        setScreenWidth(window.visualViewport.width)
 
         
-    }, [isClaimed, wasEdited])
+    }, [isClaimed, wasEdited, screenWidth])
 
     // console.log(giftArray);
+    console.log(screenWidth);
 
     const handleEdit = async (e, index) => {
         // console.log(e.target);
@@ -352,7 +355,7 @@ export default ({ giftArray, user, inFocus }) => {
                             <td className="giftNametd">{user.email === i.requestor 
                                 ? <a onClick={() => giftInfo(index)}><BsInfoCircle size={'17px'} /></a>
                                 : <a onClick={() => viewGiftInfo(index)}><BsInfoCircle size={'17px'} /></a>
-                                } {<b id={`${index}`}>{i.giftName}</b>}
+                                } {<b id={`${index}`}>{screenWidth < 400 && i.giftName.length >= 15 ? i.giftName.slice(0,15) + '...' : i.giftName}</b>}
                                 <a className='editSpan' onClick={e => handleEdit(e, index)}>
                                     {user.email === i.requestor && <GrEdit  />}
                                 </a>

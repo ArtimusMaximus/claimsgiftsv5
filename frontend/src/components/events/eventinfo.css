@@ -1,17 +1,22 @@
 .eventInfoTainer {
     display: flex;
     flex-direction: column;
-    
     align-items: center;
     width: 70vw;
     margin-left: 15vw;
-    
-    
+}
+
+#eventInfoTable > tbody > tr > td {
+    text-overflow: ellipsis;
+    max-width: 100px;
+    /* word-wrap: break-word; */
 }
 
 @media only screen and (max-width: 500px) {
     #eventInfoTable {
-        width: 90vw;
+        width: 96vw;
+        /* text-overflow: ellipsis; */
+        /* word-wrap: break-word; */
     }
     #dropDownTainer {
         flex-direction: column;

@@ -63,10 +63,8 @@
   .slider.round:before {
     border-radius: 50%;
   }
-
+/* @@@@@@@@@@@@@@@@@ end slider @@@@@@@@@@@@@@@@ */
   
-
-
   tr {
     height: 57px;
     
@@ -128,34 +126,60 @@
     margin-left: auto;
     align-items: center;
     justify-content: center;
-    
     width: 20px;
     height: 20px;
   }
 
+.giftNametd {
+  text-align: left;
+  font-size: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  text-overflow: ellipsis;
+  width: auto;
   
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  border-radius: 4px;
+  /* margin-left: 5px; */
+}
+/* #giftsTable > tbody > tr > td > b {
+  max-width: 100px;
+  text-overflow: ellipsis;
+  /* word-wrap: break-word; 
+} */
 
+
+
+@media screen and (min-width: 600px) {
   .giftNametd {
-    text-align: left;
-    font-size: 1.75rem;
-    display: flex;
-    flex-wrap: wrap;
-    text-overflow: ellipsis;
-    justify-content: center;
-    align-items: center;
-    margin-top: 12px;
-    border-radius: 4px;
-    /* margin-left: 5px; */
+    font-size: 2.5rem;
   }
-  
-  @media screen and (min-width: 600px) {
-    .giftNametd {
-      font-size: 2.5rem;
-    }
-    .requesteeTd {
-      font-size: 2rem;
-    }
+  .requesteeTd {
+    font-size: 2rem;
   }
+}
+@media only screen and (max-width: 600px) {    
+  #giftsTable {
+      width: 96vw;
+      margin-left: 0;
+  }
+}
+@media only screen and (max-width: 460px) {
+  .giftNametd {
+    margin-left: 5px;
+    font-size: 1.5rem;
+  }
+  .editSpan {
+    margin: 0;
+  }
+  #giftsTable > tbody > tr > td > b {
+  max-width: 130px;
+  text-overflow: ellipsis;
+  word-wrap: break-word; 
+  }
+}
 
 /* claim button table data */
   td > .cbtd {
@@ -201,22 +225,11 @@
     width: 70vw;
     height: 50vh;
     margin-left: 15vw;
-    
-    
   }
-  /* table {
-    width: 50%;
-    
-  } */
+  
   #giftsTable {
     width: 60vw;
   }
-  @media only screen and (max-width: 600px) {
-    #giftsTable {
-        width: 90vw;
-        margin-left: 0;
-    }
-}
   table > tbody {
     /* width: 50%; */
   }
