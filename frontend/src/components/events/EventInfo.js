@@ -89,7 +89,7 @@ export default () => {
         let iSS = eventsData?.filter(i => i?.claimee === user?.email && i?.splittees?.length >= 1)
 
         // iS.forEach(i => i.giftCost = i.giftCost / (i.splittees.length + 1))
-        console.log(eD);
+        
 
 
         let combinedArr = []
@@ -101,13 +101,13 @@ export default () => {
 
         let s0 = eventsData?.filter(i => i?.claimee === user?.email)
         let s = s0?.filter((gift) => gift?.requestor === selection)
-        console.log(s);
+        
         if (selection === 'All') {
-            // console.log(eventsData);
+            
 
             return combinedArr
         } else if (selection === 'individual') {
-            console.log('hit individual statement');
+            
             // let spl = eventsData?.filter((gift) => gift.splittees !== undefined && gift.splittees !== '' && gift.splittees.includes(user.email))
             return eD
         } else if (selection === 'splits') {
@@ -116,7 +116,7 @@ export default () => {
             return iS
         } else {
             
-            console.log('hit else statement');
+            
             return s
         }
     }
@@ -141,8 +141,6 @@ export default () => {
     const mapIt = (data) => {
         const filt = filterData(data)
         
-        
-        console.log(filt);
 
         const filtSplittees = filt?.filter(i => i.splittees !== undefined && i.splittees !== '')
         // console.log(filtSplittees);
